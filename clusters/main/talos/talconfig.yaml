@@ -30,7 +30,7 @@ nodes:
       - 1.1.1.1
       - 8.8.8.8
     installDiskSelector:
-      size: <= 2400GB
+      size: <= 3000GB
     networkInterfaces:
       # suffix is the adapter mac adres.
       - interface: enp13s0
