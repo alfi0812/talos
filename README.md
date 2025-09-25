@@ -1,1 +1,1 @@
-This is a kubernetes cluster Powered by TrueCharts ClusterTool
+Alfi0812 Personal Talos Cluster
