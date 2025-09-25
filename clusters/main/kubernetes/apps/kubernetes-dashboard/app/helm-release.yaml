@@ -30,13 +30,17 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    service:
+    global:
+      stopAll: false
+    ingress:
       main:
-        type: LoadBalancer
-        loadBalancerIP: ${DASHBOARD_IP}
+        enabled: true
+        ingressClassName: internal
         integrations:
-          metallb:
+          nginx:
             enabled: true
-        ports:
-          main:
-            port: 80
+          certManager:
+            enabled: true
+            certificateIssuer: domain-1-le-prod
+        hosts:
+          - host: kube.${DOMAIN_1}

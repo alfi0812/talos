@@ -24,4 +24,7 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  values: {}
+  values:
+    metrics:
+      main:
+        enabled: false

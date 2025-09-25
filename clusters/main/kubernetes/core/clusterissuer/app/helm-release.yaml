@@ -29,7 +29,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-
     clusterIssuer:
       selfSigned:
         enabled: true
@@ -40,7 +39,7 @@ spec:
           # Used for both logging in to the DNS provider AND ACME registration
           email: "${DOMAIN_0_EMAIL}"
           server: 'https://acme-staging-v02.api.letsencrypt.org/directory'
-          # Options: HTTP01, cloudflare, route53, akamai, digitalocean, rfc2136, acmedns, webhook
+          # Options: HTTP01, cloudflare, route53, akamai, digitalocean, rfc2136, acmedns
           type: "cloudflare"
           # for cloudflare
           cfapitoken: "${DOMAIN_0_CLOUDFLARE_TOKEN}"
@@ -48,10 +47,26 @@ spec:
           # Used for both logging in to the DNS provider AND ACME registration
           email: "${DOMAIN_0_EMAIL}"
           server: 'https://acme-v02.api.letsencrypt.org/directory'
-          # Options: HTTP01, cloudflare, route53, akamai, digitalocean, rfc2136, acmedns, webhook
+          # Options: HTTP01, cloudflare, route53, akamai, digitalocean, rfc2136, acmedns
           type: "cloudflare"
           # for cloudflare
           cfapitoken: "${DOMAIN_0_CLOUDFLARE_TOKEN}"
+        - name: domain-1-le-staging
+          # Used for both logging in to the DNS provider AND ACME registration
+          email: "${DOMAIN_1_EMAIL}"
+          server: 'https://acme-staging-v02.api.letsencrypt.org/directory'
+          # Options: HTTP01, cloudflare, route53, akamai, digitalocean, rfc2136, acmedns
+          type: "cloudflare"
+          # for cloudflare
+          cfapitoken: "${DOMAIN_1_CLOUDFLARE_TOKEN}"
+        - name: domain-1-le-prod
+          # Used for both logging in to the DNS provider AND ACME registration
+          email: "${DOMAIN_1_EMAIL}"
+          server: 'https://acme-v02.api.letsencrypt.org/directory'
+          # Options: HTTP01, cloudflare, route53, akamai, digitalocean, rfc2136, acmedns
+          type: "cloudflare"
+          # for cloudflare
+          cfapitoken: "${DOMAIN_1_CLOUDFLARE_TOKEN}"
 
     ## Remove these if you do NOT want to use clusterissuer
     clusterCertificates:
@@ -65,3 +80,9 @@ spec:
           hosts:
             - ${DOMAIN_0}
             - '*.${DOMAIN_0}'
+        - name: domain-1-wildcard
+          enabled: true
+          certificateIssuer: domain-1-le-prod
+          hosts:
+            - ${DOMAIN_1}
+            - '*.${DOMAIN_1}'

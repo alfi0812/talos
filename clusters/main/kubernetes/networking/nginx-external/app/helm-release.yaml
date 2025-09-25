@@ -29,13 +29,12 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    nameOverride: nginx-external
     controller:
-      replicaCount: 2
+      replicaCount: 1
       service:
         externalTrafficPolicy: Local
         annotations:
-          # TODO: Maybe play with this
-          # internal-dns.alpha.kubernetes.io/hostname: external.${DOMAIN_0}
           metallb.io/ip-allocated-from-pool: main
           metallb.io/loadBalancerIPs: ${NGINX_EXTERNAL_IP}
       ingressClassByName: true
@@ -63,12 +62,12 @@ spec:
         proxy-busy-buffers-size: 32k
         ssl-protocols: TLSv1.3 TLSv1.2
         use-forwarded-headers: "true"
+        forwarded-for-header: "CF-Connecting-IP"
+        proxy-real-ip-cidr: "${PODNET},${SVCNET}"
       metrics:
-        enabled: true
-        # serviceMonitor:
-        #   enabled: true
-        #   namespaceSelector:
-        #     any: true
+        enabled: false
+        serviceMonitor:
+          enabled: false
       extraArgs:
         default-ssl-certificate: "clusterissuer/certificate-issuer-domain-0-wildcard"
         publish-status-address: ${NGINX_EXTERNAL_IP}
@@ -77,7 +76,7 @@ spec:
         enabled: false
       resources:
         requests:
-          cpu: 75m
+          cpu: 100m
         limits:
           memory: 500Mi
     defaultBackend:

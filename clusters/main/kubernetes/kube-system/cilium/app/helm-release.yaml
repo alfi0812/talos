@@ -34,13 +34,24 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    # autoDirectNodeRoutes: true
-    # routingMode: native
+    cni:
+      exclusive: false
+    l2announcements:
+      enabled: false
+    socketLB:
+      hostNamespaceOnly: true
+    loadBalancer:
+      algorithm: maglev
+      mode: snat
+    autoDirectNodeRoutes: true
+    bpf:
+      masquerade: false
+    routingMode: native
     hubble:
       enabled: false
     cluster:
-      name: ${CLUSTERNAME}
-      id: 1
+        name: main
+        id: 1
     ipv4NativeRoutingCIDR: ${PODNET}
     securityContext:
       privileged: true
@@ -76,5 +87,6 @@ spec:
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
     localRedirectPolicy: true
     operator:
+      replicas: 1
       rollOutPods: true
     rollOutCiliumPods: true

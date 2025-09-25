@@ -29,8 +29,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    ## set stopAll to "true" if you do not want to use blocky
-    # and/or disable its service
     global:
       stopAll: false
     service:
@@ -41,36 +39,36 @@ spec:
         integrations:
           metallb:
             enabled: true
+    workload:
+      main:
+        replicas: 1
+    blocking:
+      clientGroupsBlock:  []
     k8sgateway:
-      # -- list of processed domains
       domains:
       - domain: "${DOMAIN_0}"
-        # -- Optional configuration option for DNS01 challenge that will redirect all acme
-        # challenge requests to external cloud domain (e.g. managed by cert-manager)
-        # See: https://cert-manager.io/docs/configuration/acme/dns01/
         dnsChallenge:
           enabled: false
           domain: dns01.clouddns.com
-
-      forward:
-        enabled: false
-        primary: tls://1.1.1.1
-        secondary: tls://1.0.0.1
-        options:
-          - name: tls_servername
-            value: cloudflare-dns.com
-
-    # CANNOT be defined in above yaml section
+      - domain: "${DOMAIN_1}"
+        dnsChallenge:
+          enabled: false
+          domain: dns01.clouddns.com
+    defaultUpstreams:
+    - "https://1.1.1.1/dns-query"
+    bootstrapDns:
+      ips: []
+      upstream: "1.1.1.1"
     queryLog:
-      # optional one of: mysql, postgresql, csv, csv-client. If empty, log to console only
       type: ""
-
     configmap:
       dashboard:
         enabled: false
       datasource:
         enabled: false
-
     cnpg:
+      main:
+        enabled: false
+    metrics:
       main:
         enabled: false
