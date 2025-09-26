@@ -7,3 +7,4 @@ resources:
   - snippet-box/ks.yaml
   - speedtest-tracker/ks.yaml
   - chromium/ks.yaml
+  - hammond/ks.yaml
