@@ -43,6 +43,9 @@ nodes:
           ip: ${VIP}
     schematic:
       customization:
+        extraKernelArgs:
+          - net.ifnames=0
+          - sysctl.kernel.kexec_load_disabled=1
         systemExtensions:
           officialExtensions:
             - siderolabs/util-linux-tools
@@ -63,6 +66,7 @@ controlPlane:
     customization:
       extraKernelArgs:
         - net.ifnames=0
+        - sysctl.kernel.kexec_load_disabled=1
       systemExtensions:
         officialExtensions:
           - siderolabs/util-linux-tools
