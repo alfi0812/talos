@@ -9,4 +9,4 @@ resources:
   - networking
   - system
   - general
-  #- auth
+  - auth
