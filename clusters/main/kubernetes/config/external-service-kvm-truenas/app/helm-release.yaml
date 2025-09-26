@@ -39,7 +39,7 @@ spec:
         enabled: true
         ingressClassName: internal
         hosts:
-        - host: talos-kvm.${DOMAIN_1}
+        - host: truenas-kvm.${DOMAIN_1}
         integrations:
           certManager:
             certificateIssuer: domain-1-le-prod
