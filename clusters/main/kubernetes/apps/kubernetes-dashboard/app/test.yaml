@@ -7,7 +7,7 @@ spec:
   restartPolicy: Never
   containers:
   - name: test
-    image: intel/oneapi-basekit:latest
+    image: intel/vainfo:latest
     command: ["bash", "-c"]
     args: ["vainfo || ls -l /dev/dri"]
     resources:
