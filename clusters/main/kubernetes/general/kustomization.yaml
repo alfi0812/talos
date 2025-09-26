@@ -5,3 +5,4 @@ resources:
   - hastebin/ks.yaml
   - stirling-pdf/ks.yaml
   - snippet-box/ks.yaml
+  - speedtest-tracker/ks.yaml
