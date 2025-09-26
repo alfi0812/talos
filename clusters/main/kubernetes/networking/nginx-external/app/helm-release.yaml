@@ -74,10 +74,5 @@ spec:
       terminationGracePeriodSeconds: 120
       publishService:
         enabled: false
-      resources:
-        requests:
-          cpu: 100m
-        limits:
-          memory: 500Mi
     defaultBackend:
       enabled: false
