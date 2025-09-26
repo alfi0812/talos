@@ -2,13 +2,14 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: intel-gpu-test
+  namespace: default
 spec:
+  restartPolicy: Never
   containers:
-  - name: gpu-test
+  - name: test
     image: intel/oneapi-basekit:latest
-    command: ["bash", "-c", "--"]
+    command: ["bash", "-c"]
     args: ["vainfo || ls -l /dev/dri"]
     resources:
       limits:
-        gpu.intel.com/i915: "1"
-  restartPolicy: Never
+        "gpu.intel.com/i915": "1"
