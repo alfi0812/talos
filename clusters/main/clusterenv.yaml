@@ -46,6 +46,8 @@ S3_URL: ENC[AES256_GCM,data:pgzOo1YzF3VWf3coY+zwvIOZGVo=,iv:JUyaZH+NM8wSl1DItyef
 S3_ACCESS_KEY: ENC[AES256_GCM,data:veFvfnyWsBf+GKqswNaDgw==,iv:p0WePesGt+ONYGEoJiZCFGZRbmnGvSgo2LfT0nDupcA=,tag:gST9Ie1NrpHOFDncY3QZ2w==,type:str]
 S3_SECRET_KEY: ENC[AES256_GCM,data:ph02hRvfRVAO6jPtDF3YvA==,iv:u6cr13PUBpaXNrZ/cJ4byAqfwB3EaXV7YVWZLw5VAz0=,tag:fl2ErGXLfVTgGGPbFhEqWA==,type:str]
 S3_ENCRYPTION_KEY: ENC[AES256_GCM,data:HVpPcQRY3+joCpTVRqW5FA==,iv:leftGBETKgqU9Z+lGL3U9Em8qDMgJtrEjyWbVkPOG8Q=,tag:GcaFI6BpULMsWoP2zkvxJw==,type:str]
+ZONE_0: ENC[AES256_GCM,data:xl/iCRq1ZZUJzzUOLEOQ6V1TLbUmQEiQAXH+hdduXvY=,iv:Sqa1sYH+O5jhzKfHTJlw3mhumZ3dwbpQbp1XZJFUJE0=,tag:fBWdczF8R6d4HaJgxOuHRw==,type:str]
+ZONE_1: ENC[AES256_GCM,data:fJglRLW6jO4kO0K8GrgY+9AWN7LtyNkTctPgUW7dXeU=,iv:MkGdeFgKB3uiTJsDnDFzxTWkaKt8j8Ez3tteErwfgNU=,tag:aXBpDGzIZcbRc2RQsK0jdg==,type:str]
 sops:
     shamir_threshold: 3
     age:
@@ -58,6 +60,7 @@ sops:
             NUdYK2dFdzRlVUp4K1hMMWxyQU5aVFUK+O+9kJQZn1D/ZoHfHNe7Q29O2JoURNLb
             mxnmi1WnM9J2wXVzF9TD9/86oenHpL7d2no1+UrQQQcFVqIZIzL5sA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-09-26T14:09:40Z"
-    mac: ENC[AES256_GCM,data:35YgL/Cw2Nkn6AZPGYctvvNhDblmpjJF7/EWN15Ht9l1zpIGQ2seTScNwtz9WMz5moqQe8MqSvXcZZD1Jac70tmstcktAYGTnGxGvT9t5x8SV6+nhgCagopkJjC17bXuwoa5bkMgI4aTbNqeoYRdNCtDH1+cJ3wc5J6yWrF+Qis=,iv:qnRR5VdIRFzfuGZUAPZZVpifOgpFCeJe/KmqArZXHbk=,tag:vWKjTwMQvY44QJS+qrusPg==,type:str]
+    lastmodified: "2025-09-26T14:19:44Z"
+    mac: ENC[AES256_GCM,data:yJtGTkWoBep0QRxuIiWHzQxgZfWX/h79Tm9YKK6XabtHNYnVXRie5EZ5LhX1iSnnGbF09l4GeLgYTMIxfsz/Efz8Djn3F3gLA7XbENJi0vnsMSYEm3os2DN6wsknItk6iK74pJ5Ai0H/m2cnfNsAx+GMFsptGJ7jj+PTnx4KO+c=,iv:uWABbzgaBT1dCD9hw8Ckwa6f3msGQYaBnSqVDYkQoZs=,tag:Gfw377DxMRlN2QoW4WXnxQ==,type:str]
+    unencrypted_suffix: _unencrypted
     version: 3.10.2
