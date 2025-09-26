@@ -24,6 +24,9 @@ spec:
     remediation:
       retries: 3
   values:
+    resources:
+      limits:
+        gpu.intel.com/i915: 1
     ingress:
       main:
         ingressClassName: external
