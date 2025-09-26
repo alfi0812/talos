@@ -32,7 +32,6 @@ spec:
         accessKey: "${S3_ACCESS_KEY}"
         secretKey: "${S3_SECRET_KEY}"
         encrKey: "${S3_ENCRYPTION_KEY}"
-    resources:
     ingress:
       main:
         enabled: true
