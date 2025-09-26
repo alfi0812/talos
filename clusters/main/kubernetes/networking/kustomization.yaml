@@ -7,3 +7,4 @@ resources:
   - cloudflareddns/ks.yaml
   - pihole/ks.yaml
   - wg-easy/ks.yaml
+  - rustdesk/ks.yaml
