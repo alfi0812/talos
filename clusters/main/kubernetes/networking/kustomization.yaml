@@ -5,5 +5,5 @@ resources:
   - nginx-internal/ks.yaml
   - cloudflared/ks.yaml
   - cloudflareddns/ks.yaml
-  #- pihole/ks.yaml
+  - pihole/ks.yaml
   #- wg-easy/ks.yaml
