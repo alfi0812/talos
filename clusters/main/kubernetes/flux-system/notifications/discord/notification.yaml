@@ -101,6 +101,9 @@ spec:
       namespace: it-tools
     - kind: HelmRelease
       name: "*"
+      namespace: intel
+    - kind: HelmRelease
+      name: "*"
       namespace: jts3servermod
     - kind: HelmRelease
       name: "*"
@@ -135,9 +138,6 @@ spec:
     - kind: HelmRelease
       name: "*"
       namespace: nextcloud
-    - kind: HelmRelease
-      name: "*"
-      namespace: nvidia-device-plugin
     - kind: HelmRelease
       name: "*"
       namespace: pihole
