@@ -11,3 +11,4 @@ resources:
   - general
   - auth
   - config
+  #- gaming
