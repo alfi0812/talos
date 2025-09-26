@@ -10,5 +10,5 @@ spec:
     args: ["vainfo || ls -l /dev/dri"]
     resources:
       limits:
-        gpu.intel.com/i915: 1
+        gpu.intel.com/i915: "1"
   restartPolicy: Never
