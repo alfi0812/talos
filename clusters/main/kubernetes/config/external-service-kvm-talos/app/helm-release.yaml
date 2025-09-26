@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: external-service-ulm
+  name: external-service-kvm-talos
   namespace: external-service
 spec:
   interval: 5m
@@ -25,8 +25,6 @@ spec:
       retries: 3
   values:
     resources:
-      requests:
-        cpu: 10m
     service:
       main:
         enabled: true
