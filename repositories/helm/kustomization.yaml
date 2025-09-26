@@ -14,4 +14,3 @@ resources:
   - spegel.yaml
   - truecharts.yaml
 # more goes here!
-  - intel.yaml
