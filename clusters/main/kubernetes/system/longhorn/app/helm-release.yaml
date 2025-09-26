@@ -26,7 +26,7 @@ spec:
   values:
     defaultSettings:
       # Increase to 3 for a multi-node cluster
-      defaultReplicaCount: 1
+      defaultReplicaCount: "1"
       # Overprovisioning might be needed when using volsync
       storageOverProvisioningPercentage: "100000"
       storageReservedPercentageForDefaultDisk: "10"
