@@ -9,7 +9,16 @@ spec:
   - name: gpu-compute
     image: intel/oneapi-basekit:latest
     command: ["bash", "-c"]
-    args: ["sycl-ls || ls -l /dev/dri"]
+    args:
+      - |
+        set -e
+        echo "Compiling SYCL test..."
+        cat << 'EOF' > vec_add.cpp
+        #include <CL/sycl.hpp>
+        #include <iostream>
+        int main() {
+            constexpr size_t N = 1024;
+            std::vector<int> A(N, 1), B(N, 2), C(N, 0);
     resources:
       limits:
         "gpu.intel.com/i915": "1"
