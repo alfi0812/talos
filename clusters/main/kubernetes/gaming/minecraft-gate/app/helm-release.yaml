@@ -88,7 +88,7 @@ spec:
                     cachePingTTL: -1s
                     fallback:
                       motd: |
-                        §cModpack server is offline.
+                        §cVanilla server is offline.
                         §eCheck back later!
                       version:
                         name: '§cTry again later!'
