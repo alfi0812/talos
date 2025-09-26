@@ -6,4 +6,4 @@ resources:
   - cloudflared/ks.yaml
   - cloudflareddns/ks.yaml
   - pihole/ks.yaml
-  #- wg-easy/ks.yaml
+  - wg-easy/ks.yaml
