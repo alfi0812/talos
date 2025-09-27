@@ -31,7 +31,6 @@ spec:
     keepHistory: false
   values:
     minRunners: 3
-    runnerLabels: actions-runners
     maxRunners: 6
     githubConfigSecret: runner-secret
     githubConfigUrl: https://github.com/trueforge-org
