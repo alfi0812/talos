@@ -8,3 +8,4 @@ resources:
   - external-service-printer/ks.yaml
   - external-service-kvm-talos/ks.yaml
   - external-service-kvm-truenas/ks.yaml
+  - external-service-minio/ks.yaml
