@@ -30,6 +30,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    nameOverride: actions-runners
+    runnerScaleSetName: actions-runners
     minRunners: 3
     maxRunners: 6
     githubConfigSecret: runner-secret
