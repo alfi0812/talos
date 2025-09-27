@@ -10,4 +10,4 @@ resources:
   - hammond/ks.yaml
   - kitchenowl/ks.yaml
   - actualserver/ks.yaml
-  #- vaultwarden/ks.yaml
+  - vaultwarden/ks.yaml
