@@ -8,3 +8,4 @@ resources:
   - speedtest-tracker/ks.yaml
   - chromium/ks.yaml
   - hammond/ks.yaml
+  - kitchenowl/ks.yaml
