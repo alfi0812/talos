@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: actions-runners
+  name: actions-runners-truecharts
   namespace: gha
 spec:
   interval: 15m
