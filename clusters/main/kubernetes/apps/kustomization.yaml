@@ -5,4 +5,4 @@ resources:
   - renovate/ks.yaml
   #- actions-runner-controller/ks.yaml
   #- actions-runners/ks.yaml
-  #- docker-registry/ks.yaml
+  - docker-registry/ks.yaml
