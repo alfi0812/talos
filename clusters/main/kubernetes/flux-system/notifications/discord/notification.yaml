@@ -74,7 +74,7 @@ spec:
       namespace: clusterissuer
     - kind: HelmRelease
       name: "*"
-      namespace: code-server
+      namespace: docker-registry
     - kind: HelmRelease
       name: "*"
       namespace: default
@@ -89,7 +89,7 @@ spec:
       namespace: generic-device-plugin
     - kind: HelmRelease
       name: "*"
-      namespace: glances
+      namespace: gha
     - kind: HelmRelease
       name: "*"
       namespace: hastebin
