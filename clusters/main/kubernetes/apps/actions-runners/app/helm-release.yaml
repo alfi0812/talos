@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: actions-runners-truecharts
-  namespace: gha
+  namespace: gha-truecharts
 spec:
   interval: 15m
   chart:
@@ -30,13 +30,14 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    runnerScaleSetName: actions-runners
     minRunners: 3
     maxRunners: 6
     githubConfigSecret: runner-secret
     githubConfigUrl: https://github.com/trueforge-org
     controllerServiceAccount:
       name: actions-runner-controller
-      namespace: gha
+      namespace: gha-truecharts
     containerMode:
       type: kubernetes
       kubernetesModeWorkVolumeClaim:
