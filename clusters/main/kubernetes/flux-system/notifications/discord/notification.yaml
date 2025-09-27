@@ -161,7 +161,7 @@ spec:
       namespace: speedtest-tracker
     - kind: HelmRelease
       name: "*"
-      namespace: synctube
+      namespace: gha-truecharts
     - kind: HelmRelease
       name: "*"
       namespace: system-upgrade
