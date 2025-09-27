@@ -13,3 +13,4 @@ resources:
   - vaultwarden/ks.yaml  
   - uptime-kuma/ks.yaml
   - nextcloud/ks.yaml
+  - homepage/ks.yaml
