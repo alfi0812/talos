@@ -26,6 +26,10 @@
         "matchDataSources": ["docker", "helm"],
         "matchPackagePatterns": ["minio", "postgresql", "reloader"],
         "schedule": ["at any time"]
+      },
+      {
+      "matchDatasources": ["docker"],
+      "registryUrls": ["https://dockerhub.alfi0812.de"]
       }
     ]
 }
