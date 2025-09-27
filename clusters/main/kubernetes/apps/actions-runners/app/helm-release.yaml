@@ -30,8 +30,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    minRunners: 3
-    maxRunners: 6
+    minRunners: 2
+    maxRunners: 8
     githubConfigSecret: runner-secret
     githubConfigUrl: https://github.com/trueforge-org
     controllerServiceAccount:
