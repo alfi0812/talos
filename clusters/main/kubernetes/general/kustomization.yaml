@@ -11,6 +11,5 @@ resources:
   - kitchenowl/ks.yaml
   - actualserver/ks.yaml
   - vaultwarden/ks.yaml  
-  - homepage/ks.yaml
   - uptime-kuma/ks.yaml
   - nextcloud/ks.yaml
