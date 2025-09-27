@@ -25,7 +25,7 @@ spec:
       retries: 3
   values:
     global:
-      stopAll: false
+      stopAll: true
     credentials:
       minio:
         type: s3

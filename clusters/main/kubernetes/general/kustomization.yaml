@@ -9,3 +9,4 @@ resources:
   - chromium/ks.yaml
   - hammond/ks.yaml
   - kitchenowl/ks.yaml
+  - actualserver/ks.yaml
