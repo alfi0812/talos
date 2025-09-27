@@ -4,3 +4,5 @@ resources:
   - minecraft-gate/ks.yaml
   - minecraft-modpack/ks.yaml
   - teamspeak3/ks.yaml
+  - sinusbot/ks.yaml
+  #- jts3servermod/ks.yaml
