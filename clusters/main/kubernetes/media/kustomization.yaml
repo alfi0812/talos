@@ -15,3 +15,5 @@ resources:
   - recyclarr/ks.yaml
   - bazarr/ks.yaml
   - bazarr-anime/ks.yaml
+  - jellyfin/ks.yaml
+  - jellyseerr/ks.yaml
