@@ -5,3 +5,4 @@ resources:
   - pvc.yaml
   - prowlarr/ks.yaml
   - sabnzbd/ks.yaml
+  - flaresolverr/ks.yaml
