@@ -13,3 +13,5 @@ resources:
   - sonarr/ks.yaml
   - sonarr-anime/ks.yaml
   - recyclarr/ks.yaml
+  - bazarr/ks.yaml
+  - bazarr-anime/ks.yaml
