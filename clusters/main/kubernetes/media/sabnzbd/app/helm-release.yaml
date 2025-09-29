@@ -53,6 +53,10 @@ spec:
             certificateIssuer: domain-1-le-prod
         hosts:
           - host: sabnzbd.${DOMAIN_1}
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 20Gi
     persistence:
       config:
         volsync:
