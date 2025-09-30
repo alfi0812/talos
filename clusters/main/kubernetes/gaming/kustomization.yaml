@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - minecraft-gate/ks.yaml
+  - minecraft-modpack/ks.yaml
+  - teamspeak3/ks.yaml
+  - sinusbot/ks.yaml
+  - jts3servermod/ks.yaml

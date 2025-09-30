@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - it-tools/ks.yaml
+  - hastebin/ks.yaml
+  - stirling-pdf/ks.yaml
+  - snippet-box/ks.yaml
+  - speedtest-tracker/ks.yaml
+  - chromium/ks.yaml
+  - hammond/ks.yaml
+  - kitchenowl/ks.yaml
+  - actualserver/ks.yaml
+  - vaultwarden/ks.yaml  
+  - uptime-kuma/ks.yaml
+  - nextcloud/ks.yaml
+  - homepage/ks.yaml
