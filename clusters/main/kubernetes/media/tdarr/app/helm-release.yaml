@@ -101,5 +101,5 @@ spec:
     resources:
       limits:
         cpu: 4000m
-        memory: 20Gi
+        memory: 40Gi
         gpu.intel.com/i915: 1
