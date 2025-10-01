@@ -90,16 +90,11 @@ spec:
             enabled: true
             trigger:
               schedule: 50 0 * * *
-      transcode-cache:
-        type: "emptyDir"
-      transcode-cache2:
-        enabled: true
-        mountPath: "/temp2"
       media:
         enabled: true
         existingClaim: media-nfs-pvc
     resources:
       limits:
         cpu: 4000m
-        memory: 40Gi
+        memory: 8Gi
         gpu.intel.com/i915: 1
