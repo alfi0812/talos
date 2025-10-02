@@ -66,6 +66,9 @@ spec:
             enabled: true
             trigger:
               schedule: 50 0 * * *
+      transcode-cache:
+        type: "emptyDir"
+        medium: ""
       media:
         enabled: true
         existingClaim: media-nfs-pvc
