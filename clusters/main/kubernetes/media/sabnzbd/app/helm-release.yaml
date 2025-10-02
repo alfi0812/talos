@@ -69,10 +69,6 @@ spec:
             enabled: true
             trigger:
               schedule: 40 0 * * *
-      downloads:
-        enabled: true
-        size: 200Gi
-        mountPath: /downloads
       media:
         enabled: true
         existingClaim: media-nfs-pvc
