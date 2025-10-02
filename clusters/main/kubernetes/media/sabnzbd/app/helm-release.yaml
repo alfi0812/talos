@@ -56,7 +56,7 @@ spec:
     resources:
       limits:
         cpu: 4000m
-        memory: 16Gi
+        memory: 8Gi
     persistence:
       config:
         size: 200Gi
