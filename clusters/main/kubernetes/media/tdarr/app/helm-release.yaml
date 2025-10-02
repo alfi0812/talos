@@ -66,30 +66,6 @@ spec:
             enabled: true
             trigger:
               schedule: 50 0 * * *
-      logs:
-        volsync:
-        - name: logs
-          type: restic
-          credentials: minio
-          dest:
-            enabled: true
-          src:
-            enabled: true
-            trigger:
-              schedule: 50 0 * * *
-      server:
-        volsync:
-        - name: server
-          type: restic
-          credentials: minio
-          dest:
-            cacheCapacity: 20Gi
-            enabled: true
-          src:
-            cacheCapacity: 20Gi
-            enabled: true
-            trigger:
-              schedule: 50 0 * * *
       media:
         enabled: true
         existingClaim: media-nfs-pvc
