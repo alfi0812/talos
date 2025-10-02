@@ -59,7 +59,6 @@ spec:
         memory: 8Gi
     persistence:
       config:
-        size: 200Gi
         volsync:
         - name: config
           type: restic
