@@ -7,8 +7,6 @@ resources:
   - sabnzbd/ks.yaml
   - flaresolverr/ks.yaml
   - lidarr/ks.yaml
-  - mylar/ks.yaml
-  - whisparr/ks.yaml
   - radarr/ks.yaml
   - sonarr/ks.yaml
   - sonarr-anime/ks.yaml
