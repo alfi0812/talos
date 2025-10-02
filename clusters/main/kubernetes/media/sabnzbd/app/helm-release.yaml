@@ -60,16 +60,6 @@ spec:
     persistence:
       config:
         size: 200Gi
-        volsync:
-        - name: config
-          type: restic
-          credentials: minio
-          dest:
-            enabled: true
-          src:
-            enabled: true
-            trigger:
-              schedule: 40 0 * * *
       downloads:
         enabled: true
         size: 200Gi
