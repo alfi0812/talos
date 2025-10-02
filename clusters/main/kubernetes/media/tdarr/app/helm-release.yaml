@@ -69,6 +69,7 @@ spec:
       transcode-cache:
         type: "emptyDir"
         medium: ""
+        size: 100Gi
       media:
         enabled: true
         existingClaim: media-nfs-pvc
