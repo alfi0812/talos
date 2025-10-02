@@ -4,7 +4,7 @@ resources:
   - namespace.yaml
   - pvc.yaml
   - prowlarr/ks.yaml
-  #- sabnzbd/ks.yaml
+  - sabnzbd/ks.yaml
   - flaresolverr/ks.yaml
   - lidarr/ks.yaml
   - radarr/ks.yaml
