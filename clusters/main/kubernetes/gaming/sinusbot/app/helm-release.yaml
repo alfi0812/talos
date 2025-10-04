@@ -29,6 +29,13 @@ spec:
     image:
       repository: ghcr.io/gamer92000/sinusbot-docker
       tag: latest
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                OVERRIDE_PASSWORD: ${NEXTCLOUD_PASSWORD}
     credentials:
       minio:
         type: s3
