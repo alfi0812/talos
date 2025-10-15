@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: nextcloud
-      version: 38.5.1
+      version: 38.5.2
       sourceRef:
         kind: HelmRepository
         name: truecharts
