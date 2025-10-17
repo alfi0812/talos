@@ -68,8 +68,6 @@ spec:
               schedule: 50 0 * * *
       transcode-cache:
         type: "emptyDir"
-        medium: ""
-        size: 100Gi
       media:
         enabled: true
         existingClaim: media-nfs-pvc
