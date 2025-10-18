@@ -54,6 +54,10 @@ spec:
         hosts:
           - host: sabnzbd.${DOMAIN_1}
     persistence:
+      downloads:
+        enabled: true
+        mountPath: /downloads
+        size: 500Gi
       config:
         volsync:
         - name: config
