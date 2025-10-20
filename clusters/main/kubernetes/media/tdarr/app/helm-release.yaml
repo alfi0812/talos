@@ -69,6 +69,8 @@ spec:
       media:
         enabled: true
         existingClaim: media-nfs-pvc
+      transcode-cache:
+        enabled: false
     resources:
       limits:
         cpu: 4000m
