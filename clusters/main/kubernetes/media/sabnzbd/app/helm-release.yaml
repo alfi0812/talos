@@ -29,8 +29,6 @@ spec:
         enabled: false
     global:
       stopAll: false
-    image:
-      pullPolicy: Always
     credentials:
       minio:
         type: s3
