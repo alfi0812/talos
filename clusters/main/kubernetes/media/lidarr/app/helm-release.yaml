@@ -28,7 +28,7 @@ spec:
       stopAll: false
     image:
       repository: ghcr.io/trueforge-org/lidarr
-      tag: 3.0.0@sha256:387fcfd339a860094ed474a8423f2bad7961672513a35a6683b05bddda82918d
+      tag: 3.0.0@sha256:922f82bc8c46ce86a68d5c85fd254e3c6d4830f4223290a6b6b2ca1f3929038d
     credentials:
       minio:
         type: s3
