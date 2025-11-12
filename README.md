@@ -1,1 +1,1 @@
-Alfi0812 Personal Talos Clusterf
+Alfi0812 Personal Talos Cluster
