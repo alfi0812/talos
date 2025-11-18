@@ -93,6 +93,8 @@ spec:
       main:
         podSpec:
           containers:
+            command:
+            - sleep 9999999
             main:
               env:
                 #JELLYFIN_DATA_DIR: /data
