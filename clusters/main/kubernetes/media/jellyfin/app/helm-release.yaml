@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: jellyfin
-      version: 21.12.8
+      version: 21.12.9
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -62,9 +62,25 @@ spec:
             enabled: true
           src:
             enabled: true
-            cacheCapacity: 20Gi
             trigger:
               schedule: 30 0 * * *
+      data:
+        enabled: true
+        mountPath: "/data"
+        volsync:
+        - name: data
+          type: restic
+          credentials: minio
+          dest:
+            enabled: true
+          src:
+            enabled: true
+            trigger:
+              schedule: 30 0 * * *
+      logs:
+        enabled: true
+        mountPath: "/logs"
+        type: "emptyDir"
       media:
         enabled: true
         existingClaim: media-nfs-pvc
