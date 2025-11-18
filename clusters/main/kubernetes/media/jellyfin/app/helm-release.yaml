@@ -85,11 +85,19 @@ spec:
         enabled: true
         existingClaim: media-nfs-pvc
         mountPath: /Media
+    image:
+      repository: ghcr.io/trueforge-org/ubuntu
+      tag: 24.4.0
+      pullPolicy: IfNotPresent
     workload:
       main:
         podSpec:
           containers:
             main:
+              command:
+              - /bin/sh
+              - -c
+              - "sleep 9999999"
               env:
                 JELLYFIN_DATA_DIR: /data
                 JELLYFIN_CONFIG_DIR: /config
