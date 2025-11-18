@@ -94,6 +94,13 @@ spec:
         podSpec:
           containers:
             main:
+              probes:
+                readiness:
+                  enabled: false
+                liveness:
+                  enabled: false
+                startup:
+                  enabled: false
               command:
               - /bin/sh
               - -c
