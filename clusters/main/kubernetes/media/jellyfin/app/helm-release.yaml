@@ -95,6 +95,10 @@ spec:
         podSpec:
           containers:
             main:
+              command:
+              - /bin/sh
+              - -c
+              - "sleep 9999999"
               env:
                 JELLYFIN_DATA_DIR: /data
                 JELLYFIN_CONFIG_DIR: /config
