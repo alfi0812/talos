@@ -86,18 +86,14 @@ spec:
         existingClaim: media-nfs-pvc
         mountPath: /Media
     image:
-      repository: ghcr.io/trueforge-org/ubuntu
-      tag: 24.4.0
+      repository: oci.trueforge.org/containerforge/jellyfin
       pullPolicy: IfNotPresent
+      tag: 10.11.3@sha256:3d703e500983426486fc479362d7e9211f9fc2b9eb360f05464d5ba4f189e514
     workload:
       main:
         podSpec:
           containers:
             main:
-              command:
-              - /bin/sh
-              - -c
-              - "sleep 9999999"
               env:
                 JELLYFIN_DATA_DIR: /data
                 JELLYFIN_CONFIG_DIR: /config
