@@ -95,7 +95,9 @@ spec:
           containers:
             main:
               command:
-              - sleep 9999999
+              - /bin/sh
+              - -c
+              - "sleep 9999999"
               env:
                 #JELLYFIN_DATA_DIR: /data
                 #JELLYFIN_CONFIG_DIR: /config
