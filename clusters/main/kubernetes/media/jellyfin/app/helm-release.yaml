@@ -24,7 +24,6 @@ spec:
     remediation:
       retries: 3
   timeout: 10m
-  wait: false
   values:
     portal:
       open:
