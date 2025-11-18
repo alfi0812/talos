@@ -85,6 +85,10 @@ spec:
         enabled: true
         existingClaim: media-nfs-pvc
         mountPath: /Media
+    image:
+      repository: ghcr.io/trueforge-org/ubuntu
+      tag: 24.4.0
+      pullPolicy: IfNotPresent
     workload:
       main:
         podSpec:
