@@ -101,6 +101,10 @@ spec:
                   enabled: false
                 startup:
                   enabled: false
+              command:
+              - /bin/sh
+              - -c
+              - "tail -f /dev/null"
               env:
                 JELLYFIN_DATA_DIR: /data
                 JELLYFIN_CONFIG_DIR: /config
