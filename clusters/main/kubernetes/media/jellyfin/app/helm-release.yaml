@@ -65,8 +65,6 @@ spec:
             trigger:
               schedule: 30 0 * * *
       data:
-        enabled: true
-        mountPath: "/data"
         volsync:
         - name: data
           type: restic
@@ -77,30 +75,15 @@ spec:
             enabled: true
             trigger:
               schedule: 30 0 * * *
-      logs:
-        enabled: true
-        mountPath: "/logs"
-        type: "emptyDir"
       media:
         enabled: true
         existingClaim: media-nfs-pvc
         mountPath: /Media
-    image:
-      repository: oci.trueforge.org/containerforge/jellyfin
-      pullPolicy: IfNotPresent
-      tag: 10.11.3@sha256:3d703e500983426486fc479362d7e9211f9fc2b9eb360f05464d5ba4f189e514
     workload:
       main:
         podSpec:
           containers:
             main:
-              probes:
-                readiness:
-                  enabled: false
-                liveness:
-                  enabled: false
-                startup:
-                  enabled: false
               env:
                 JELLYFIN_DATA_DIR: /data
                 JELLYFIN_CONFIG_DIR: /config
