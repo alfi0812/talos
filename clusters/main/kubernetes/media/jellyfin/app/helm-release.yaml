@@ -48,6 +48,9 @@ spec:
             certificateIssuer: domain-1-le-prod
         hosts:
           - host: jellyfin.${DOMAIN_1}
+    securityContext:
+      container:
+        readOnlyRootFilesystem: false
     resources:
       limits:
         cpu: 4000m
