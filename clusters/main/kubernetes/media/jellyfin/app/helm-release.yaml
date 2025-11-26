@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: jellyfin
-      version: 22.0.3
+      version: 22.1.0
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -30,11 +30,6 @@ spec:
         enabled: false
     global:
       stopAll: false
-    image:
-      pullPolicy: Always
-    securityContext:
-      container:
-        readOnlyRootFilesystem: false
     credentials:
       minio:
         type: s3
