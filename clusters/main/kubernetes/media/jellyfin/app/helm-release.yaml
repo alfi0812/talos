@@ -32,6 +32,9 @@ spec:
       stopAll: false
     image:
       pullPolicy: Always
+    securityContext:
+      container:
+        readOnlyRootFilesystem: false
     credentials:
       minio:
         type: s3
