@@ -24,6 +24,11 @@ spec:
     remediation:
       retries: 3
   values:
+    # for now until image is fixed
+    image:
+      repository: ghcr.io/hotio/cloudflareddns
+      pullPolicy: IfNotPresent
+      tag: latest@sha256:b64687779bbe0dcd41f9854129ce8fa9d6c5f009e1992a79bed97c85fe253eaf
     credentials:
       minio:
         type: s3
