@@ -1,0 +1,29 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "packageRules": [
+      {
+        "description": ["Block automerge for kubectl patch"],
+        "matchUpdateTypes": ["patch"],
+        "automerge": false,
+        "matchPackageNames": ["registry.k8s.io/kubectl", "ghcr.io/siderolabs/kubelet", "ghcr.io/siderolabs/installer"],
+        "labels": ["type/patch", "system-upgrade"],
+        "addLabels": null
+      },
+      {
+        "description": ["Block automerge for kubectl minor"],
+        "matchUpdateTypes": ["minor"],
+        "automerge": false,
+        "matchPackageNames": ["registry.k8s.io/kubectl", "ghcr.io/siderolabs/kubelet", "ghcr.io/siderolabs/installer"],
+        "labels": ["type/minor", "system-upgrade"],
+        "addLabels": null
+      },
+      {
+        "description": ["Block automerge for kubectl major"],
+        "matchUpdateTypes": ["major"],
+        "dependencyDashboardApproval": true,
+        "matchPackageNames": ["registry.k8s.io/kubectl", "ghcr.io/siderolabs/kubelet", "ghcr.io/siderolabs/installer"],
+        "labels": ["type/major", "system-upgrade"],
+        "addLabels": null
+      }
+    ]
+  }

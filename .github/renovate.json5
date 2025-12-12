@@ -4,6 +4,7 @@
   "extends": [
     "config:recommended",
     "github>trueforge-org/truecharts//.github/renovate/main.json5",
-    "github>alfi0812/talos-cluster//.github/custom.json5"
+    "github>alfi0812/talos-cluster//.github/custom.json5",
+    "github>alfi0812/talos-cluster//.github/kubectl.json5"
   ]
 }
