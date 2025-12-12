@@ -1,24 +1,24 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "gitAuthor": "viserion-renovate[bot] <199991279+viserion-renovate[bot]@users.noreply.github.com>",
-    "major": {
-      "enabled": true,
-      "automerge": false,
-      "dependencyDashboardApproval": false
-    },
-    "pinDigest": {
-      "enabled": true,
-      "automerge": true,
-      "dependencyDashboardApproval": false,
-      "labels": ["type/pin", "automerge"]
-    },
-    "ignore": [],
-    "packageRules": [
-      {
-        "description": ["Custom schedule for frequently updated packages"],
-        "matchDataSources": ["docker", "helm"],
-        "matchPackagePatterns": ["minio", "postgresql", "reloader"],
-        "schedule": ["at any time"]
-      }
-    ]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "gitAuthor": "viserion-renovate[bot] <199991279+viserion-renovate[bot]@users.noreply.github.com>",
+  "major": {
+    "enabled": true,
+    "automerge": false,
+    "dependencyDashboardApproval": false
+  },
+  "pinDigest": {
+    "enabled": true,
+    "automerge": true,
+    "dependencyDashboardApproval": false,
+    "labels": ["type/pin", "automerge"]
+  },
+  "ignore": [],
+  "packageRules": [
+    {
+      "description": ["Custom schedule for frequently updated packages"],
+      "matchDataSources": ["docker", "helm"],
+      "matchPackagePatterns": ["minio", "postgresql", "reloader"],
+      "schedule": ["at any time"]
+    }
+  ]
 }
