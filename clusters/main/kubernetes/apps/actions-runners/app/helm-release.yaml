@@ -51,7 +51,7 @@ spec:
         containers:
           - name: runner
             # image: tccr.io/tccr/charts-ci:latest
-            image: ghcr.io/actions/actions-runner:2.330.0
+            image: oci.trueforge.org/containerforge/actions-runner:2.330.0
             command:
               - /home/runner/run.sh
             env:
