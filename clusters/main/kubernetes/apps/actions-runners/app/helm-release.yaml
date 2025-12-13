@@ -50,7 +50,7 @@ spec:
       spec:
         containers:
           - name: runner
-            image: tccr.io/tccr/charts-ci:latest
+            image: oci.trueforge.org/tccr/charts-ci:latest
             command:
               - /home/runner/run.sh
             env:
