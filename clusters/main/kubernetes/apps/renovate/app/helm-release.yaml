@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: mend-renovate
-      version: 5.3.2
+      version: 6.1.0
       sourceRef:
         kind: HelmRepository
         name: truecharts
