@@ -5,4 +5,3 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - tuppr/ks.yaml
-  - tuppr-plans/ks.yaml
