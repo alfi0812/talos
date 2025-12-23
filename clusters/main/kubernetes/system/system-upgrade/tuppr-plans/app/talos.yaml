@@ -6,7 +6,6 @@ metadata:
 spec:
   talos:
     version: ${TALOS_VERSION}  # Required - target Talos version
-
   policy:
     debug: true          # Optional, verbose logging
     force: false         # Optional, skip etcd health checks
