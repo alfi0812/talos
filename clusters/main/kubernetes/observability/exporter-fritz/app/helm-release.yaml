@@ -43,7 +43,7 @@ spec:
           containers:
             main:
               extraArgs:
-              - --config.file=/exporter/config.yaml
+              - --config=/exporter/config.yaml
 
     configmap:
       exporter-configfile:
