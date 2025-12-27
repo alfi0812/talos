@@ -91,30 +91,30 @@ spec:
               - name: Cloudflare
                 group: connectivity
                 url: icmp://1.1.1.1
-                interval: 1m
+                interval: 60s
                 conditions:
                   - "[CONNECTED] == true"
               - name: Google
                 group: connectivity
                 url: icmp://8.8.8.8
-                interval: 1m
+                interval: 60s
                 conditions:
                   - "[CONNECTED] == true"
               - name: Quad9
                 group: connectivity
                 url: icmp://9.9.9.9
-                interval: 1m
+                interval: 60s
                 conditions:
                   - "[CONNECTED] == true"
-              - name: alfi0812.de
+              - name: ${DOMAIN_0}
                 group: cloudflare
-                url: https://alfi0812.de
-                interval: 1m
+                url: https://${DOMAIN_0}
+                interval: 60s
                 conditions:
                   - "[STATUS] == 200"
-              - name: goeppel.de
+              - name: ${DOMAIN_1}
                 group: cloudflare
-                url: https://goeppel.dev
+                url: https://${DOMAIN_1}
                 interval: 1m
                 conditions:
                   - "[STATUS] == 200"
