@@ -47,7 +47,7 @@ spec:
       password: ${DOCKERHUB_PASSWORD}
     ingress:
       enabled: true
-      className: ""
+      className: internal
       path: /
       # Used to create an Ingress record.
       hosts:
@@ -55,9 +55,6 @@ spec:
       annotations:
         cert-manager.io/cluster-issuer: domain-0-le-prod
         cert-manager.io/private-key-rotation-policy: Always
-        annotations:
-          gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 404"]
       labels: {}
       tls:
         - hosts:
