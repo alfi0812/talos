@@ -102,6 +102,7 @@ FRITZ_PASSWORD: ENC[AES256_GCM,data:iwVRf38JssU4D2wltUM=,iv:f/qUvYdPQN/jgINgbJ5V
 FLUXCD_DISCORD_WEBHOOK: ENC[AES256_GCM,data:4MMcI5ixhV8dWB0PZwDIxkf/BHEuLyOeoyJb8jr/gTYtR/YFepkVePVKXpoZk5bDoHlygYOG2dkXbQ1+5LFGLewuEf5uWTGNSjnoJ/INj89jXW98CGknAQc3kM6ucUERr4BrzXF5RmcpjoiCzKadidK1poJYcnxLpw==,iv:ZQW6nC4Tn7lGEChDH2cm4G8p84tl6/jK6eUYFK4mZ6I=,tag:GMzospfoeUbydWl2EMvqjg==,type:str]
 GATUS_BUDDY_STATUS_HOSTNAME: ENC[AES256_GCM,data:BVvW20t68Sb0hhe94Z6H/YJXr9o+MAHw5Cgmtg==,iv:sZVdDrGaUPkcdyXPEB6hOu+BDG2fttaVJGqIY2L/IXQ=,tag:XTz5Q/aSBXY3HCfcNoyFmA==,type:str]
 GATUS_WEBHOOK: ENC[AES256_GCM,data:eouoqXg7KTZ+Rc0BHneF+srzzVInh3U7OKzdcmr2ClTyeC6TAGTv9VZe/geTtmhAGYN3JGtSa8+YJIeNmeXBxCKTdstskYIUp1KAR1Ch/rjGIi1VedD3zjcVIjbr3wYhlx/uQ6ChIULccibBEH6DTDs/+yVGdBMZjQ==,iv:0uwpcVVNOZDEMVjeWeORt7h94M/rTM5CVUodWCD6VkM=,tag:MXIhwFRjWe9gGP1lvD/VHA==,type:str]
+BUDDY_DDNS_HOSTNAME: ENC[AES256_GCM,data:sOEnhR4KaDgPDWFmOvLGzfDisQ==,iv:nhiW7mS1NVwYwpR56adRoeztcKctRqbDzlDdQnMqqzA=,tag:Y5xMjMZRFoKXx57AAoX/Sg==,type:str]
 sops:
     shamir_threshold: 3
     age:
@@ -114,6 +115,7 @@ sops:
             b2lwbmlXb3R2dW9MbzkrL2FzVzBUNnMKwTRm9UxRlr2RvUqMg9frlf9694ZeWIwP
             XDRNBxPBkl3mho+wGkeloj+M2iWVFMI6rBT3NtrMsAsiYE2ZfghRyw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-27T21:12:27Z"
-    mac: ENC[AES256_GCM,data:Gr4kFI+KUfe3xrBF6tZrh80G/PM/2CwQ93E5+zNRRDDvGdXiHQM0WGwpNifLJqWsgbNoHE5VQMjqMX6v1AjiWgV5vcmaa0w2C7cSvUd6Gc6Hmt+FKIVF0c+CSfU8d6sU3Ix/syl6QGe2HGIkh8Gk8Ue2mTWBEE+n4Nj3YZ8o5Wc=,iv:Ecm8IIY1NS4U1mnaF1HsPqgPCFMLe5EVt9fsKvntBbA=,tag:qfjsDCRjFK6THDO+ofGnEA==,type:str]
+    lastmodified: "2025-12-27T21:24:08Z"
+    mac: ENC[AES256_GCM,data:47leV9oirLn+0zBnFtZfWj6cgFYFQkxehdHQN+wQoc251xeZm3vsZrYGS5Ln589VkGzhn7gcTysSsAsuoIYg1x2e/tYBATjLNOHuHI0LTO/dIp4WUm76q4ypwDGCBDHCKzYa/aUjGnPWS4QHlfgUqQYPSe/7ufLPajfYl6Ch6Yw=,iv:Z5kW2BFOpIEsmz9iB7X8/9DPiIGeVYvvkAFgES0bi0s=,tag:nZk/83K0l52t5cf7kP5oUw==,type:str]
+    unencrypted_suffix: _unencrypted
     version: 3.10.2
