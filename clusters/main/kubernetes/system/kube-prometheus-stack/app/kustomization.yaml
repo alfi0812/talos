@@ -5,3 +5,5 @@ resources:
   - namespace.yaml
   - helm-release.yaml
   - promethuesrule.yaml
+  - alertmanagerconfig.yaml
+  - alertmanager.secret.yaml
