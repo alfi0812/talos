@@ -36,6 +36,7 @@ spec:
         ports:
           main:
             port: 9787
+            targetPort: 9787
     workload:
       main:
         podSpec:
@@ -58,7 +59,7 @@ spec:
         mountPath: /exporter/config.yaml
         subPath: config.yaml
     exporter:
-      exporter_port: {{ .Values.service.main.ports.main.port }}
+      exporter_port: 9787
       devices:
       - name: Fritz!Box 7590 Router
         hostname: '${FRITZBOX_IP}'
