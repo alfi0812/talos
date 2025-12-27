@@ -425,7 +425,7 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          cert-manager.io/cluster-issuer: cloudflare
+          cert-manager.io/cluster-issuer: domain-1-le-prod
           cert-manager.io/private-key-rotation-policy: Always
         hosts:
           - prometheus.${DOMAIN_1}
