@@ -99,30 +99,50 @@ spec:
                 interval: 60s
                 conditions:
                   - "[CONNECTED] == true"
+                alerts:
+                  - type: discord
+                    description: "Healthcheck Failed"
+                    send-on-resolved: true
               - name: Google
                 group: connectivity
                 url: icmp://8.8.8.8
                 interval: 60s
                 conditions:
                   - "[CONNECTED] == true"
+                alerts:
+                  - type: discord
+                    description: "Healthcheck Failed"
+                    send-on-resolved: true
               - name: Quad9
                 group: connectivity
                 url: icmp://9.9.9.9
                 interval: 60s
                 conditions:
                   - "[CONNECTED] == true"
+                alerts:
+                  - type: discord
+                    description: "Healthcheck Failed"
+                    send-on-resolved: true
               - name: ${DOMAIN_0}
                 group: cloudflare
                 url: https://${DOMAIN_0}
                 interval: 60s
                 conditions:
                   - "[STATUS] == 200"
+                alerts:
+                  - type: discord
+                    description: "Healthcheck Failed"
+                    send-on-resolved: true
               - name: ${DOMAIN_1}
                 group: cloudflare
                 url: https://${DOMAIN_1}
                 interval: 1m
                 conditions:
                   - "[STATUS] == 200"
+                alerts:
+                  - type: discord
+                    description: "Healthcheck Failed"
+                    send-on-resolved: true
             ### BUDDY ENDPOINTS
               - name: Status Page (Buddy)
                 group: buddy
@@ -136,7 +156,7 @@ spec:
                   - "[BODY].status == UP"
                 alerts:
                   - type: discord
-                    description: "healthcheck failed"
+                    description: "Healthcheck Failed"
                     send-on-resolved: true
               - name: Ping
                 group: buddy
@@ -149,5 +169,5 @@ spec:
                   - "[CONNECTED] == true"
                 alerts:
                   - type: discord
-                    description: "healthcheck failed"
+                    description: "Healthcheck Failed"
                     send-on-resolved: true
