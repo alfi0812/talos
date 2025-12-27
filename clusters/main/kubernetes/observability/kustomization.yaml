@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - smartctl-exporter/ks.yaml
   - exporter-fritz/ks.yaml
+  - gatus/ks.yaml
