@@ -31,7 +31,7 @@ spec:
     keepHistory: false
   values:
     minRunners: 2
-    maxRunners: 8
+    maxRunners: 6
     githubConfigSecret: runner-secret
     githubConfigUrl: https://github.com/trueforge-org
     controllerServiceAccount:
