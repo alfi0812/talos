@@ -1,0 +1,50 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: exporter-repeater
+  namespace: exporter-repeater
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 15.29.44
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 5m
+  install:
+    createNamespace: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  values:
+    portal:
+      open:
+        enabled: false
+    image:
+      repository: docker.io/pdreker/fritz_exporter
+      pullPolicy: IfNotPresent
+      tag: 2.6.1@sha256:a6b182eb3bc94c7dd37eb2ded8bbb6653861615f4c1e4a906fee679f9f605ce3
+    service:
+      main:
+        ports:
+          main:
+            port: 9787
+            type: tcp
+            targetPort: 9787
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                FRITZ_HOSTNAME: "${REPEATER_IP}"
+                FRITZ_USERNAME: "${FRITZ_USER}"
+                FRITZ_PASSWORD: "${FRITZ_PASSWORD}"
+
