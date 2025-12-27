@@ -24,6 +24,8 @@ spec:
     remediation:
       retries: 3
   values:
+    global:
+      stopAll: true
     credentials:
       minio:
         type: s3
