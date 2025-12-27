@@ -48,7 +48,7 @@ spec:
       enableService: true
       enableIngress: true
       autoIngress: true 
-      autoService: true
+      autoService: false
     configmap:
       config:
         enabled: true
