@@ -76,6 +76,13 @@ spec:
         username: '${FRITZ_USER}'
         password: '${FRITZ_PASSWORD}'
         host_info: True
+    metrics:
+      main:
+        enabled: true
+        type: servicemonitor
+        endpoints:
+          - port: main
+        targetSelector: metrics
 
 
 
