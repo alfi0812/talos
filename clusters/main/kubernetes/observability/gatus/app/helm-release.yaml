@@ -95,6 +95,9 @@ spec:
                 default-alert:
                   description: "health check failed"
                   send-on-resolved: true
+                overrides:
+                  - group: "buddy"
+                    webhook-url: ${GATUS_WEBHOOK_BUDDY}
             endpoints:
               - name: Cloudflare
                 group: connectivity
