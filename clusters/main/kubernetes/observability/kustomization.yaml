@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - smartctl-exporter/ks.yaml
   - exporter-router/ks.yaml
+  - exporter-repeater/ks.yaml
