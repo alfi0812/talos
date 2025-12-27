@@ -454,3 +454,7 @@ spec:
                 requests:
                   storage: 100Gi  
     cleanPrometheusOperatorObjectNames: true
+    defaultRules:
+      ## Disabled PrometheusRule alerts
+      disabled:
+         NodeMemoryHighUtilization: true
