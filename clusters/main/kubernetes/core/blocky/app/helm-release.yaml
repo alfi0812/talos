@@ -44,6 +44,8 @@ spec:
           gatus.home-operations.com/endpoint: |
             group: services
             interval: 60s
+            ui:
+              hide-url: true
             conditions:
               - "[CONNECTED] == true"
               - "[RESPONSE_TIME] < 100"
