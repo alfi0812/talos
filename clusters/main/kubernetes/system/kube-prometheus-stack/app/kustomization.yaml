@@ -7,3 +7,4 @@ resources:
   - promethuesrule.yaml
   - alertmanagerconfig.yaml
   - alertmanager.secret.yaml
+  - scrapeconfig.yaml
