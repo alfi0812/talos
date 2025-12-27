@@ -111,6 +111,7 @@ spec:
           user: uid=admin,ou=people,dc=${DN},dc=${DC}
           password: ${LLDAP_PASSWORD}
       access_control:
+        default_policy: 'deny'
         rules:
         - domain:
             - ${DOMAIN_1}

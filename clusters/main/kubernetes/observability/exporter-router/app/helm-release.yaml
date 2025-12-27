@@ -46,4 +46,5 @@ spec:
                 FRITZ_HOSTNAME: "${FRITZBOX_IP}"
                 FRITZ_USERNAME: "${FRITZ_USER}"
                 FRITZ_PASSWORD: "${FRITZ_PASSWORD}"
+                FRITZ_LISTEN_ADDRESS: ""
 
