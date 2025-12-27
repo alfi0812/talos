@@ -60,6 +60,8 @@ spec:
             paths:
               - path: /api
                 pathType: Prefix
+              - path: /health
+                pathType: Prefix
     sidecar:
       enable: true
       enableService: true
