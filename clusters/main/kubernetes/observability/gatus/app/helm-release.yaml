@@ -91,7 +91,7 @@ spec:
             metrics: true
             alerting:
               discord:
-                webhook-url: ${GATUS_WEBHOOK}
+                webhook-url: "${GATUS_WEBHOOK}""
             endpoints:
               - name: Cloudflare
                 group: connectivity
@@ -140,7 +140,7 @@ spec:
                     send-on-resolved: true
               - name: Ping
                 group: buddy
-                url: icmp://test
+                url: icmp://${BUDDY_DDNS_HOSTNAME}
                 interval: 1m
                 ui:
                   hide-url: true
