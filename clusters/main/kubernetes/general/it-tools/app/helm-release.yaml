@@ -24,6 +24,8 @@ spec:
     remediation:
       retries: 3
   values:
+    global:
+      stopAll: true
     ingress:
       main:
         ingressClassName: external
