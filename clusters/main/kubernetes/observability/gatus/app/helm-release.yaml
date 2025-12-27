@@ -93,4 +93,18 @@ spec:
                 conditions:
                   - "[CONNECTED] == true"
 
+              - name: alfi0812.de
+                group: cloudflare
+                url: https://alfi0812.de
+                interval: 1m
+                conditions:
+                  - "[STATUS] == 200"
+
+              - name: goeppel.de
+                group: cloudflare
+                url: https://goeppel.dev
+                interval: 1m
+                conditions:
+                  - "[STATUS] == 200"
+
             metrics: true
