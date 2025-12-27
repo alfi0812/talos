@@ -82,7 +82,7 @@ spec:
         type: servicemonitor
         endpoints:
           - port: main
-        targetSelector: metrics
+        targetSelector: main
 
 
 
