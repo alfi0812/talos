@@ -86,6 +86,7 @@ spec:
                   link: https://github.com/Alfi0812
                 - name: TalosCluster
                   link: https://github.com/Alfi0812/talos
+            metrics: true
             endpoints:
               - name: Cloudflare
                 group: connectivity
@@ -117,4 +118,13 @@ spec:
                 interval: 1m
                 conditions:
                   - "[STATUS] == 200"
-            metrics: true
+            ### BUDDY ENDPOINTS
+              - name: Status Page (Buddy)
+                group: buddy
+                url: https://${GATUS_BUDDY_STATUS_HOSTNAME}
+                interval: 1m
+                ui:
+                  hide-url: true
+                  hide-hostname: true
+                conditions:
+                  - "[STATUS] == 200"
