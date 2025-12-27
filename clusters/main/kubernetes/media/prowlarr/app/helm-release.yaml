@@ -63,8 +63,8 @@ spec:
             trigger:
               schedule: 30 0 * * *
     metrics:
-        main:
-          enabled: true
-          apiKey: ${API_PROWLARR}
-          prometheusRule:
-            enabled: false
+      main:
+        enabled: true
+        apiKey: ${API_PROWLARR}
+        prometheusRule:
+          enabled: false
