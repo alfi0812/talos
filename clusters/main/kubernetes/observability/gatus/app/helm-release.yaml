@@ -91,7 +91,7 @@ spec:
             metrics: true
             alerting:
               discord:
-                webhook-url: "${GATUS_WEBHOOK}""
+                webhook-url: ${GATUS_WEBHOOK}
             endpoints:
               - name: Cloudflare
                 group: connectivity
