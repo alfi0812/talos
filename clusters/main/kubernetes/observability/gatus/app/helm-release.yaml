@@ -89,6 +89,9 @@ spec:
                 - name: TalosCluster
                   link: https://github.com/Alfi0812/talos
             metrics: true
+            alerting:
+              discord:
+                webhook-url: ${GATUS_WEBHOOK}
             endpoints:
               - name: Cloudflare
                 group: connectivity
@@ -131,3 +134,7 @@ spec:
                 conditions:
                   - "[STATUS] == 200"
                   - "[BODY].status == UP"
+                alerts:
+                  - type: discord
+                    description: "healthcheck failed"
+                    send-on-resolved: true
