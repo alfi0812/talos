@@ -6,3 +6,5 @@ resources:
   # - schematics.yaml
   - kubernetes.yaml
   - talos.yaml
+components:
+  - ../../../../components/notifications/discord
