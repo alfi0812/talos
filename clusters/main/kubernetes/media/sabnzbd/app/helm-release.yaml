@@ -57,6 +57,9 @@ spec:
       main:
         podSpec:
           containers:
+            main:
+              env:
+                SABNZBD__HOST_WHITELIST_ENTRIES: "sabnzbd.${DOMAIN_1}, sabnzbd.sabnzbd.svc, sabnzbd"
             exportarr:
               env:
                 ENABLE_ADDITIONAL_METRICS: true
