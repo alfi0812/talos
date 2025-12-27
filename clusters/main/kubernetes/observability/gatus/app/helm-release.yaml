@@ -44,7 +44,7 @@ spec:
         hosts:
           - host: status.${DOMAIN_1}
       api:
-        enabled: false
+        enabled: true
         ingressClassName: external
         primary: false
         targetSelector:
