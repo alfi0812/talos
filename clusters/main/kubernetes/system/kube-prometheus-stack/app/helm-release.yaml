@@ -455,8 +455,6 @@ spec:
             memory: 500Mi
           limits:
             memory: 2000Mi
-        secrets:
-          - etcd-client-cert
         storageSpec:
           volumeClaimTemplate:
             spec:
