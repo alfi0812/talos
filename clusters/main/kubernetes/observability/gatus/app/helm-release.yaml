@@ -29,7 +29,7 @@ spec:
         enabled: false
     ingress:
       main:
-        enabled: false
+        enabled: true
         ingressClassName: external
         integrations:
           nginx:
@@ -43,6 +43,23 @@ spec:
             certificateIssuer: domain-1-le-prod
         hosts:
           - host: status.${DOMAIN_1}
+      api:
+        enabled: false
+        ingressClassName: external
+        primary: false
+        targetSelector:
+          main: main
+        integrations:
+          nginx:
+            enabled: true
+          certManager:
+            enabled: true
+            certificateIssuer: domain-1-le-prod
+        hosts:
+          - host: status.${DOMAIN_1}
+            paths:
+              - path: /api
+                pathType: Prefix
     sidecar:
       enable: true
       enableService: true
