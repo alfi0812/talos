@@ -80,6 +80,8 @@ spec:
         endpoints:
           - port: main
             path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
         targetSelector: main
 
 
