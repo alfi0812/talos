@@ -46,6 +46,7 @@ spec:
             interval: 60s
             ui:
               hide-url: true
+              hide-hostname: true
             conditions:
               - "[CONNECTED] == true"
               - "[RESPONSE_TIME] < 100"
