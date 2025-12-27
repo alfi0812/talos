@@ -1,8 +1,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: exporter-repeater
-  namespace: exporter-repeater
+  name: exporter-fritz
+  namespace: exporter-fritz
 spec:
   interval: 5m
   chart:
@@ -36,7 +36,6 @@ spec:
         ports:
           main:
             port: 9787
-            type: tcp
             targetPort: 9787
     workload:
       main:
@@ -44,7 +43,7 @@ spec:
           containers:
             main:
               env:
-                FRITZ_HOSTNAME: "${REPEATER_IP}"
+                FRITZ_HOSTNAME: "${FRITZBOX_IP}"
                 FRITZ_USERNAME: "${FRITZ_USER}"
                 FRITZ_PASSWORD: "${FRITZ_PASSWORD}"
 
