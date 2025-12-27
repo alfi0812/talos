@@ -65,17 +65,14 @@ spec:
         hostname: '${FRITZBOX_IP}'
         username: '${FRITZ_USER}'
         password: '${FRITZ_PASSWORD}'
-        host_info: True
       - name: Fritz!Box 7590 Repeater
         hostname: '${REPEATER_IP}'
         username: '${FRITZ_USER}'
         password: '${FRITZ_PASSWORD}'
-        host_info: True
       - name: Fritz!Box 6690 Cable
         hostname: '${CONFIG_ULM_IP}'
         username: '${FRITZ_USER}'
         password: '${FRITZ_PASSWORD}'
-        host_info: True
     metrics:
       main:
         enabled: true
