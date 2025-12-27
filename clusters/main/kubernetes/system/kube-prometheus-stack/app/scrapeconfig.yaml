@@ -30,3 +30,19 @@ spec:
     - action: replace
       targetLabel: job
       replacement: node-exporter
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: fritz-exporter
+  namespace: kube-prometheus-stack  
+spec:
+  staticConfigs:
+    - targets:
+        - exporter-fritz-app-template.exporter-fritz.svc.cluster.local:9787
+  metricsPath: /metrics
+  relabelings:
+    - action: replace
+      targetLabel: job
+      replacement: fritz-exporter
