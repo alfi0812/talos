@@ -58,7 +58,7 @@ spec:
         mountPath: /exporter/config.yaml
         subPath: config.yaml
     exporter:
-      exporter_port: .Values.service.main.ports.main.port
+      exporter_port: {{ .Values.service.main.ports.main.port }}
       devices:
       - name: Fritz!Box 7590 Router
         hostname: '${FRITZBOX_IP}'
