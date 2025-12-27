@@ -109,14 +109,14 @@ spec:
 
               - name: Minecraft Modpack
                 group: gaming
-                url: udp://modpack.alfi0812:25565
+                url: udp://modpack.alfi0812.de:25565
                 interval: 1m
                 conditions:
                   - "[CONNECTED] == true"
 
               - name: Minecraft Vanilla
                 group: gaming
-                url: udp://alfi0812:25565
+                url: udp://alfi0812.de:25565
                 interval: 1m
                 conditions:
                   - "[CONNECTED] == true"
