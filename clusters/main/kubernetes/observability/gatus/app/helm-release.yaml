@@ -59,7 +59,6 @@ spec:
               type: postgres
               path: {{ (printf "%s?client_encoding=utf8" (.Values.cnpg.main.creds.std | trimAll "\"")) | quote }}
             {{- end }}
-
             ui:
               title: Status | Gatus
               header: Status
@@ -70,7 +69,6 @@ spec:
                   link: https://github.com/Alfi0812
                 - name: TalosCluster
                   link: https://github.com/Alfi0812/talos
-
             endpoints:
               - name: Cloudflare
                 group: connectivity
@@ -78,47 +76,28 @@ spec:
                 interval: 1m
                 conditions:
                   - "[CONNECTED] == true"
-
               - name: Google
                 group: connectivity
                 url: icmp://8.8.8.8
                 interval: 1m
                 conditions:
                   - "[CONNECTED] == true"
-
               - name: Quad9
                 group: connectivity
                 url: icmp://9.9.9.9
                 interval: 1m
                 conditions:
                   - "[CONNECTED] == true"
-
               - name: alfi0812.de
                 group: cloudflare
                 url: https://alfi0812.de
                 interval: 1m
                 conditions:
                   - "[STATUS] == 200"
-
               - name: goeppel.de
                 group: cloudflare
                 url: https://goeppel.dev
                 interval: 1m
                 conditions:
                   - "[STATUS] == 200"
-
-              - name: Minecraft Modpack
-                group: gaming
-                url: udp://modpack.alfi0812.de:25565
-                interval: 1m
-                conditions:
-                  - "[CONNECTED] == true"
-
-              - name: Minecraft Vanilla
-                group: gaming
-                url: udp://alfi0812.de:25565
-                interval: 1m
-                conditions:
-                  - "[CONNECTED] == true"
-
             metrics: true
