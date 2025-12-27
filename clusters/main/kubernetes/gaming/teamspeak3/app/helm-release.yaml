@@ -53,6 +53,10 @@ spec:
             conditions:
               - "[CONNECTED] == true"
               - "[RESPONSE_TIME] < 100"
+            alerts:
+              - type: discord
+                description: "Healthcheck Failed"
+                send-on-resolved: true
     workload:
       main:
         podSpec:
