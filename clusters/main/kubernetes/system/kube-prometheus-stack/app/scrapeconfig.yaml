@@ -41,7 +41,7 @@ spec:
   staticConfigs:
     - targets:
         - 172.17.123.34:9787
-  metricsPath: /metrics
+  metricsPath: /
   relabelings:
     - action: replace
       targetLabel: job
