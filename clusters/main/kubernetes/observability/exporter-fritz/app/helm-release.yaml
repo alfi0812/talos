@@ -81,7 +81,7 @@ spec:
           - port: main
             path: /metrics
             interval: 1m
-            scrapeTimeout: 10s
+            scrapeTimeout: 15s
         targetSelector: main
 
 
