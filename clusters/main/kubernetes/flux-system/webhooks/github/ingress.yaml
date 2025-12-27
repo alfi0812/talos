@@ -6,6 +6,8 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: domain-1-le-prod
     cert-manager.io/private-key-rotation-policy: Always
+    gatus.home-operations.com/endpoint: |-
+      conditions: ["[STATUS] == 404"]
 spec:
   ingressClassName: external
   rules:
