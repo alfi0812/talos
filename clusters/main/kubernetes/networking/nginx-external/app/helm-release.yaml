@@ -64,10 +64,6 @@ spec:
         use-forwarded-headers: "true"
         forwarded-for-header: "CF-Connecting-IP"
         proxy-real-ip-cidr: "${PODNET},${SVCNET}"
-      metrics:
-        enabled: false
-        serviceMonitor:
-          enabled: false
       extraArgs:
         default-ssl-certificate: "clusterissuer/certificate-issuer-domain-0-wildcard"
         publish-status-address: ${NGINX_EXTERNAL_IP}

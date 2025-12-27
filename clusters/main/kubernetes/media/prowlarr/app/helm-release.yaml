@@ -62,6 +62,3 @@ spec:
             enabled: true
             trigger:
               schedule: 30 0 * * *
-    metrics:
-      main:
-        enabled: false

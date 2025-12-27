@@ -63,10 +63,6 @@ spec:
         ssl-protocols: TLSv1.3 TLSv1.2
         use-forwarded-headers: "true"
         proxy-real-ip-cidr: "${PODNET},${SVCNET}"
-      metrics:
-        enabled: false
-        serviceMonitor:
-          enabled: false
       extraArgs:
         default-ssl-certificate: "clusterissuer/certificate-issuer-domain-0-wildcard"
         publish-status-address: ${NGINX_INTERNAL_IP}

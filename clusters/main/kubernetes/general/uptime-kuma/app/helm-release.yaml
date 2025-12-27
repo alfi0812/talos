@@ -44,9 +44,6 @@ spec:
             certificateIssuer: domain-1-le-prod
         hosts:
           - host: status.${DOMAIN_1}
-    metrics:
-      main:
-        enabled: false
     persistence:
       config:
         volsync:
