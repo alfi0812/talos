@@ -40,7 +40,8 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - exporter-fritz-app-template.exporter-fritz.svc.cluster.local:9787
+        - 172.17.123.34:9787
+  metricsPath: /metrics
   relabelings:
     - action: replace
       targetLabel: job

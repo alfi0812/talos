@@ -44,14 +44,12 @@ spec:
             main:
               extraArgs:
               - --config=/exporter/config.yaml
-
     configmap:
       exporter-configfile:
         enabled: true
         data:
           config.yaml: |
             {{- $.Values.exporter | toYaml | nindent 2 }}
-
     persistence:
       configfile:
         enabled: true
@@ -60,7 +58,6 @@ spec:
         objectName: exporter-configfile
         mountPath: /exporter/config.yaml
         subPath: config.yaml
-
     exporter:
       exporter_port: 9787
       devices:
@@ -79,6 +76,7 @@ spec:
         username: '${FRITZ_USER}'
         password: '${FRITZ_PASSWORD}'
         host_info: True
+
 
 
 
