@@ -53,6 +53,13 @@ spec:
             certificateIssuer: domain-1-le-prod
         hosts:
           - host: sabnzbd.${DOMAIN_1}
+    workload:
+      main:
+        podSpec:
+          containers:
+            exportarr:
+              env:
+                ENABLE_ADDITIONAL_METRICS: true
     persistence:
       config:
         volsync:
