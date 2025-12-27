@@ -72,13 +72,6 @@ spec:
       service:
         selector:
           component: kube-apiserver # etcd runs on control plane nodes
-      serviceMonitor:
-        scheme: https
-        insecureSkipVerify: false
-        serverName: "localhost"
-        caFile: "/etc/prometheus/secrets/etcd-client-cert/etcd-ca.crt"
-        certFile: "/etc/prometheus/secrets/etcd-client-cert/etcd-client.crt"
-        keyFile: "/etc/prometheus/secrets/etcd-client-cert/etcd-client-key.key"
     kubeProxy:
       enabled: false
     kube-state-metrics:
