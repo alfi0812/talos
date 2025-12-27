@@ -41,6 +41,11 @@ spec:
       watchIngressWithoutClass: false
       ingressClassResource:
         name: external
+        annotations:
+          gatus.home-operations.com/endpoint: |
+            group: external
+            client:
+              dns-resolver: "tcp://1.1.1.1:53" 
         default: false
         controllerValue: k8s.io/external
       config:
