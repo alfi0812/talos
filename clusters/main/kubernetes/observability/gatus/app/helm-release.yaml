@@ -122,7 +122,7 @@ spec:
               - name: Status Page (Buddy)
                 group: buddy
                 url: https://${GATUS_BUDDY_STATUS_HOSTNAME}
-                interval: 1m
+                interval: 60s
                 ui:
                   hide-url: true
                   hide-hostname: true
