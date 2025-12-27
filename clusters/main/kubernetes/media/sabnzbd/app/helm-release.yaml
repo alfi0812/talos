@@ -80,3 +80,9 @@ spec:
       limits:
         cpu: 4000m
         memory: 8Gi
+    metrics:
+      main:
+        enabled: true
+        apiKey: ${API_SABNZBD}
+        prometheusRule:
+          enabled: false
