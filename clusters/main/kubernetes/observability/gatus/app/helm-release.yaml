@@ -29,7 +29,7 @@ spec:
         enabled: false
     ingress:
       main:
-        enabled: true
+        enabled: false
         ingressClassName: external
         integrations:
           nginx:
@@ -42,7 +42,7 @@ spec:
             enabled: true
             certificateIssuer: domain-1-le-prod
         hosts:
-          - host: gatus.${DOMAIN_1}
+          - host: status.${DOMAIN_1}
     sidecar:
       enable: true
       enableService: true
