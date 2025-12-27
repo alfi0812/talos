@@ -6,7 +6,7 @@ metadata:
   name: discord
 spec:
   type: discord
-  address: ${DISCORD_WEBHOOK_NOTIFICATION}
+  address: ${FLUXCD_DISCORD_WEBHOOK}
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/notification.toolkit.fluxcd.io/alert_v1beta3.json
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
