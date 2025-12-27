@@ -8,3 +8,5 @@ resources:
   - alertmanagerconfig.yaml
   - alertmanager.secret.yaml
   - scrapeconfig.yaml
+components:
+  - ../../../../components/notifications/discord

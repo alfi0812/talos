@@ -16,3 +16,5 @@ resources:
   - jellyseerr/ks.yaml
   - tdarr/ks.yaml
   - readarr/ks.yaml
+components:
+  - ../../../../components/notifications/discord
