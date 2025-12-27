@@ -47,7 +47,7 @@ spec:
         ingressClassName: external
         annotations:
           gatus.home-operations.com/endpoint: |-
-          conditions: ["[STATUS] == 404"]
+            conditions: ["[STATUS] == 404"]
         integrations:
           certManager:
             enabled: true
