@@ -92,6 +92,9 @@ spec:
             alerting:
               discord:
                 webhook-url: ${GATUS_WEBHOOK}
+                default-alert:
+                  description: "health check failed"
+                  send-on-resolved: true
             endpoints:
               - name: Cloudflare
                 group: connectivity
@@ -101,8 +104,6 @@ spec:
                   - "[CONNECTED] == true"
                 alerts:
                   - type: discord
-                    description: "Healthcheck Failed"
-                    send-on-resolved: true
               - name: Google
                 group: connectivity
                 url: icmp://8.8.8.8
@@ -111,8 +112,6 @@ spec:
                   - "[CONNECTED] == true"
                 alerts:
                   - type: discord
-                    description: "Healthcheck Failed"
-                    send-on-resolved: true
               - name: Quad9
                 group: connectivity
                 url: icmp://9.9.9.9
@@ -121,8 +120,6 @@ spec:
                   - "[CONNECTED] == true"
                 alerts:
                   - type: discord
-                    description: "Healthcheck Failed"
-                    send-on-resolved: true
               - name: ${DOMAIN_0}
                 group: cloudflare
                 url: https://${DOMAIN_0}
@@ -131,8 +128,6 @@ spec:
                   - "[STATUS] == 200"
                 alerts:
                   - type: discord
-                    description: "Healthcheck Failed"
-                    send-on-resolved: true
               - name: ${DOMAIN_1}
                 group: cloudflare
                 url: https://${DOMAIN_1}
@@ -141,8 +136,6 @@ spec:
                   - "[STATUS] == 200"
                 alerts:
                   - type: discord
-                    description: "Healthcheck Failed"
-                    send-on-resolved: true
             ### BUDDY ENDPOINTS
               - name: Status Page (Buddy)
                 group: buddy
@@ -156,8 +149,6 @@ spec:
                   - "[BODY].status == UP"
                 alerts:
                   - type: discord
-                    description: "Healthcheck Failed"
-                    send-on-resolved: true
               - name: Ping
                 group: buddy
                 url: icmp://${BUDDY_DDNS_HOSTNAME}
@@ -169,5 +160,3 @@ spec:
                   - "[CONNECTED] == true"
                 alerts:
                   - type: discord
-                    description: "Healthcheck Failed"
-                    send-on-resolved: true

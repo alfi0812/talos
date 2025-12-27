@@ -46,6 +46,8 @@ spec:
             group: internal
             client:
               dns-resolver: "tcp://blocky-dns.blocky.svc.cluster.local:53"
+            alerts:
+              - type: discord
         default: true
         controllerValue: k8s.io/internal
       config:

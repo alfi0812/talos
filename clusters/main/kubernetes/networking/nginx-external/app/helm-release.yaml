@@ -46,6 +46,8 @@ spec:
             group: external
             client:
               dns-resolver: "tcp://1.1.1.1:53" 
+            alerts:
+              - type: discord
         default: false
         controllerValue: k8s.io/external
       config:
