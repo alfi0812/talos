@@ -31,4 +31,4 @@ spec:
         core:
           sources: ["pci", "system", "usb"]
     prometheus:
-      enable: false
+      enable: true
