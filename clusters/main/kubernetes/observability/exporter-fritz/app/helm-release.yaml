@@ -42,8 +42,37 @@ spec:
         podSpec:
           containers:
             main:
-              env:
-                FRITZ_HOSTNAME: "${FRITZBOX_IP}"
-                FRITZ_USERNAME: "${FRITZ_USER}"
-                FRITZ_PASSWORD: "${FRITZ_PASSWORD}"
+              extraArgs:
+              - --config.file=/exporter/config.yaml
+
+    configmap:
+      exporter-configfile:
+        enabled: true
+        data:
+          config.yaml: |
+            {{- $.Values.exporter | toYaml | nindent 2 }}
+
+    persistence:
+      configfile:
+        enabled: true
+        type: configmap
+        readOnly: true
+        objectName: exporter-configfile
+        mountPath: /exporter/config.yaml
+        subPath: config.yaml
+
+    exporter:
+      exporter_port: 9787
+      devices:
+      - name: Fritz!Box 7590 Router
+        hostname: test
+        username: test
+        password: test
+        host_info: True
+      - name: Repeater Wohnzimmer
+        hostname: test
+        username: test
+        password: test
+
+
 
