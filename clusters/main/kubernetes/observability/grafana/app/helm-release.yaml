@@ -33,7 +33,7 @@ spec:
                 GF_SERVER_ROOT_URL: https://grafana.${DOMAIN_1}
     ingress:
       main:
-        enabled: true
+        enabled: false
         ingressClassName: internal
         integrations:
           nginx:
