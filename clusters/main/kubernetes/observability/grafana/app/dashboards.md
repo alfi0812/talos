@@ -8,7 +8,7 @@ cilium
 kubelet-csr-approver
 longhorn
 Bazarr
-Jellyfincloud
+Jellyfin
 Renovate
 Snapshot Controller
 System-Upgrade
