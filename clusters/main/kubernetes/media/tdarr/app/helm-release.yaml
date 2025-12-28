@@ -92,19 +92,10 @@ spec:
               probes:
                 liveness:
                   enabled: false
-                  type: http
-                  path: /metrics
-                  port: "{{ .Values.service.metrics.ports.metrics.port }}"
                 readiness:
                   enabled: false
-                  type: http
-                  path: /metrics
-                  port: "{{ .Values.service.metrics.ports.metrics.port }}"
                 startup:
                   enabled: false
-                  type: http
-                  path: /metrics
-                  port: "{{ .Values.service.metrics.ports.metrics.port }}"
               env:
                 TDARR_URL: "http://tdarr.media.svc.cluster.local:8265"
     metrics:
