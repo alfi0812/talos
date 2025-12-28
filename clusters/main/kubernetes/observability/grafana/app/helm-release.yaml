@@ -200,3 +200,11 @@ spec:
           marketplace:
             id: 13983
             revision: 10
+        cilium:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          marketplace:
+            id: 21431
+            revision: 6
