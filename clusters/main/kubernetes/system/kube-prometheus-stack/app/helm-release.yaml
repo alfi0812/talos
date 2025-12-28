@@ -437,6 +437,10 @@ spec:
             hosts:
               - prometheus.${DOMAIN_1}
       prometheusSpec:
+        scrapeClasses:
+          - default: true
+            fallbackScrapeProtocol: PrometheusText0.0.4
+            name: default-scrape
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         ruleSelectorNilUsesHelmValues: false
