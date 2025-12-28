@@ -90,7 +90,7 @@ spec:
                 AUTHELIA_STORAGE_ENCRYPTION_KEY: ${AUTHELIA_ENCRYPTION_KEY}
     service:
       metrics:
-        enabled: true
+        enabled: "{{ .Values.metrics.main.enabled }}"
         ports:
           metrics:
             enabled: true
@@ -101,6 +101,7 @@ spec:
         endpoints:
           - port: metrics
             path: /metrics
+        targetSelector: metrics
     authelia:
       server:
         buffers:
