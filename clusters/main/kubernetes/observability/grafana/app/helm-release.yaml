@@ -198,5 +198,5 @@ spec:
             - name: "$${DS_PROMETHEUS}"
               value: Prometheus
           marketplace:
-            id: 12579
-            revision: 8                  
+            id: 13983
+            revision: 10
