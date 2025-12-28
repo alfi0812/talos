@@ -39,9 +39,9 @@ spec:
             enabled: true
           certManager:
             enabled: true
-            certificateIssuer: domain-1-le-prod
+            certificateIssuer: domain-0-le-prod
         hosts:
-          - host: kromgo.${DOMAIN_1}
+          - host: kromgo.${DOMAIN_0}
     kromgo:
       badge:
         font: Verdana.ttf  # Relative to /kromgo - Verdana.ttf is available in the container
