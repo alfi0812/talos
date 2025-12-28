@@ -94,3 +94,9 @@ spec:
                   gpu.intel.com/i915: 1
     autodiscovery:
       enabled: true
+    metrics:
+      main:
+        enabled: true
+        endpoints:
+          - port: main
+            path: /metrics
