@@ -187,8 +187,16 @@ spec:
         docker:
           enabled: true
           datasource:
-            - name: "$${PROMETHEUS}"
+            - name: "$${DS_DS_PROMETHEUS}"
               value: Prometheus
           marketplace:
             id: 9621
-            revision: 2                   
+            revision: 2   
+        fritzbox:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          marketplace:
+            id: 12579
+            revision: 8                  
