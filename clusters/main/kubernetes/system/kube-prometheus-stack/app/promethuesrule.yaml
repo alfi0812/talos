@@ -12,8 +12,8 @@ spec:
     - alert: NodeMemoryHighUtilization
       expr: |
         100 - (
-          node_memory_MemAvailable_bytes{job="node-exporter", instance="192.168.1.50:9100"}
-          / node_memory_MemTotal_bytes{job="node-exporter", instance="192.168.1.50:9100"}
+          node_memory_MemAvailable_bytes{job="node-exporter", instance="${CONFIG_TRUENAS_IP}:9100"}
+          / node_memory_MemTotal_bytes{job="node-exporter", instance="${CONFIG_TRUENAS_IP}:9100"}
           * 100
         ) > 98
       for: 15m
@@ -29,8 +29,8 @@ spec:
     - alert: NodeMemoryHighUtilization
       expr: |
         100 - (
-          node_memory_MemAvailable_bytes{job="node-exporter", instance!="192.168.1.50:9100"}
-          / node_memory_MemTotal_bytes{job="node-exporter", instance!="192.168.1.50:9100"}
+          node_memory_MemAvailable_bytes{job="node-exporter", instance!="${CONFIG_TRUENAS_IP}:9100"}
+          / node_memory_MemTotal_bytes{job="node-exporter", instance!="${CONFIG_TRUENAS_IP}:9100"}
           * 100
         ) > 90
       for: 15m
