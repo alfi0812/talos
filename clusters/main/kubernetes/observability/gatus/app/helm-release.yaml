@@ -129,7 +129,7 @@ spec:
                   - "[BODY].status == UP"
                 alerts:
                   - type: discord
-              - name: Ping
+              - name: Ping (Buddy)
                 group: buddy
                 url: icmp://${BUDDY_DDNS_HOSTNAME}
                 interval: 1m
