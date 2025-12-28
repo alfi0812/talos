@@ -167,4 +167,12 @@ spec:
           marketplace:
             # renovate: depName="SmartCTL"
             id: 22604
-            revision: 2                    
+            revision: 2    
+        tdarr:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          marketplace:
+            id: 20388
+            revision: 3                        
