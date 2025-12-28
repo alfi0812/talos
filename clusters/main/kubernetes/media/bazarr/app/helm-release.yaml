@@ -68,7 +68,4 @@ spec:
         mountPath: /Media
     metrics:
       main:
-        enabled: true
-        apiKey: ${API_BAZARR}
-        prometheusRule:
-          enabled: false
+        enabled: false
