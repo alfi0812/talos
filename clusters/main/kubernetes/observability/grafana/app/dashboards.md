@@ -1,7 +1,5 @@
 Dashboards to add:
-Docker-registry
 exporter-fritz
-generic-device-plugin
 cilium
 kubelet-csr-approver
 longhorn
