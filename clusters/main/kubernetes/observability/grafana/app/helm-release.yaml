@@ -208,3 +208,19 @@ spec:
           marketplace:
             id: 21431
             revision: 6
+        longhorn:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          marketplace:
+            id: 23521
+            revision: 2
+        wgeasy:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          marketplace:
+            id: 21733
+            revision: 1
