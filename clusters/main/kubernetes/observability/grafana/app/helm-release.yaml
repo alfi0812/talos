@@ -174,6 +174,7 @@ spec:
             - name: "$${DS_PROMETHEUS}"
               value: Prometheus
           marketplace:
+            # renovate: depName="Tdarr"
             id: 20388
             revision: 3    
         cloudflared:
@@ -182,6 +183,7 @@ spec:
             - name: "$${DS_PROMETHEUS}"
               value: Prometheus
           marketplace:
+            # renovate: depName="Cloudflared"
             id: 17457
             revision: 6   
         docker:
@@ -190,6 +192,7 @@ spec:
             - name: "$${DS_DS_PROMETHEUS}"
               value: Prometheus
           marketplace:
+            # renovate: depName="Docker Monitoring"
             id: 9621
             revision: 2   
         fritzbox:
@@ -198,6 +201,7 @@ spec:
             - name: "$${DS_PROMETHEUS}"
               value: Prometheus
           marketplace:
+            # renovate: depName="Fritzbox"
             id: 13983
             revision: 10
         cilium:
@@ -206,6 +210,7 @@ spec:
             - name: "$${DS_PROMETHEUS}"
               value: Prometheus
           marketplace:
+            # renovate: depName="Cilium"
             id: 21431
             revision: 6
         longhorn:
@@ -214,6 +219,7 @@ spec:
             - name: "$${DS_PROMETHEUS}"
               value: Prometheus
           marketplace:
+            # renovate: depName="Longhorn"
             id: 23521
             revision: 2
         wgeasy:
@@ -222,6 +228,7 @@ spec:
             - name: "$${DS_PROMETHEUS}"
               value: Prometheus
           marketplace:
+            # renovate: depName="WG-Easy"
             id: 21733
             revision: 1
         k8s:
@@ -230,6 +237,7 @@ spec:
             - name: "$${DS_PROMETHEUS}"
               value: Prometheus
           marketplace:
+            # renovate: depName="k8s"
             id: 15661
             revision: 2
         node:
@@ -238,5 +246,6 @@ spec:
             - name: "$${DS_PROMETHEUS}"
               value: Prometheus
           marketplace:
+            # renovate: depName="Node Exporter Full"
             id: 1860
             revision: 42
