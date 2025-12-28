@@ -6,3 +6,4 @@ resources:
   - gatus/ks.yaml
   - kromgo/ks.yaml
   - loki/ks.yaml
+  - alloy/ks.yaml
