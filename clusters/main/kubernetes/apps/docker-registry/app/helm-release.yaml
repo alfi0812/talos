@@ -45,6 +45,10 @@ spec:
       remoteurl: https://registry-1.docker.io
       username: ${DOCKERHUB_USER}
       password: ${DOCKERHUB_PASSWORD}
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
     ingress:
       enabled: true
       className: internal
