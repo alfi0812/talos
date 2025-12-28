@@ -5,3 +5,4 @@ resources:
     - namespace.yaml
 components:
   - ../../../../components/notifications/discord
+  - buddy.secret.yaml
