@@ -175,4 +175,12 @@ spec:
               value: Prometheus
           marketplace:
             id: 20388
-            revision: 3                        
+            revision: 3    
+        cloudflared:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          marketplace:
+            id: 17457
+            revision: 36                    
