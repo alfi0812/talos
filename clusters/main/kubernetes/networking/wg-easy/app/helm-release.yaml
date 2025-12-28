@@ -74,3 +74,9 @@ spec:
             enabled: true
             trigger:
               schedule: 40 1 * * *
+    metrics:
+      main:
+        enabled: true
+        endpoints:
+          - port: main
+            path: /metrics/prometheus
