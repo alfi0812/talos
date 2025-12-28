@@ -89,6 +89,22 @@ spec:
             exportarr:
               enabled: "{{ .Values.metrics.main.enabled }}"
               imageSelector: exporterImage
+              probes:
+                liveness:
+                  enabled: true
+                  type: http
+                  path: /metrics
+                  port: "{{ .Values.service.metrics.ports.metrics.port }}"
+                readiness:
+                  enabled: true
+                  type: http
+                  path: /metrics
+                  port: "{{ .Values.service.metrics.ports.metrics.port }}"
+                startup:
+                  enabled: true
+                  type: http
+                  path: /metrics
+                  port: "{{ .Values.service.metrics.ports.metrics.port }}"
               env:
                 TDARR_URL: "http://tdarr.media.svc.cluster.local:8265"
     metrics:
