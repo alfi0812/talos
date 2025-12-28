@@ -63,7 +63,7 @@ Key goals of this setup:
 | **Mend Renovate**  | Automatically tracks and updates container images and dependencies                 |
 | **GitHub Actions** | CI pipelines for validation, linting, and testing of cluster configs               |
 | **SOPS**           | Encryption of all secrets and credentials stored in Git, integrated with FluxCD    |
-| **Clustertool**    | Bootstrap tool from Truecharts used to build the basic Cluster Structure and Setup |
+| **Clustertool**    | Bootstrap tool from TrueForge used to build the basic Cluster Structure and Setup  |
 
 ---
 
@@ -138,7 +138,7 @@ All secrets and credentials are stored in this repository **encrypted with SOPS*
 
 This cluster is heavily inspired by and built upon the excellent work of:
 
-* **TrueCharts** – [https://trueforge.org/](https://trueforge.org/)
+* **TrueForge** – [https://trueforge.org/](https://trueforge.org/)
 * **Home Operations** – [https://github.com/home-operations](https://github.com/home-operations)
 
 Their open-source contributions and documentation made this setup possible.
