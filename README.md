@@ -112,8 +112,6 @@ All secrets and credentials are stored in this repository **encrypted with SOPS*
 | **Data VDEV**         | 6× Seagate Exos X24 16 TB HDD    |
 | **Remote Management** | NanoKVM PCIe Edition             |
 
----
-
 ### Talos Kubernetes Node
 
 | Component             | Specification                  |
