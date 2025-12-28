@@ -109,7 +109,7 @@ spec:
                 TDARR_URL: "http://tdarr.media.svc.cluster.local:8265"
     metrics:
       main:
-        enabled: true
+        enabled: false
         endpoints:
           - port: metrics
             path: /metrics
