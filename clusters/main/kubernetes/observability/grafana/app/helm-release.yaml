@@ -1,0 +1,156 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana
+  namespace: grafana
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: grafana
+      version: 21.2.9
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 5m
+  install:
+    createNamespace: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  values:
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                GF_SERVER_ROOT_URL: https://grafana.${DOMAIN_1}
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: external
+        integrations:
+          nginx:
+            enabled: true
+          certManager:
+            enabled: true
+            certificateIssuer: domain-1-le-prod
+        hosts:
+          - host: grafana.${DOMAIN_1}
+    cnpg:
+      main:
+        cluster:
+          singleNode: true 
+    configmap:
+      datasource-loki:
+        enabled: true
+        labels:
+          grafana_datasource: "1"
+        data:
+          datasource-loki.yaml: |-
+            apiVersion: 1
+            datasources:
+              - name: Loki
+                type: loki
+                uid: loki
+                url: http://loki-headless.loki.svc.cluster.local:3100
+                access: proxy
+                isDefault: false
+                jsonData:
+                  maxLines: 250   
+    dashboards:
+      grafana:
+        cert-manager:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          marketplace:
+            # renovate: depName="Cert-manager-Kubernetes"
+            id: 20842
+            revision: 3
+        cnpg:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          marketplace:
+            # renovate: depName="CloudNativePG"
+            id: 20417
+            revision: 4
+        flux-cluster:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/refs/heads/main/monitoring/configs/dashboards/cluster.json
+        flux-control-plane:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/refs/heads/main/monitoring/configs/dashboards/control-plane.json
+        metallb:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          marketplace:
+            # renovate: depName="Metallb"
+            id: 20162
+            revision: 6
+        nginx:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          url: https://github.com/kubernetes/ingress-nginx/raw/refs/tags/ingress-nginx-3.15.2/deploy/grafana/dashboards/nginx.json
+        blocky:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+            - name: "$${VAR_BLOCKY_URL}"
+              value: "https://blocky.${BASE_DOMAIN}"
+          url: https://raw.githubusercontent.com/0xERR0R/blocky/refs/heads/main/docs/blocky-grafana.json
+        volsync:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+            - name: "$${VAR_REPLICATIONDESTNAME}"
+              value: '.*-dest|.*-bootstrap'
+          marketplace:
+            # renovate: depName="VolSync Dashboard"
+            id: 21356
+            revision: 3        
+        logs-container:
+          enabled: true
+          datasource:
+            - name: "$${DS_LOKI}"
+              value: loki
+          marketplace:
+            # renovate: depName="Container Log Dashboard"
+            id: 16966
+            revision: 1
+        arrs:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          url: https://raw.githubusercontent.com/onedr0p/exportarr/refs/heads/master/examples/grafana/dashboard2.json
+        smartctl-exporter:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          marketplace:
+            # renovate: depName="SmartCTL"
+            id: 22604
+            revision: 2                    

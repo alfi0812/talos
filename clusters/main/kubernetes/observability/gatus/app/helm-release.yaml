@@ -39,6 +39,10 @@ spec:
             certificateIssuer: domain-1-le-prod
         hosts:
           - host: status.${DOMAIN_1}
+    cnpg:
+      main:
+        cluster:
+          singleNode: true
     sidecar:
       enable: true
       enableService: true
