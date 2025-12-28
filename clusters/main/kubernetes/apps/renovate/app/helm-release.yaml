@@ -58,8 +58,6 @@ spec:
     metrics:
       main:
         enabled: true
-        type: servicemonitor
         endpoints:
           - port: main
             path: /metrics
-        targetSelector: main

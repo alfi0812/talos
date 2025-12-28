@@ -88,6 +88,12 @@ spec:
                 AUTHELIA_SESSION_SECRET: ${AUTHELIA_SESSION_KEY}
                 AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET: ${AUTHELIA_JWT_KEY}
                 AUTHELIA_STORAGE_ENCRYPTION_KEY: ${AUTHELIA_ENCRYPTION_KEY}
+    metrics:
+      main:
+        enabled: true
+        endpoints:
+          - port: main
+            path: /metrics
     authelia:
       server:
         buffers:
@@ -137,3 +143,7 @@ spec:
           disable_html_emails: true
           tls:
             server_name: ${SMTP_HOST}
+      telemetry:
+        metrics:
+          enabled: true
+          address: 'tcp://:9091/metrics'
