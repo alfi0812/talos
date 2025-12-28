@@ -37,6 +37,15 @@ spec:
       enabled: true
       size: 100Gi
     configData:
+      http:
+        addr: :5000
+        headers:
+          X-Content-Type-Options: [nosniff]
+        debug:
+          addr: :5001
+          prometheus:
+            enabled: true
+            path: /metrics
       compatibility:
         schema1:
           enabled: true
