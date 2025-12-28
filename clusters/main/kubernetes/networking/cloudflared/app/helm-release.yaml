@@ -34,3 +34,15 @@ spec:
             main:
               env:
                 TUNNEL_TOKEN: "${TUNNEL_TOKEN}"
+    service:
+      main:
+        enabled: true
+        ports:
+          main:
+            enabled: 20241
+    metrics:
+      main:
+        enabled: true
+        endpoints:
+          - port: main
+            path: /metrics
