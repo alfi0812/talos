@@ -3,6 +3,6 @@ kind: Kustomization
 resources:
     - helm-release.yaml
     - namespace.yaml
+    - buddy.secret.yaml
 components:
   - ../../../../components/notifications/discord
-  - buddy.secret.yaml
