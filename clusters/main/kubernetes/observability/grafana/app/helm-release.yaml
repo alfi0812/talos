@@ -104,6 +104,12 @@ spec:
             - name: "$${DS_PROMETHEUS}"
               value: Prometheus
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/refs/heads/main/monitoring/configs/dashboards/control-plane.json
+        node-feature-discovery:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          url: https://github.com/kubernetes-sigs/node-feature-discovery/raw/refs/tags/v0.18.3/examples/grafana-dash
         metallb:
           enabled: true
           datasource:
