@@ -19,3 +19,4 @@ resources:
   - twuni.yaml
   - actions-runner-controller.yaml
   - openebs.yaml
+  - grafana.yaml
