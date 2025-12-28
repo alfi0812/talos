@@ -91,17 +91,17 @@ spec:
               imageSelector: exporterImage
               probes:
                 liveness:
-                  enabled: true
+                  enabled: false
                   type: http
                   path: /metrics
                   port: "{{ .Values.service.metrics.ports.metrics.port }}"
                 readiness:
-                  enabled: true
+                  enabled: false
                   type: http
                   path: /metrics
                   port: "{{ .Values.service.metrics.ports.metrics.port }}"
                 startup:
-                  enabled: true
+                  enabled: false
                   type: http
                   path: /metrics
                   port: "{{ .Values.service.metrics.ports.metrics.port }}"
@@ -109,7 +109,7 @@ spec:
                 TDARR_URL: "http://tdarr.media.svc.cluster.local:8265"
     metrics:
       main:
-        enabled: false
+        enabled: true
         endpoints:
           - port: metrics
             path: /metrics
