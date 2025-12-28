@@ -39,7 +39,8 @@ spec:
         enabled: true
         ports:
           main:
-            enabled: 20241
+            enabled: true
+            port: 20241
     metrics:
       main:
         enabled: true
