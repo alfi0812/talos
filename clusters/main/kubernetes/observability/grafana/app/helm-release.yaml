@@ -32,7 +32,6 @@ spec:
               env:
                 GF_SERVER_ROOT_URL: https://grafana.${DOMAIN_1}
                 GF_AUTH_DISABLE_LOGIN_FORM: true
-                GF_AUTH_OAUTH_AUTO_LOGIN: true
                 GF_SECURITY_ADMIN_USER: ""
                 GF_SECURITY_ADMIN_PASSWORD: ""
     ingress:
