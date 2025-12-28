@@ -89,4 +89,13 @@ spec:
     operator:
       replicas: 1
       rollOutPods: true
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
     rollOutCiliumPods: true
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        trustCRDsExist: true
