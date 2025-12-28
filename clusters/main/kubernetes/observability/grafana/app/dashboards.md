@@ -1,2 +1,0 @@
-Dashboards to add:
-Jellyfin
