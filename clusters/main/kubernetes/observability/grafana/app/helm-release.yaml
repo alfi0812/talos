@@ -224,3 +224,19 @@ spec:
           marketplace:
             id: 21733
             revision: 1
+        k8s:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          marketplace:
+            id: 15661
+            revision: 2
+        node:
+          enabled: true
+          datasource:
+            - name: "$${DS_PROMETHEUS}"
+              value: Prometheus
+          marketplace:
+            id: 1860
+            revision: 42
