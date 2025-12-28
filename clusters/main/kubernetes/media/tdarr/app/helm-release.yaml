@@ -30,6 +30,10 @@ spec:
         enabled: false
     global:
       stopAll: false
+    exporterImage:
+      repository: docker.io/homeylab/tdarr-exporter
+      pullPolicy: IfNotPresent
+      tag: 1.4.3@sha256:88254cb505bfff20e86e04fa23a71789a411e7939e3bcbccbd5ef397ff91d052
     credentials:
       minio:
         type: s3
@@ -71,6 +75,29 @@ spec:
         existingClaim: media-nfs-pvc
       transcode-cache:
         enabled: false
+    service:
+      metrics:
+        enabled: "{{ .Values.metrics.main.enabled }}"
+        ports:
+          metrics:
+            enabled: true
+            port: 9090
+    workload:
+      main:
+        podSpec:
+          containers:
+            exportarr:
+              enabled: "{{ .Values.metrics.main.enabled }}"
+              imageSelector: exporterImage
+              env:
+                TDARR_URL: "http://tdarr.media.svc.cluster.local:8265"
+    metrics:
+      main:
+        enabled: true
+        endpoints:
+          - port: metrics
+            path: /metrics
+        targetSelector: metrics      
     resources:
       limits:
         cpu: 4000m
