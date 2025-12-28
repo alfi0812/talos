@@ -50,8 +50,8 @@ spec:
           - host: jellyfin.${DOMAIN_1}
     resources:
       limits:
-        cpu: 4000m
-        memory: 8Gi
+        cpu: 8000m
+        memory: 16Gi
     persistence:
       config:
         volsync:
