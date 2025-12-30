@@ -74,9 +74,3 @@ spec:
         readOnlyRootFilesystem: false
         runAsUser: 0
         runAsGroup: 0
-    metrics:
-        main:
-          enabled: true
-          apiKey: ${API_READARR}
-          prometheusRule:
-            enabled: false
