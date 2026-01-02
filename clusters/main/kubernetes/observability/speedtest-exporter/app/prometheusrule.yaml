@@ -24,7 +24,7 @@ spec:
             summary: SpeedTest slow internet download.
           expr: |
             avg_over_time(speedtest_download_bits_per_second{job=~".*speedtest-exporter.*"}[4h])
-              < 400e6
+              < 240e6
           for: 0m
           labels:
             severity: warning
@@ -34,7 +34,7 @@ spec:
             summary: SpeedTest slow internet upload.
           expr: |
             avg_over_time(speedtest_upload_bits_per_second{job=~".*speedtest-exporter.*"}[4h])
-              < 400e6
+              < 140e6
           for: 0m
           labels:
             severity: warning
