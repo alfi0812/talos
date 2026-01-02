@@ -51,6 +51,22 @@ Key goals of this setup:
 - Native Kubernetes integration
 - Works seamlessly with SOPS for encrypted secrets
 
+### Why a Single-Node Cluster?
+- Simplifies operations and reduces complexity
+- Ideal for homelab and learning environments
+- Focuses on reproducibility rather than high availability
+
+---
+
+## 📡 Networking Assumptions
+
+This cluster assumes a **simple and reliable home network environment**.
+
+- The Talos VM relies on the Fritzbox router for primary network connectivity
+- No advanced routing, BGP, or multi-homing is assumed
+- Networking is optimized for simplicity and stability rather than redundancy
+- External access is handled via managed ingress and tunnels where required
+
 ---
 
 ## 🧩 Core Components
@@ -69,13 +85,19 @@ Key goals of this setup:
 
 ## 🗂 Directory Structure
 
-```text
+~~~text
 clusters/
 └── main/
     ├── components/   # Common components applied to multiple parts of the cluster
     ├── kubernetes/   # Applications and Kubernetes workloads
     └── talos/        # Talos Linux machine and cluster configuration
-```
+
+repositories/
+├── entries/           # Repository entry definitions
+├── git/               # Flux GitRepository sources
+├── helm/              # Flux HelmRepository sources
+└── oci/               # Flux OCIRepository sources
+~~~
 
 ---
 
