@@ -8,3 +8,4 @@ resources:
   - loki/ks.yaml
   - alloy/ks.yaml
   - grafana/ks.yaml
+  - speedtest-exporter/ks.yaml
