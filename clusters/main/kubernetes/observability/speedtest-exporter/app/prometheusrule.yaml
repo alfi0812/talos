@@ -4,7 +4,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: speedtest-exporter-rules
-  namespace: monitoring
+  namespace: speedtest-exporter
 spec:
   groups:
     - name: speedtest-exporter.rules
