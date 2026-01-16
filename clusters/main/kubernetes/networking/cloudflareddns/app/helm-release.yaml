@@ -26,9 +26,10 @@ spec:
   values:
     # for now until image is fixed
     image:
-      repository: ghcr.io/hotio/cloudflareddns
+      #repository: ghcr.io/hotio/cloudflareddns
+      repository: oci.trueforge.org/containerforge/cloudflareddns
       pullPolicy: IfNotPresent
-      tag: latest@sha256:24eac87c0dd061e23b80f0d9e71aa9d8a1311897091c494e6b351ae7d11071ce
+      tag: 3.0.0@sha256:6b54d7dde3e10e4cb4aa946ba38b5c364ad3f443c86d5c091ed092bfcd6247bd
     securityContext:
       container:
         runAsNonRoot: false
