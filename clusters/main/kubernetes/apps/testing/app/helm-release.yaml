@@ -36,7 +36,7 @@ spec:
           containers:
             main:
               env:
-                DATABASE_PROTOCOL: postgresql
+                DATABASE_PROTOCOL: postgresql+psycopg
                 DATABASE_PORT: "5432"
                 DATABASE_NAME: "{{ .Values.cnpg.main.database }}"
                 DATABASE_USER: "{{ .Values.cnpg.main.user }}"
