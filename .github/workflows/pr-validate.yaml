@@ -3,8 +3,6 @@ name: "Pull Request: Validate"
 on:
   pull_request:
 
-concurrency:
-  cancel-in-progress: true
 env:
   KUBERNETES_DIR: ./clusters/main/kubernetes
 
