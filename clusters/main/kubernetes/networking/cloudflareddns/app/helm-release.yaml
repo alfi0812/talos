@@ -48,7 +48,7 @@ spec:
             main:
               env:
                 UPDATE_IPV4: true
-                UPDATE_IPV6: true
+                UPDATE_IPV6: false
 
     persistence:
       config:
