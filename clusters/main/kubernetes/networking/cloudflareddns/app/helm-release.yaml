@@ -24,6 +24,10 @@ spec:
     remediation:
       retries: 3
   values:
+    image:
+      repository: oci.trueforge.org/containerforge/cloudflareddns
+      pullPolicy: IfNotPresent
+      tag: sandbox
     credentials:
       minio:
         type: s3
