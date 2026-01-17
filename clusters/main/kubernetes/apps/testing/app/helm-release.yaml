@@ -46,4 +46,4 @@ spec:
         user: ctfd
         database: ctfd
     mariadb:
-      enabled: false
+      enabled: true
