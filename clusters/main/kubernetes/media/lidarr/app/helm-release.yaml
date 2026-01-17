@@ -25,7 +25,9 @@ spec:
       retries: 3
   values:
     global:
-      stopAll: false
+      stopAll: false#
+    image:
+      tag: sandbox
     credentials:
       minio:
         type: s3
