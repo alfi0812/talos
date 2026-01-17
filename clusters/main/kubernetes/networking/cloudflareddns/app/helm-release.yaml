@@ -49,6 +49,11 @@ spec:
               env:
                 UPDATE_IPV4: true
                 UPDATE_IPV6: false
+    securityContext:
+      container:
+        readOnlyRootFilesystem: false
+        runAsGroup: 0
+        runAsUser: 0
 
     persistence:
       config:
