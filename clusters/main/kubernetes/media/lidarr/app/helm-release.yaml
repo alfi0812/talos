@@ -26,8 +26,6 @@ spec:
   values:
     global:
       stopAll: false
-    image:
-      tag: sandbox
     credentials:
       minio:
         type: s3
