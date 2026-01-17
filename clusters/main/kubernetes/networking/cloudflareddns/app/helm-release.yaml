@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: cloudflareddns
-      version: 12.14.13
+      version: 12.14.14
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -24,10 +24,6 @@ spec:
     remediation:
       retries: 3
   values:
-    image:
-      repository: oci.trueforge.org/containerforge/cloudflareddns
-      pullPolicy: IfNotPresent
-      tag: sandbox
     credentials:
       minio:
         type: s3
@@ -46,14 +42,6 @@ spec:
       - domain: wireguard.${DOMAIN_1}
         record: A
         zone: ${ZONE_1}
-    workload:
-      main:
-        podSpec:
-          containers:
-            main:
-              env:
-                UPDATE_IPV4: true
-                UPDATE_IPV6: false
     securityContext:
       container:
         readOnlyRootFilesystem: false
