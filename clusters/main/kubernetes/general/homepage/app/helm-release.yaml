@@ -54,12 +54,8 @@ spec:
       codeserver:
         enabled: true
         container:
-          args:
-            - "--port"
-            - "12321"
-            - "/"
-            - --auth
-            - none
+          env:
+            DEFAULT_WORKSPACE: /
         ingress:
           enabled: true
           ingressClassName: internal
