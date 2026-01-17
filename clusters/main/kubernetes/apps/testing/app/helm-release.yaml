@@ -36,12 +36,10 @@ spec:
           containers:
             main:
               env:
-                DATABASE_PROTOCOL: postgresql+pg8000
-                DATABASE_PORT: "5432"
-                DATABASE_NAME: "{{ .Values.cnpg.main.database }}"
-                DATABASE_USER: "{{ .Values.cnpg.main.user }}"
-                DATABASE_HOST: "{{ .Values.cnpg.main.creds.host }}"
-                DATABASE_PASSWORD: "{{ .Values.cnpg.main.creds.password  }}"
+                DATABASE_URL:
+                  secretKeyRef:
+                    name: cnpg-main-urls
+                    key: std
     cnpg:
       main:
         enabled: true
