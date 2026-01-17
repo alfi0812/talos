@@ -33,6 +33,7 @@ spec:
         secretKey: "${S3_SECRET_KEY}"
         encrKey: "${S3_ENCRYPTION_KEY}"
     cloudflareddns:
+      log_level: 3
       api_token: ${CLOUDFLARE_TOKEN}
       host_zone_record:
       - domain: minecraft.${DOMAIN_0}
