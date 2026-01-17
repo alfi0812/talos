@@ -53,6 +53,13 @@ spec:
     addons:
       codeserver:
         enabled: true
+        container:
+          args:
+            - "--port"
+            - "12321"
+            - "/"
+            - --auth
+            - none
         ingress:
           enabled: true
           ingressClassName: internal
@@ -87,3 +94,4 @@ spec:
             main:
               env:
                 HOMEPAGE_ALLOWED_HOSTS: home.${DOMAIN_1}
+    
