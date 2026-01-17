@@ -49,7 +49,6 @@ spec:
               env:
                 UPDATE_IPV4: true
                 UPDATE_IPV6: true
-                LOG_LEVEL: 3 
 
     persistence:
       config:
