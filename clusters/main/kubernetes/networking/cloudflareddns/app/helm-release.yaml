@@ -41,6 +41,16 @@ spec:
       - domain: wireguard.${DOMAIN_1}
         record: A
         zone: ${ZONE_1}
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                UPDATE_IPV4: true
+                UPDATE_IPV6: true
+                LOG_LEVEL: 3 
+
     persistence:
       config:
         volsync:
