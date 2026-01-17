@@ -53,9 +53,6 @@ spec:
     addons:
       codeserver:
         enabled: true
-        container:
-          env:
-            DEFAULT_WORKSPACE: /
         ingress:
           enabled: true
           ingressClassName: internal
