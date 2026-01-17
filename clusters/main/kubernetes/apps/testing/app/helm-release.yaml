@@ -1,0 +1,50 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ctfd
+  namespace: testing
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: ctfd
+      version: 9.23.9
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 15m
+  timeout: 20m
+  maxHistory: 3
+  driftDetection:
+    mode: warn
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                DATABASE_PORT: "5432"
+                DATABASE_NAME: "{{ .Values.cnpg.main.database }}"
+                DATABASE_USER: "{{ .Values.cnpg.main.user }}"
+                DATABASE_HOST: "{{ .Values.cnpg.main.creds.host }}"
+                DATABASE_PASSWORD: "{{ .Values.cnpg.main.creds.password  }}"
+    cnpg:
+      main:
+        enabled: true
+        user: ctfd
+        database: ctfd
+    mariadb:
+      enabled: false

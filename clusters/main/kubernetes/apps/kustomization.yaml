@@ -6,3 +6,4 @@ resources:
   - actions-runner-controller/ks.yaml
   - actions-runners/ks.yaml
   - docker-registry/ks.yaml
+  - testing/ks.yaml
