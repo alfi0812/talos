@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: jellyfin
-      version: 22.2.17
+      version: 22.2.18
       sourceRef:
         kind: HelmRepository
         name: truecharts
