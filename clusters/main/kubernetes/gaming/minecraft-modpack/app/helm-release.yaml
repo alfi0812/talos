@@ -25,7 +25,7 @@ spec:
       retries: 3
   values:
     global:
-      stopAll: true
+      stopAll: false
     mcbackup:
       enabled: false
     persistence:
@@ -48,10 +48,9 @@ spec:
         podSpec:
           containers:
             main:
-              imageSelector: j17Image
+              imageSelector: j21Image
               env:
                 FORCE_REDOWNLOAD: 'false'
-                FORGEVERSION: 43.5.0
                 FORGE_INSTALLER: ''
                 FORGE_INSTALLER_URL: ''
                 GENERATOR_SETTINGS: ''
@@ -67,9 +66,11 @@ spec:
                 MAX_TICK_TIME: 60000
                 DISABLE_HEALTHCHECK: true
                 MEMORY: 20G
+                CF_SLUG: all-the-mods-10
                 OVERRIDE_SERVER_PROPERTIES: false
                 RCON_PASSWORD: ${MINECRAFT_PASSWORD}
-                TYPE: FORGE
+                TYPE: AUTO_CURSEFORGE
+                CF_API_KEY: ${CURSEFORGE_API_KEY}
                 USE_AIKAR_FLAGS: false
                 USE_FLARE_FLAGS: false
                 USE_SIMD_FLAGS: false
