@@ -25,7 +25,7 @@ spec:
       retries: 3
   values:
     global:
-      stopAll: false
+      stopAll: true
     mcbackup:
       enabled: false
     persistence:
@@ -74,7 +74,6 @@ spec:
                 USE_AIKAR_FLAGS: false
                 USE_FLARE_FLAGS: false
                 USE_SIMD_FLAGS: false
-                VERSION: 1.19.2
                 VIEW_DISTANCE: 10
             mcbackup:
               enabled: false
