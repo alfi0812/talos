@@ -52,7 +52,7 @@ spec:
                 DETECTION_MODE: "dig-whoami.cloudflare"
                 LOG_LEVEL: 3
                 CF_APITOKEN: ${CLOUDFLARE_TOKEN}
-                CF_HOSTS: "minecraft.${DOMAIN_0},minecraft.${DOMAIN_0}"
+                CF_HOSTS: "minecraft.${DOMAIN_0},wireguard.${DOMAIN_1}"
                 INTERVAL: 300
               envFrom: {}
 
