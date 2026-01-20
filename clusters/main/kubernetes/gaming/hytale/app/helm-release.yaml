@@ -35,7 +35,7 @@ spec:
             main:
               env:
                 HYTALE_AUTO_UPDATE: true
-                HYTALE_PORT: {{ .Values.service.main.ports.main.port }}
+                HYTALE_PORT: "{{ .Values.service.main.ports.main.port }}"
                 HYTALE_ALLOW_OP: true
                 HYTALE_BACKUP_ENALBED: false
                 HYTALE_BACKUP_DIR: /app/backup
