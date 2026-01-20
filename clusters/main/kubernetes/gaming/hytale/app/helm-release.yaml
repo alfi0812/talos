@@ -45,13 +45,6 @@ spec:
                 HYTALE_BACKUP_FREQ: 30
                 # HYTALE_EXTRA_ARGS:
                 # HYTALE_JAVA_ARGS:
-              probes:
-                liveness:
-                  type: tcp
-                readiness:
-                  type: tcp
-                startup:
-                  type: tcp
     service:
       main:
         externalTrafficPolicy: Local
