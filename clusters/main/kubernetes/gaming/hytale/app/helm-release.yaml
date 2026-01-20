@@ -43,11 +43,11 @@ spec:
                 # HYTALE_EXTRA_ARGS:
               probes:
                 liveness:
-                  type: udp
+                  type: tcp
                 readiness:
-                  type: udp
+                  type: tcp
                 startup:
-                  type: udp
+                  type: tcp
     service:
       main:
         externalTrafficPolicy: Local
