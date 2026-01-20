@@ -34,6 +34,8 @@ spec:
         podSpec:
           containers:
             main:
+              stdin: true
+              tty: true
               env:
                 HYTALE_AUTO_UPDATE: true
                 HYTALE_PORT: "{{ .Values.service.main.ports.main.port }}"
