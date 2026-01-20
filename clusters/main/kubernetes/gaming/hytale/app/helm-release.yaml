@@ -51,7 +51,7 @@ spec:
     service:
       main:
         externalTrafficPolicy: Local
-        loadBalancerIP: 192.168.178.18
+        loadBalancerIP: ${HYTALE_SERVER_IP}
         type: LoadBalancer
         ports:
           main:
