@@ -24,6 +24,8 @@ spec:
     remediation:
       retries: 3
   values:
+    global:
+      stopAll: true
     image:
       # repository: oci.trueforge.org/containerforge/hytale
       repository: ghcr.io/trueforge-org/hytale
@@ -37,7 +39,7 @@ spec:
               stdin: true
               tty: true
               env:
-                HYTALE_AUTO_UPDATE: true
+                HYTALE_AUTO_UPDATE: false
                 HYTALE_PORT: "{{ .Values.service.main.ports.main.port }}"
                 HYTALE_ALLOW_OP: true
                 HYTALE_BACKUP_ENALBED: false
