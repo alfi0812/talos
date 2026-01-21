@@ -54,6 +54,7 @@ spec:
                   enabled: false
                 startup:
                   enabled: false
+                  
     service:
       main:
         externalTrafficPolicy: Local
