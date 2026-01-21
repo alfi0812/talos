@@ -25,7 +25,7 @@ spec:
       retries: 3
   values:
     global:
-      stopAll: false
+      stopAll: true
     image:
       # repository: oci.trueforge.org/containerforge/hytale
       repository: ghcr.io/trueforge-org/hytale
