@@ -6,4 +6,4 @@ resources:
   - teamspeak3/ks.yaml
   - sinusbot/ks.yaml
   - jts3servermod/ks.yaml
-  #- hytale/ks.yaml
+  - hytale/ks.yaml
