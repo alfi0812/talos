@@ -35,8 +35,7 @@ spec:
               tty: true
               env:
                 HYTALE_AUTO_UPDATE: true
-                # HYTALE_EXTRA_ARGS:
-                # HYTALE_JAVA_ARGS:
+                HYTALE_JAVA_ARGS: -Xms6G -Xmx14G
     resources:
       limits:
         cpu: 4000m
