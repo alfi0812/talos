@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
-  "name": "TrueCharts",
+  "name": "TalosCluster",
   "image": "oci.trueforge.org/containerforge/devcontainer:2.0.6@sha256:b8f8a95a0edf58aaab4076fa477bd8e3c6efcb68fb41cb4c37da05e618ff0320",
   "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
   "customizations": {
