@@ -20,7 +20,13 @@
         "sandipchitale.vscode-kubernetes-helm-extras",
         "VadzimNestsiarenka.helm-template-preview-and-more",
         "karyan40024.helmix",
-        "eamodio.gitlens"
+        "eamodio.gitlens",
+        "streetsidesoftware.code-spell-checker",
+        "Codium.codium",
+        "mhutchie.git-graph",
+        "yzhang.markdown-all-in-one",
+        "DavidAnson.vscode-markdownlint",
+        "GitHub.copilot"
       ]
     }
   }
