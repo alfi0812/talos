@@ -46,3 +46,13 @@ spec:
     metrics:
       serviceMonitor:
         enabled: true
+    ## Temp fix for longhorn/longhorn#12573
+    image:
+      longhorn:
+        instanceManager:
+          # -- Registry for the Longhorn Instance Manager image.
+          registry: ""
+          # -- Repository for the Longhorn Instance Manager image.
+          repository: derekbit/longhorn-instance-manager
+          # -- Tag for the Longhorn Instance Manager image.
+          tag: 1.11.0-fix-leak
