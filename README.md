@@ -79,7 +79,7 @@ This cluster assumes a **simple and reliable home network environment**.
 | **Mend Renovate**  | Automatically tracks and updates container images and dependencies                 |
 | **GitHub Actions** | CI pipelines for validation, linting, and testing of cluster configs               |
 | **SOPS**           | Encryption of all secrets and credentials stored in Git, integrated with FluxCD    |
-| **Clustertool**    | Bootstrap tool from TrueForge used to build the basic Cluster Structure and Setup  |
+| **ForgeTool**    | Bootstrap tool from TrueForge used to build the basic Cluster Structure and Setup  |
 
 ---
 
