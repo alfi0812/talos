@@ -17,7 +17,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: actions-runner-controller
-    namespace: gha
+    namespace: gha-truecharts
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
