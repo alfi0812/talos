@@ -14,5 +14,5 @@ resources:
   - gaming
   - media
   - observability
-  #- truecharts
+  - truecharts
   
