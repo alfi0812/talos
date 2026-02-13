@@ -15,5 +15,3 @@ spec:
     monitoring:
       serviceMonitor:
         enabled: true
-    webhook:
-      enabled: false
