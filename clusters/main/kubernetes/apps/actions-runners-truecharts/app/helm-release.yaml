@@ -32,7 +32,7 @@ spec:
   values:
     minRunners: 3
     maxRunners: 6
-    githubConfigSecret: runner-secret
+    githubConfigSecret: runner-secret-truecharts
     githubConfigUrl: https://github.com/trueforge-org
     controllerServiceAccount:
       name: actions-runner-controller
