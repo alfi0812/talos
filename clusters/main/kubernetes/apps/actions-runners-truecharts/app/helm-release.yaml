@@ -42,7 +42,7 @@ spec:
       kubernetesModeWorkVolumeClaim:
         accessModes:
           - ReadWriteOnce
-        storageClassName: longhorn
+        storageClassName: openebs-hostpath
         resources:
           requests:
             storage: 32Gi
