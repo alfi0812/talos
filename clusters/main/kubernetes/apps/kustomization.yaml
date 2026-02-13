@@ -6,4 +6,3 @@ resources:
   - docker-registry/ks.yaml
   - actions-runner-controller/ks.yaml
   #- actions-runners-truecharts/ks.yaml
-  - config.secret.yaml
