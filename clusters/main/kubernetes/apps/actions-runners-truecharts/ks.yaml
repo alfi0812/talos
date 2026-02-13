@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: clusters/main/kubernetes/truecharts/actions-runners/app
+  path: clusters/main/kubernetes/apps/actions-runners-truecharts/app
   prune: true
   sourceRef:
     kind: GitRepository
