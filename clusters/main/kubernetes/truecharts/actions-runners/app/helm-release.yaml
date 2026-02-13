@@ -36,7 +36,7 @@ spec:
     githubConfigUrl: https://github.com/trueforge-org
     controllerServiceAccount:
       name: actions-runner-controller
-      namespace: gha-truecharts
+      namespace: gha
     containerMode:
       type: kubernetes
       kubernetesModeWorkVolumeClaim:
