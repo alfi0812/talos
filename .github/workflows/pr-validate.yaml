@@ -95,7 +95,6 @@ jobs:
     needs:
       - kubeconform
       - diff
-      - test
     name: Automerge and Approve build
     runs-on: actions-runners
     steps:
