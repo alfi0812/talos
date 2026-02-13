@@ -30,7 +30,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    minRunners: 2
+    minRunners: 3
     maxRunners: 6
     githubConfigSecret: runner-secret
     githubConfigUrl: https://github.com/trueforge-org
@@ -42,7 +42,7 @@ spec:
       kubernetesModeWorkVolumeClaim:
         accessModes:
           - ReadWriteOnce
-        storageClassName: openebs-hostpath
+        storageClassName: longhorn
         resources:
           requests:
             storage: 32Gi
