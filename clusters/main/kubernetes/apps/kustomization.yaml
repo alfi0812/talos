@@ -4,5 +4,4 @@ resources:
   - kubernetes-dashboard/ks.yaml
   - renovate/ks.yaml
   - actions-runner-controller/ks.yaml
-  - actions-runners-truecharts/ks.yaml
   - docker-registry/ks.yaml
