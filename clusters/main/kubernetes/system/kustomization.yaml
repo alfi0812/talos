@@ -14,4 +14,4 @@ resources:
   - generic-device-plugin/ks.yaml
   - intel-device-plugin-operator/ks.yaml
   - intel-device-plugin-gpu/ks.yaml
-  #- system-upgrade
+  - system-upgrade
