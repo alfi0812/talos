@@ -26,6 +26,10 @@ spec:
   values:
     global:
       stopAll: false
+    image:
+      repository: ghcr.io/alfhou/hammond
+      tag: v0.0.24@sha256:c85dc0293aa10be15280277bade9cce808be572d0d4c5eac62acd87dec30479d
+      pullPolicy: Always
     credentials:
       minio:
         type: s3
