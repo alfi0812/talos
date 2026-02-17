@@ -50,7 +50,7 @@ spec:
       spec:
         containers:
           - name: runner
-            image: oci.trueforge.org/containerforge/actions-runner:2.331.0@sha256:8f03b45b90d763ba07c78484402b116bdf6d06147611498132d903602d4e8853
+            image: oci.trueforge.org/containerforge/actions-runner:2.331.0@sha256:3254a17b343c85ab087e39c86b4ee8dc4dcaedbebf7542f040b58f18a22881b4
             command:
               - /home/runner/run.sh
             env:
