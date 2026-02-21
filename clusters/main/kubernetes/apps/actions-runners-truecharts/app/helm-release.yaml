@@ -39,19 +39,14 @@ spec:
       namespace: gha
     containerMode:
       type: kubernetes
-      kubernetesModeWorkVolumeClaim:
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: openebs-hostpath
-        resources:
-          requests:
-            storage: 32Gi
     template:
       spec:
         volumes:
           - name: config
             emptyDir: {}
           - name: tmp
+            emptyDir: {}
+          - name: work
             emptyDir: {}
         containers:
           - name: runner
@@ -66,3 +61,5 @@ spec:
                 mountPath: /config
               - name: tmp
                 mountPath: /tmp
+              - name: work
+                mountPath: /home/runner/_work
