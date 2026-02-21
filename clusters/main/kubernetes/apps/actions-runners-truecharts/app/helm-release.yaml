@@ -51,6 +51,8 @@ spec:
         volumes:
           - name: config
             emptyDir: {}
+          - name: tmp
+            emptyDir: {}
         containers:
           - name: runner
             image: oci.trueforge.org/containerforge/actions-runner:2.331.0@sha256:289ef1cc8f806a23e67670d1eebda78da2adfb8c23a9a18c5024975fe41afcd7
@@ -62,3 +64,5 @@ spec:
             volumeMounts:
               - name: config
                 mountPath: /config
+              - name: tmp
+                mountPath: /tmp
