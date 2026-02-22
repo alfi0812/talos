@@ -38,12 +38,9 @@ spec:
       name: actions-runner-controller
       namespace: gha
     containerMode:
-      type: kubernetes
+      type: dind
     template:
       spec:
-        volumes:
-          - name: work
-            emptyDir: {}
         containers:
           - name: runner
             image: ghcr.io/home-operations/actions-runner:2.331.0@sha256:17e4be4e4664067b9a5f2e43d0e66e0a249654f3783a0a3f17448844a5422be5
@@ -51,7 +48,3 @@ spec:
               - /home/runner/run.sh
             env:
               - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
-                value: "false"
-            volumeMounts:
-              - name: work
-                mountPath: /home/runner/_work
