@@ -1,6 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "gitAuthor": "viserion-renovate[bot] <199991279+viserion-renovate[bot]@users.noreply.github.com>",
+  "rebaseWhen": "conflicted",
   "major": {
     "enabled": true,
     "automerge": false,
