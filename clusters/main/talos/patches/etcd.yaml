@@ -1,0 +1,6 @@
+cluster:
+  etcd:
+    extraArgs:
+      quota-backend-bytes: "17179869184" # 16GB
+      heartbeat-interval: "250"
+      election-timeout: "2500"

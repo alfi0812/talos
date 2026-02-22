@@ -31,7 +31,7 @@ spec:
     keepHistory: false
   values:
     minRunners: 3
-    maxRunners: 6
+    maxRunners: 12
     githubConfigSecret: runner-secret
     githubConfigUrl: https://github.com/alfi0812/talos
     controllerServiceAccount:

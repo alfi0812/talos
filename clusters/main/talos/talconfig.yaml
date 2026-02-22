@@ -55,6 +55,7 @@ nodes:
             - siderolabs/mei
     patches:
       - '@./patches/gc.yaml'
+      - '@./patches/etcd.yaml'
 controlPlane:
   patches:
     - '@./patches/controlplane.yaml'
