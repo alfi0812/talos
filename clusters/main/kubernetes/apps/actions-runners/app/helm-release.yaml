@@ -42,8 +42,6 @@ spec:
     template:
       spec:
         volumes:
-          - name: runner-data
-            emptyDir: {}
           - name: work
             emptyDir: {}
         containers:
@@ -54,10 +52,6 @@ spec:
             env:
               - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
                 value: "false"
-              - name: RUNNER_WORKDIR
-                value: /home/runner
             volumeMounts:
-              - name: runner-data
-                mountPath: /home/runner
               - name: work
                 mountPath: /home/runner/_work
