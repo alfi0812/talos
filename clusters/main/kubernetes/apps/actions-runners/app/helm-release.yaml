@@ -44,6 +44,8 @@ spec:
         volumes:
           - name: runner-data
             emptyDir: {}
+          - name: work
+            emptyDir: {}
         containers:
           - name: runner
             image: ghcr.io/home-operations/actions-runner:2.331.0@sha256:17e4be4e4664067b9a5f2e43d0e66e0a249654f3783a0a3f17448844a5422be5
@@ -57,3 +59,5 @@ spec:
             volumeMounts:
               - name: runner-data
                 mountPath: /home/runner
+              - name: work
+                mountPath: /home/runner/_work
