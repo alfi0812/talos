@@ -56,4 +56,4 @@ spec:
                 value: /runner
             volumeMounts:
               - name: runner-data
-                mountPath: /home/runner/data
+                mountPath: /runner
