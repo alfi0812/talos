@@ -283,27 +283,6 @@ jobs:
 
             ${{ needs.test.result == 'cancelled' && '⚠️ **Tests were cancelled**' || '' }}
 
-            ---
-
-            ### CI Rules
-
-            HelmReleases are tested when:
-
-            - `helm-release.yaml` changed
-            - No `ci/skip` exists
-            - No `.ci-skip` exists
-
-            ---
-
-            ### Final Decision
-
-            ${{ needs.detect.result != 'success' && '❌ CI failed (detect failed)' || '' }}
-
-            ${{ needs.detect.result == 'success' && needs.test.result == 'success' && '✅ CI passed' || '' }}
-
-            ${{ needs.detect.result == 'success' && needs.test.result == 'skipped' && '✅ CI passed (nothing to test)' || '' }}
-
-            ${{ needs.detect.result == 'success' && needs.test.result != 'success' && needs.test.result != 'skipped' && '❌ CI failed' || '' }}
       - name: Enforce final status
         run: |
           # Detect must succeed
