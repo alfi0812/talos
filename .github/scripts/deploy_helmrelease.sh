@@ -79,7 +79,7 @@ else
   CHART_REF="ci-repo/$CHART_NAME"
 fi
 
-print_header "HelmRelease Deployment Test by Boemeltrein" "🚂"
+print_header "HelmRelease Deployment Test by Alfi0812" "⌛"
 
 print_section "⚙️ Processing: $HELMRELEASE_PATH"
 
@@ -355,14 +355,14 @@ set -e
 # Debug info
 # --------------------------------------------------
 print_section "🐛 Debug info"
-print_sub_section "📦 Pods:"
+print_section "📦 Pods:"
 kubectl get pods -n "$NAMESPACE" -o wide || true
 
-print_sub_section "📅 Events:"
+print_section "📅 Events:"
 kubectl get events -n "$NAMESPACE" --sort-by=.metadata.creationTimestamp || true
 
 for pod in $(kubectl get pods -n "$NAMESPACE" -o name 2>/dev/null); do
-  print_sub_section "📜 Logs for $pod:"
+  print_section "📜 Logs for $pod:"
   kubectl logs -n "$NAMESPACE" "$pod" --all-containers --tail=200 || true
 done
 
