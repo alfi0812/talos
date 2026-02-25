@@ -1,4 +1,4 @@
-name: HelmRelease test deployment
+name: "Pull Request: Install"
 
 on:
   workflow_dispatch:
