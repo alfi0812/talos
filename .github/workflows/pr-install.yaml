@@ -1,0 +1,226 @@
+name: HelmRelease test deployment
+
+on:
+  workflow_dispatch:
+  pull_request:
+#    paths:
+#      - "**/helm-release.yaml"
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed HelmReleases
+        id: set
+        run: |
+          files=$(git diff \
+            "${{ github.event.pull_request.base.sha }}" \
+            "${{ github.sha }}" \
+            --name-only | grep 'helm-release.yaml$' || true)
+          
+          if [ -z "$files" ]; then
+            echo "🔍 No HelmReleases changed"
+            echo "matrix=[]" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          
+          echo "🔍 Detected HelmReleases:"
+          printf '%s\n' "$files"
+          
+          # --------------------------------------------------
+          # Filter releases with CI skip marker
+          # --------------------------------------------------
+          mapfile -t files_array <<< "$files"
+
+          filtered=()
+          skipped=()
+
+          for file in "${files_array[@]}"; do
+            dir=$(dirname "$file")
+
+            if [ -f "$dir/ci/skip" ] || [ -f "$dir/.ci-skip" ]; then
+              skipped+=("$file")
+              continue
+            fi
+
+            filtered+=("$file")
+          done
+
+          echo ""
+          echo "===== HelmRelease CI scan result ====="
+
+          if [ ${#skipped[@]} -gt 0 ]; then
+            echo "⏭️ Skipped:"
+            printf '  - %s\n' "${skipped[@]}"
+          else
+            echo "⏭️ Skipped: none"
+          fi
+
+          if [ ${#filtered[@]} -gt 0 ]; then
+            echo "🧪 To test:"
+            printf '  - %s\n' "${filtered[@]}"
+          else
+            echo "🧪 To test: none"
+          fi
+          echo "======================================"
+          echo ""
+
+          # ---------- GitHub job summary ----------
+          {
+            echo "## HelmRelease CI result"
+            echo ""
+            echo "### ⏭️ Skipped"
+            if [ ${#skipped[@]} -gt 0 ]; then
+              printf -- "- %s\n" "${skipped[@]}"
+            else
+              echo "_none_"
+            fi
+            echo ""
+            echo "### 🧪 To test"
+            if [ ${#filtered[@]} -gt 0 ]; then
+              printf -- "- %s\n" "${filtered[@]}"
+            else
+              echo "_none_"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          # ---------- Matrix handling ----------
+          if [ ${#filtered[@]} -eq 0 ]; then
+            echo "matrix=[]" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          json=$(printf '%s\n' "${filtered[@]}" | jq -R . | jq -s .)
+
+          {
+            echo "matrix<<EOF"
+            echo "$json"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+  test:
+    needs: detect
+    if: needs.detect.outputs.matrix != '[]'
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        helmrelease: ${{ fromJson(needs.detect.outputs.matrix) }}
+
+    steps:
+      # --------------------------------------------------
+      # Checkout repo
+      # --------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      # --------------------------------------------------
+      # Install required CLI tools
+      # --------------------------------------------------
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq gettext
+          sudo curl -sSL https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 \
+            -o /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+
+      # --------------------------------------------------
+      # Dummy env vars for Helm interpolation
+      # --------------------------------------------------
+      - name: Set dummy env vars
+        run: |
+          echo "DOMAIN_0=base.dummy0.local" >> "$GITHUB_ENV"
+          echo "DOMAIN_1=base.dummy1.local" >> "$GITHUB_ENV"
+          echo "DOMAIN=dummy.local" >> "$GITHUB_ENV"
+          echo "PODNET=10.42.0.0/16" >> "$GITHUB_ENV"
+          echo "METALLB_RANGE=192.168.20.211-192.168.20.219" >> "$GITHUB_ENV"
+          echo "GATUS_BUDDY_HEARTBEAT_TOKEN=1234567890" >> "$GITHUB_ENV"
+          
+      # --------------------------------------------------
+      # Create ephemeral k3d cluster
+      # --------------------------------------------------
+      - name: Install kubectl
+        uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede # v4
+
+      - name: Install helm
+        uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 # v4
+
+      - name: Create k3d cluster
+        uses: nolar/setup-k3d-k3s@v1
+        with:
+          version: latest
+          k3d-args: --k3s-arg --disable=metrics-server@server:*
+          # github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Remove node taints
+        run: |
+          kubectl taint --all=true nodes node.cloudprovider.kubernetes.io/uninitialized- || true
+
+      # --------------------------------------------------
+      # Deploy & test HelmRelease
+      # --------------------------------------------------
+      - name: Test HelmRelease
+        run: |
+          chmod +x .github/scripts/deploy_helmrelease.sh
+          bash .github/scripts/deploy_helmrelease.sh "${{ matrix.helmrelease }}"
+
+  test-summary:
+    name: test-summary
+    runs-on: ubuntu-latest
+    needs:
+      - detect
+      - test
+    if: always()
+
+    steps:
+      - name: Build GitHub summary
+        run: |
+          {
+            echo "## HelmRelease test summary"
+            echo ""
+
+            echo "### Detect job"
+            echo "- Result: **${{ needs.detect.result }}**"
+            echo ""
+
+            echo "### Test matrix job"
+            echo "- Result: **${{ needs.test.result }}**"
+            echo ""
+
+            if [ "${{ needs.test.result }}" = "skipped" ]; then
+              echo "ℹ️ No HelmReleases required testing."
+            elif [ "${{ needs.test.result }}" = "success" ]; then
+              echo "✅ All HelmRelease tests passed."
+            else
+              echo "❌ One or more HelmRelease tests failed."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Enforce final status
+        run: |
+          # Detect must succeed
+          if [ "${{ needs.detect.result }}" != "success" ]; then
+            echo "Detect job failed"
+            exit 1
+          fi
+
+          # Test may be success OR skipped (no releases changed)
+          if [ "${{ needs.test.result }}" != "success" ] && \
+             [ "${{ needs.test.result }}" != "skipped" ]; then
+            echo "HelmRelease tests failed"
+            exit 1
+          fi
+
+          echo "All checks passed"
+
+  

@@ -1,0 +1,30 @@
+name: Automerge and Approve
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Pull Request: Validate"]  # Name of the main CI workflow
+    types:
+      - completed
+
+jobs:
+  automerge:
+    permissions:
+      contents: write
+      pull-requests: write
+    name: Automerge and Approve build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+      - name: automerge
+        uses: pascalgn/automerge-action@7961b8b5eec56cc088c140b56d864285eabd3f67 # v0.16.4
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          UPDATE_RETRIES: 12
+          UPDATE_RETRY_SLEEP: 60000
+          MERGE_METHOD: squash
