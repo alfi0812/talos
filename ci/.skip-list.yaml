@@ -1,0 +1,4 @@
+# Path of helm-release file to skip during CI testing
+skipList:
+  - clusters/main/kubernetes/kube-system/cilium/app
+  - clusters/main/kubernetes/system/longhorn/app

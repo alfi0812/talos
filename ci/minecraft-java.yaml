@@ -5,3 +5,12 @@ resources:
   requests:
     cpu: 75m
     memory: 200Mi
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          imageSelector: j21Image
+          env:
+            MEMORY: 20G
+            TYPE: FORGE
