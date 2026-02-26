@@ -10,7 +10,7 @@
   "extends": [
     "config:recommended",
     ":timezone(Europe/Amsterdam)",    
-    // ":disableRateLimiting",
+    ":disableRateLimiting",
     ":semanticCommits",
     ":configMigration",
     "helpers:pinGitHubActionDigests",
