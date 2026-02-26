@@ -12,5 +12,5 @@ workload:
         main:
           imageSelector: j21Image
           env:
-            MEMORY: 20G
+            MEMORY: 2G
             TYPE: FORGE
