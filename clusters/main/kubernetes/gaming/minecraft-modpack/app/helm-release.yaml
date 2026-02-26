@@ -64,7 +64,7 @@ spec:
                   -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem
                   -XX:MaxTenuringThreshold=1
                 MAX_TICK_TIME: 60000
-                DISABLE_HEALTHCHECK: true
+                DISABLE_HEALTHCHECK: false
                 MEMORY: 20G
                 CF_SLUG: all-the-mods-10
                 OVERRIDE_SERVER_PROPERTIES: false
