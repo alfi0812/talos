@@ -17,3 +17,4 @@
 # Uncategorized
 - { name: "automerge",               color: "ee0701" }
 - { name: "system-upgrade",          color: "5319E7" }
+- { name: "fluxcd-update",          color: "5319E7" }
