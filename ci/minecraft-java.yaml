@@ -13,4 +13,4 @@ workload:
           imageSelector: j21Image
           env:
             MEMORY: 2G
-            TYPE: FORGE
+            TYPE: "FABRIC"
