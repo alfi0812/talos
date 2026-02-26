@@ -25,17 +25,13 @@ spec:
       retries: 3
   values:
     global:
-      stopAll: true
-    mcbackup:
-      enabled: false
+      stopAll: false
     persistence:
       data:
         enabled: true
         type: nfs
         path: /${MINECRAFT_NFS_PATH}
         server: ${CONFIG_TRUENAS_IP}
-      backups:
-        enabled: false
     resources:
       limits:
         cpu: 8000m
@@ -75,5 +71,3 @@ spec:
                 USE_FLARE_FLAGS: false
                 USE_SIMD_FLAGS: false
                 VIEW_DISTANCE: 10
-            mcbackup:
-              enabled: false
