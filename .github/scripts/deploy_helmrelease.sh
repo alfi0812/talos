@@ -66,7 +66,7 @@ REPO_NAME="$(yq '.spec.chart.spec.sourceRef.name' "$HELMRELEASE_PATH")"
 REPO_FILE="repositories/helm/${REPO_NAME}.yaml"
 REPO_URL="$(yq '.spec.url' "$REPO_FILE")"
 APP_DIR="$(dirname "$HELMRELEASE_PATH")"
-CI_VALUES_FILE="$APP_DIR/ci/ci-values.yaml"
+CI_VALUES_FILE="ci/$CHART_NAME.yaml"
 
 # --------------------------------------------------
 # Setup chart repository reference
@@ -162,19 +162,27 @@ if yq -e '
   changed=true
 fi
 
-# Remove NFS persistence entries
+# Remove unsupported persistence entries (nfs + existingClaim)
 if yq -e '
   (.persistence? // {})
   | to_entries[]
-  | select(.value.type? == "nfs")
+  | select(
+      .value.type? == "nfs"
+      or .value.existingClaim?
+    )
 ' "$VALUES_FILE" >/dev/null 2>&1; then
 
   yq -i '
-    .persistence |= with_entries(select(.value.type? != "nfs")) |
+    .persistence |= with_entries(
+      select(
+        .value.type? != "nfs"
+        and (.value.existingClaim? | not)
+      )
+    ) |
     del(.persistence | select(. == {}))
   ' "$VALUES_FILE"
 
-  echo "      ⚠️ NFS persistence removed for CI"
+  echo "      ⚠️ Unsupported persistence removed for CI"
   changed=true
 fi
 
