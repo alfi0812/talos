@@ -44,7 +44,6 @@ spec:
         podSpec:
           containers:
             main:
-              imageSelector: j21Image
               env:
                 FORCE_REDOWNLOAD: 'false'
                 FORGE_INSTALLER: ''
