@@ -10,7 +10,7 @@ workload:
     podSpec:
       containers:
         main:
-          imageSelector: j21Image
           env:
             MEMORY: 2G
             TYPE: PAPER
+            EULA: "TRUE"
