@@ -11,6 +11,6 @@ workload:
       containers:
         main:
           env:
-            MEMORY: 2G
+            MEMORY: 1G
             TYPE: PAPER
             EULA: "TRUE"
