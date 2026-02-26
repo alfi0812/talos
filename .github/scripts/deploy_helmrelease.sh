@@ -168,7 +168,7 @@ if yq -e '
   | to_entries[]
   | select(
       .value.type? == "nfs"
-      or .value.existingClaim?
+      or (.value.existingClaim? != null)
     )
 ' "$VALUES_FILE" >/dev/null 2>&1; then
 
@@ -176,7 +176,7 @@ if yq -e '
     .persistence |= with_entries(
       select(
         .value.type? != "nfs"
-        and (.value.existingClaim? | not)
+        and (.value.existingClaim? == null)
       )
     ) |
     del(.persistence | select(. == {}))
