@@ -1,0 +1,4 @@
+nextcloud:
+  credentials:
+    initialAdminPassword: test1234
+    initialAdminUser: admin
