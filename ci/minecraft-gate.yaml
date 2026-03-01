@@ -1,36 +1,36 @@
 configmap:
-config:
-  enabled: true
-  data:
-    config.yml: |
-      config:
-        bind: 0.0.0.0:{{ .Values.service.main.ports.main.port }}
-        onlineMode: true
-        debug: true
-        query:
-          enabled: true
-          port: {{ .Values.service.main.ports.query.port }}
-          showPlugins: false
-        lite:
-          enabled: true
-          routes:
-            - host: [modpack.base.dummy0.local]
-              backend: minecraft-modpack-minecraft-java.minecraft.svc.cluster.local:25565
-              cachePingTTL: -1s
-              fallback:
-                motd: |
-                  §cModpack server is offline.
-                  §eCheck back later!
-                version:
-                  name: '§cTry again later!'
-                  protocol: -1
-            - host: [tcpshield.base.dummy0.local, base.dummy0.local]
-              backend: minecraft-vanilla-minecraft-java.minecraft.svc.cluster.local:25565
-              cachePingTTL: -1s
-              fallback:
-                motd: |
-                  §cVanilla server is offline.
-                  §eCheck back later!
-                version:
-                  name: '§cTry again later!'
-                  protocol: -1
+  config:
+    enabled: true
+    data:
+      config.yml: |
+        config:
+          bind: 0.0.0.0:{{ .Values.service.main.ports.main.port }}
+          onlineMode: true
+          debug: true
+          query:
+            enabled: true
+            port: {{ .Values.service.main.ports.query.port }}
+            showPlugins: false
+          lite:
+            enabled: true
+            routes:
+              - host: [modpack.base.dummy0.local]
+                backend: minecraft-modpack-minecraft-java.minecraft.svc.cluster.local:25565
+                cachePingTTL: -1s
+                fallback:
+                  motd: |
+                    §cModpack server is offline.
+                    §eCheck back later!
+                  version:
+                    name: '§cTry again later!'
+                    protocol: -1
+              - host: [tcpshield.base.dummy0.local, base.dummy0.local]
+                backend: minecraft-vanilla-minecraft-java.minecraft.svc.cluster.local:25565
+                cachePingTTL: -1s
+                fallback:
+                  motd: |
+                    §cVanilla server is offline.
+                    §eCheck back later!
+                  version:
+                    name: '§cTry again later!'
+                    protocol: -1

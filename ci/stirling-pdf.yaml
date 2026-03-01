@@ -3,6 +3,6 @@ workload:
     podSpec:
       containers:
         main:
-          # imageSelector: image
+          imageSelector: image
           env:
             INSTALL_BOOK_AND_ADVANCED_HTML_OPS: false
