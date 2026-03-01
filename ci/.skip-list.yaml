@@ -2,4 +2,4 @@
 skipList:
   - clusters/main/kubernetes/kube-system/cilium/app
   - clusters/main/kubernetes/system/longhorn/app
-  - ‎clusters/main/kubernetes/observability/exporter-fritz/app
+  - clusters/main/kubernetes/observability/exporter-fritz/app
