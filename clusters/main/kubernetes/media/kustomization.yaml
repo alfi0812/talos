@@ -13,7 +13,7 @@ resources:
   - bazarr/ks.yaml
   - bazarr-anime/ks.yaml
   - jellyfin/ks.yaml
-  - jellyseerr/ks.yaml
+  #- seerr/ks.yaml
   - tdarr/ks.yaml
   - readarr/ks.yaml
 components:
