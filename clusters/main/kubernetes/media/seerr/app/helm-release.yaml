@@ -52,7 +52,7 @@ spec:
             enabled: true
             certificateIssuer: domain-1-le-prod
         hosts:
-          - host: jellyseerr.${DOMAIN_1}
+          - host: seerr.${DOMAIN_1}
     persistence:
       config:
         volsync:
