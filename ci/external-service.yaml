@@ -1,0 +1,4 @@
+service:
+  main:
+    enabled: true
+    externalIP: 192.168.178.1
