@@ -6,4 +6,5 @@ skipList:
   - clusters/main/kubernetes/apps/renovate/app
   - clusters/main/kubernetes/system/spegel/app
   - clusters/main/kubernetes/auth/authelia/app
+  - clusters/main/kubernetes/core/clusterissuer/app
 
