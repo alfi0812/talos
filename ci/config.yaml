@@ -7,4 +7,11 @@ skipList:
   - clusters/main/kubernetes/system/spegel/app
   - clusters/main/kubernetes/auth/authelia/app
   - clusters/main/kubernetes/core/clusterissuer/app
-
+dummyEnv:
+  DOMAIN_0: base.dummy0.local
+  DOMAIN_1: base.dummy1.local
+  DOMAIN: dummy.local
+  PODNET: 10.42.0.0/16
+  METALLB_RANGE: 192.168.20.211-192.168.20.219
+  GATUS_BUDDY_HEARTBEAT_TOKEN: abc123def
+  NGINX_EXTERNAL_IP: 192.168.20.215
