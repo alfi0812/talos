@@ -27,6 +27,9 @@ spec:
   values:
     global:
       stopAll: false
+    image:
+      repository: oci.trueforge.org/containerforge/nextcloud-fpm
+      tag: 33.0.0
     credentials:
       minio:
         type: s3
