@@ -8,6 +8,8 @@ skipList:
   - clusters/main/kubernetes/auth/authelia/app
   - clusters/main/kubernetes/core/clusterissuer/app
   - clusters/main/kubernetes/apps/actions-runners/app
+  - clusters/main/kubernetes/apps/actions-runner-controller/app
+  - clusters/main/kubernetes/apps/actions-runners-truecharts/app
 dummyEnv:
   DOMAIN_0: base.dummy0.local
   DOMAIN_1: base.dummy1.local
