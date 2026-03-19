@@ -7,6 +7,7 @@ skipList:
   - clusters/main/kubernetes/system/spegel/app
   - clusters/main/kubernetes/auth/authelia/app
   - clusters/main/kubernetes/core/clusterissuer/app
+  - clusters/main/kubernetes/apps/actions-runners/app
 dummyEnv:
   DOMAIN_0: base.dummy0.local
   DOMAIN_1: base.dummy1.local
