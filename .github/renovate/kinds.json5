@@ -1,17 +1,26 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "flux": {
-    "managerFilePatterns": ["/\\.yaml(?:\\.j2)?$/"],
-    "branchPrefix": "renovate/flux-"
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  flux: {
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
+    branchPrefix: "renovate/flux-"
   },
-  "kubernetes": {
-    "managerFilePatterns": ["/\\.yaml(?:\\.j2)?$/"],
-    "branchPrefix": "renovate/kubernetes-"
+  kubernetes: {
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
+    branchPrefix: "renovate/kubernetes-"
   },
   "github-actions": {
-    "branchPrefix": "renovate/githubactions-"
+    branchPrefix: "renovate/githubactions-"
   },
-  "devcontainer": {
-    "branchPrefix": "renovate/devcontainer-"
-  }
+  devcontainer: {
+    branchPrefix: "renovate/devcontainer-"
+  },
+  packageRules: [
+    {
+      description: "Disable docker datasource for Kubernetes manager on HelmRelease files",
+      matchManagers: ["kubernetes"],
+      matchDatasources: ["docker"],
+      matchFileNames: ["**/helm-release.yaml"],
+      enabled: false
+    }
+  ]
 }
