@@ -21,3 +21,4 @@ resources:
   - actions-runner-controller.yaml
   - openebs.yaml
   - grafana.yaml
+  - grafana-community.yaml
