@@ -4,6 +4,8 @@ metadata:
   name: actions-runners
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: actions-runner-controller
   interval: 10m
   path: clusters/main/kubernetes/apps/actions-runners/app
   prune: true
