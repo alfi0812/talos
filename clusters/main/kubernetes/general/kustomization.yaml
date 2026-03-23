@@ -12,3 +12,4 @@ resources:
   - vaultwarden/ks.yaml  
   - nextcloud/ks.yaml
   - homepage/ks.yaml
+  
