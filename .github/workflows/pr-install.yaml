@@ -258,7 +258,7 @@ jobs:
       - name: Add PR Comment
         if: github.event_name == 'pull_request'
         continue-on-error: true
-        uses: mshick/add-pr-comment@e5991cdd976b9aaf9d547c5786d72363d832012e
+        uses: mshick/add-pr-comment@f102bb3ebc97eedd4e2a98a9e71e462cc257fe80
         with:
           repo-token: ${{ steps.app-token.outputs.token }}
           message-id: "${{ github.event.pull_request.number }}/helmrelease-tests"
