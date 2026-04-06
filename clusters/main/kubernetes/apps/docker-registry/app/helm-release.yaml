@@ -32,7 +32,7 @@ spec:
   values:
     image:
       repository: docker.io/library/registry
-      tag: 3.0.0
+      tag: 3.1.0
     persistence:
       enabled: true
       size: 100Gi
