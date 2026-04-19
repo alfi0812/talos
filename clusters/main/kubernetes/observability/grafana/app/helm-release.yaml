@@ -203,7 +203,7 @@ spec:
           marketplace:
             # renovate: depName="Fritzbox"
             id: 13983
-            revision: 10
+            revision: 11
         cilium:
           enabled: true
           datasource:
