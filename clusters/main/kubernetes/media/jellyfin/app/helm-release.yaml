@@ -25,6 +25,8 @@ spec:
       retries: 3
   timeout: 20m
   values:
+    image:
+      tag: sandbox@sha256:bcab3ed5fe363244ad390c1aaa26d5ba910778bc7d417d60569c8d854371c347
     portal:
       open:
         enabled: false
