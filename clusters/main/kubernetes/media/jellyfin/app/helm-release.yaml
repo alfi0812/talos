@@ -26,7 +26,7 @@ spec:
   timeout: 20m
   values:
     image:
-      tag: sandbox@sha256:bcab3ed5fe363244ad390c1aaa26d5ba910778bc7d417d60569c8d854371c347
+      tag: sandbox@sha256:7a6d8bd29ea28f87043b395e29456689b5fc8f27b0937cfaa949c2bb8e2a9e43
     portal:
       open:
         enabled: false
