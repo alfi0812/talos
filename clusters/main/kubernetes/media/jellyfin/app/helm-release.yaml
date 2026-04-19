@@ -89,8 +89,6 @@ spec:
                 JELLYFIN_CONFIG_DIR: /config
                 JELLYFIN_LOG_DIR: /logs
                 JELLYFIN_CACHE_DIR: /cache
-                LD_LIBRARY_PATH: "${LD_LIBRARY_PATH:+${LD_LIBRARY_PATH}:}/usr/lib/x86_64-linux-gnu:/usr/lib/jellyfin-ffmpeg/lib"
-                OCL_ICD_VENDORS: "/etc/OpenCL/vendors:/usr/lib/jellyfin-ffmpeg/lib"
               resources:
                 limits:
                   gpu.intel.com/i915: 1
