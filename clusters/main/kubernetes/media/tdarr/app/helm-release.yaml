@@ -33,7 +33,7 @@ spec:
     exporterImage:
       repository: docker.io/homeylab/tdarr-exporter
       pullPolicy: IfNotPresent
-      tag: 1.4.3@sha256:88254cb505bfff20e86e04fa23a71789a411e7939e3bcbccbd5ef397ff91d052
+      tag: 2.0.0@sha256:36f08cb9f322f85f86b94671b14ffdc13c6ee65fc27f42b7b2721e626743bc87
     credentials:
       minio:
         type: s3
