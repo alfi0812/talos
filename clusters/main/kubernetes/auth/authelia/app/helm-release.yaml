@@ -54,6 +54,8 @@ spec:
         mode: recovery
         cluster:
           singleNode: true
+        monitoring:
+          enablePodMonitor: true
         backups:
           enabled: true
           credentials: minio
