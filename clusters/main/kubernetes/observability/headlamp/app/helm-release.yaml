@@ -92,6 +92,16 @@ spec:
             source: https://artifacthub.io/packages/headlamp/headlamp-plugins/headlamp_ai_assistant
             # renovate: datasource=docker depName=ghcr.io/headlamp-k8s/headlamp-plugin-ai-assistant
             version: 0.2.0-alpha
+          - name: intel-gpu
+            source: https://artifacthub.io/packages/headlamp/headlamp-intel-gpu/headlamp-intel-gpu
+            # renovate: datasource=github-releases depName=privilegedescalation/headlamp-intel-gpu-plugin
+            version: 1.1.0
+          - name: metallb
+            source: https://artifacthub.io/packages/headlamp/headlamp-metallb-plugin/headlamp-metallb-plugin
+            # renovate: datasource=github-releases depName=YotamKorah/headlamp-metallb-plugin
+            version: 0.5.0
+
+
     ingress:
       enabled: true
       annotations:

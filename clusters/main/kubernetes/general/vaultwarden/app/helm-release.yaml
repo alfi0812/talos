@@ -49,7 +49,6 @@ spec:
         ingressClassName: external
         primary: false
         annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: '${IP_WHITELIST}'
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 403"]
         targetSelector:

@@ -51,6 +51,9 @@ spec:
       admin:
         enabled: true
         ingressClassName: external
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 403"]
         targetSelector:
           collabora: collabora
         integrations:
