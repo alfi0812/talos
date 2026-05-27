@@ -98,15 +98,16 @@ spec:
                   enabled: false
               env:
                 TDARR_URL: "http://tdarr.media.svc.cluster.local:8265"
+            main:
+              resources:
+                limits:
+                  gpu.intel.com/i915: 1
+                  cpu: 4000m
+        memory: 8Gi
     metrics:
       main:
         enabled: true
         endpoints:
           - port: metrics
             path: /metrics
-        targetSelector: metrics      
-    resources:
-      limits:
-        cpu: 4000m
-        memory: 8Gi
-        gpu.intel.com/i915: 1
+        targetSelector: metrics            
