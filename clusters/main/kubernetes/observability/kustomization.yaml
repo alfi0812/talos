@@ -9,3 +9,4 @@ resources:
   - alloy/ks.yaml
   - grafana/ks.yaml
   - speedtest-exporter/ks.yaml
+  - headlamp/ks.yaml

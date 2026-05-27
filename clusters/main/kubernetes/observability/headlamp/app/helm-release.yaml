@@ -1,0 +1,129 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: headlamp
+  namespace: headlamp
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: headlamp
+      version: 0.42.0
+      sourceRef:
+        kind: HelmRepository
+        name: home-ops-mirror
+        namespace: flux-system
+      interval: 15m
+  timeout: 20m
+  maxHistory: 3
+  driftDetection:
+    mode: warn
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
+  values:
+
+    initContainers:
+      - # Generate kubeconfig file. Can be removed when https://github.com/kubernetes-sigs/headlamp/issues/1826 is resolved
+        command:
+          - /bin/sh
+          - "-c"
+          - |
+            kubectl config set-cluster main --server=https://kubernetes.default.svc --certificate-authority=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+            kubectl config set-credentials main --token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+            kubectl config set-context main --cluster=main --user=main
+            kubectl config use-context main
+        env:
+          - name: KUBERNETES_SERVICE_HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: KUBERNETES_SERVICE_PORT
+            value: "6443"
+          - name: KUBECONFIG
+            value: /home/headlamp/.config/Headlamp/kubeconfigs/config
+        image: alpine/kubectl:1.36.1
+        name: create-kubeconfig
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 101
+          runAsNonRoot: true
+          runAsUser: 100
+        volumeMounts:
+          - mountPath: /home/headlamp/.config/Headlamp/kubeconfigs
+            name: kubeconfig
+            readOnly: false
+  
+    volumes:
+      - name: kubeconfig
+        emptyDir: {}
+    volumeMounts:
+      - mountPath: /home/headlamp/.config/Headlamp/kubeconfigs
+        name: kubeconfig
+        readOnly: true
+
+    config:
+      watchPlugins: true
+    pluginsManager:
+      enabled: true
+      configContent: |
+        plugins:
+          - name: flux
+            source: https://artifacthub.io/packages/headlamp/headlamp-plugins/headlamp_flux
+            # renovate: datasource=docker depName=ghcr.io/headlamp-k8s/headlamp-plugin-flux
+            version: 0.6.0
+          - name: cert-manager
+            source: https://artifacthub.io/packages/headlamp/headlamp-plugins/headlamp_cert-manager
+            # renovate: datasource=docker depName=ghcr.io/headlamp-k8s/headlamp-plugin-cert-manager
+            version: 0.1.0
+          - name: ai-assistant
+            source: https://artifacthub.io/packages/headlamp/headlamp-plugins/headlamp_ai_assistant
+            # renovate: datasource=docker depName=ghcr.io/headlamp-k8s/headlamp-plugin-ai-assistant
+            version: 0.2.0-alpha
+          - name: intel-gpu
+            source: https://artifacthub.io/packages/headlamp/headlamp-intel-gpu/headlamp-intel-gpu
+            # renovate: datasource=github-releases depName=privilegedescalation/headlamp-intel-gpu-plugin
+            version: 1.1.0
+          - name: metallb
+            source: https://artifacthub.io/packages/headlamp/headlamp-metallb-plugin/headlamp-metallb-plugin
+            # renovate: datasource=github-releases depName=YotamKorah/headlamp-metallb-plugin
+            version: 0.5.0
+
+
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: domain-1-le-prod
+        cert-manager.io/private-key-rotation-policy: Always
+        nginx.ingress.kubernetes.io/auth-method: 'GET'
+        nginx.ingress.kubernetes.io/auth-url: 'http://authelia.authelia.svc.cluster.local:9091/api/verify'
+        nginx.ingress.kubernetes.io/auth-signin: 'https://auth.${DOMAIN_1}?rm=$request_method'
+        nginx.ingress.kubernetes.io/auth-response-headers: 'Remote-User,Remote-Name,Remote-Groups,Remote-Email'
+      ingressClassName: internal
+      hosts:
+        - host: kube.${DOMAIN_1}
+          paths:
+            - pathType: Prefix
+              path: /
+              type: ImplementationSpecific
+              backend:
+                service:
+                  name: headlamp
+                  port:
+                    number: 80
+      tls:
+        - secretName: headlamp-tls-0
+          hosts:
+            - kube.${DOMAIN_1}
