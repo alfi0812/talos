@@ -9,7 +9,6 @@ resources:
   - metallb/ks.yaml
   - openebs/ks.yaml
   - snapshot-controller/ks.yaml
-  # - spegel/ks.yaml
   - volsync/ks.yaml
   - generic-device-plugin/ks.yaml
   - intel-device-plugin-operator/ks.yaml
