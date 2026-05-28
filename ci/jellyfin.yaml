@@ -1,7 +1,3 @@
-resources:
-  limits:
-    cpu: 1500m
-    memory: 2400Mi
 workload:
   main:
     podSpec:
@@ -10,3 +6,5 @@ workload:
           resources:
             limits:
               gpu.intel.com/i915: 0
+              cpu: 1500m
+              memory: 2400Mi
