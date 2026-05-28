@@ -99,7 +99,7 @@ spec:
           - name: metallb
             source: https://artifacthub.io/packages/headlamp/headlamp-metallb-plugin/headlamp-metallb-plugin
             # renovate: datasource=github-releases depName=YotamKorah/headlamp-metallb-plugin
-            version: 0.5.0
+            version: 0.5.1
 
 
     ingress:
