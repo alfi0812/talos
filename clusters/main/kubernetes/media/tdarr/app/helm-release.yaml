@@ -103,7 +103,7 @@ spec:
                 limits:
                   gpu.intel.com/i915: 1
                   cpu: 4000m
-        memory: 8Gi
+                  memory: 8Gi
     metrics:
       main:
         enabled: true
