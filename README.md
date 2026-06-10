@@ -4,8 +4,8 @@
 
 *A self-hosted, GitOps-driven Kubernetes cluster built on Talos Linux, focused on reliability, observability, and clean automation.*
 
-[![Truenas](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de%2Ftruenas_version&style=for-the-badge&logo=truenas&logoColor=white&label=%20&color=blue)](https://www.truenas.com/)&nbsp;&nbsp;
-[![Talos](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de%2Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&label=%20&color=blue)](https://www.talos.dev/)&nbsp;&nbsp;
+[![Truenas](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/Ftruenas_version&style=for-the-badge&logo=truenas&logoColor=white&label=%20&color=blue)](https://www.truenas.com/)&nbsp;&nbsp;
+[![Talos](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&label=%20&color=blue)](https://www.talos.dev/)&nbsp;&nbsp;
 [![Kubernetes](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de%2Fkubernetes_version&style=for-the-badge&logo=kubernetes&logoColor=white&label=%20&color=blue)](https://www.kubernetes.io/)&nbsp;&nbsp;
 [![Flux](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de%2Fflux_version&style=for-the-badge&logo=flux&logoColor=white&color=blue&label=%20)](https://fluxcd.io)&nbsp;&nbsp;
 
