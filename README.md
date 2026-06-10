@@ -13,13 +13,13 @@
 [![Status-Page](https://img.shields.io/endpoint?url=https://status.boemeltrein.nl/api/v1/endpoints/buddy_status-page-(buddy)/health/badge.shields&style=for-the-badge&logo=statuspage&logoColor=white&label=Status%20Page)](https://status.goeppel.dev)&nbsp;&nbsp;
 [![Alertmanager](https://img.shields.io/endpoint?url=https://status.boemeltrein.nl/api/v1/endpoints/buddy_heartbeat-(buddy)/health/badge.shields&style=for-the-badge&logo=prometheus&logoColor=white&label=Alertmanager)](https://status.goeppel.dev)
 
-[![Age-Days](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/cluster_age_days&style=flat-square&label=Age)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Uptime-Days](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/cluster_uptime_days&style=flat-square&label=Uptime)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Node-Count](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/cluster_node_count&style=flat-square&label=Nodes)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Pod-Count](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/cluster_pod_count&style=flat-square&label=Pods)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![CPU-Usage](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/cluster_cpu_usage&style=flat-square&label=CPU)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Memory-Usage](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/cluster_memory_usage&style=flat-square&label=Memory)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Alerts](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/cluster_alert_count&style=flat-square&label=Alerts)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+[![Age-Days](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_age_days?format=shields&style=flat-square&label=Age)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+[![Uptime-Days](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_uptime_days?format=shields&style=flat-square&label=Uptime)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+[![Node-Count](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_node_count?format=shields&style=flat-square&label=Nodes)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+[![Pod-Count](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_pod_count?format=shields&style=flat-square&label=Pods)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+[![CPU-Usage](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_cpu_usage?format=shields&style=flat-square&label=CPU)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+[![Memory-Usage](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_memory_usage?format=shields&style=flat-square&label=Memory)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+[![Alerts](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_alert_count?format=shields&style=flat-square&label=Alerts)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
 
 </div>
 
