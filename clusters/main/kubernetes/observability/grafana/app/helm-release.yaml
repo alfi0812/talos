@@ -178,7 +178,7 @@ spec:
           marketplace:
             # renovate: depName="Tdarr"
             id: 20388
-            revision: 4    
+            revision: 5    
         cloudflared:
           enabled: true
           datasource:
