@@ -27,6 +27,14 @@ spec:
     portal:
       open:
         enabled: false
+    metrics:
+      main:
+        endpoints:
+          - port: main
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 30s
+    targetSelector: main
     exporter:
       exporter_port: 9787
       listen_address: '0.0.0.0'
