@@ -33,7 +33,7 @@ spec:
           - port: main
             path: /metrics
             interval: 1m
-            scrapeTimeout: 20
+            scrapeTimeout: 20s
     targetSelector: main
     exporter:
       exporter_port: 9787
