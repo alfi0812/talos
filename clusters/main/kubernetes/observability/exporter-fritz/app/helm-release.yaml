@@ -29,7 +29,7 @@ spec:
         enabled: false
     exporter:
       exporter_port: 9787
-      listen_address: 0.0.0.0
+      listen_address: '0.0.0.0'
       devices:
       - name: Fritz!Box 7590 Router
         hostname: '${FRITZBOX_IP}'
