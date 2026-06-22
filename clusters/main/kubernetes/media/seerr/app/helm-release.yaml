@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: seerr
-      version: 15.6.0
+      version: 16.0.0
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -55,6 +55,7 @@ spec:
           - host: seerr.${DOMAIN_1}
     persistence:
       config:
+        targetSelectAll: true
         volsync:
         - name: config
           type: restic
@@ -65,3 +66,49 @@ spec:
             enabled: true
             trigger:
               schedule: 30 0 * * *
+    cnpg:
+      main:
+        cluster:
+          singleNode: true
+        monitoring:
+          enablePodMonitor: true
+        # mode: recovery
+        backups:
+          enabled: true
+          credentials: minio
+          scheduledBackups:
+            - name: daily-backup
+              schedule: "0 5 0 * * *"
+              backupOwnerReference: self
+              immediate: true
+              suspend: false
+        recovery:
+          method: object_store
+          credentials: minio
+    migrateImage:
+      repository: ghcr.io/ralgar/pgloader
+      pullPolicy: IfNotPresent
+      tag: pr-1531@sha256:e5ae0b8149058828938d0f14ccc1f793171db8c4c8b69b7b6b45dfd998f0149f
+    workload:
+      main:
+        podSpec:
+          containers:
+            # main:
+            migrate:
+              enabled: true
+              imageSelector: migrateImage
+              probes:
+                liveness:
+                  enabled: false
+                readiness:
+                  enabled: false
+                startup:
+                  enabled: false
+              args:
+                - pgloader
+                - --with
+                - "quote identifiers"
+                - --with
+                - "data only"
+                - /app/config/db.sqlite3
+                - "{{ .Values.cnpg.main.creds.std }}"
