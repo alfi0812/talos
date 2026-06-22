@@ -95,7 +95,7 @@ spec:
           containers:
             # main:
             migrate:
-              enabled: true
+              enabled: false
               imageSelector: migrateImage
               probes:
                 liveness:
