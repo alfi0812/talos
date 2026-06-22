@@ -55,7 +55,6 @@ spec:
           - host: seerr.${DOMAIN_1}
     persistence:
       config:
-        targetSelectAll: true
         volsync:
         - name: config
           type: restic
