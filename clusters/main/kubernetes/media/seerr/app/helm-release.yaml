@@ -72,7 +72,7 @@ spec:
           singleNode: true
         monitoring:
           enablePodMonitor: true
-        # mode: recovery
+        mode: recovery
         backups:
           enabled: true
           credentials: minio
