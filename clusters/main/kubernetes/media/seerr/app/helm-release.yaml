@@ -66,6 +66,25 @@ spec:
             enabled: true
             trigger:
               schedule: 30 0 * * *
+    cnpg:
+      main:
+        cluster:
+          singleNode: true
+        monitoring:
+          enablePodMonitor: true
+        # mode: recovery
+        backups:
+          enabled: true
+          credentials: minio
+          scheduledBackups:
+            - name: daily-backup
+              schedule: "0 5 0 * * *"
+              backupOwnerReference: self
+              immediate: true
+              suspend: false
+        recovery:
+          method: object_store
+          credentials: minio
     migrateImage:
       repository: ghcr.io/ralgar/pgloader
       pullPolicy: IfNotPresent
