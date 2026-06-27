@@ -25,8 +25,11 @@ jobs:
           private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
       - name: automerge
         uses: pascalgn/automerge-action@7961b8b5eec56cc088c140b56d864285eabd3f67 # v0.16.4
+        id: automerge
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-          UPDATE_RETRIES: 12
+          UPDATE_RETRIES: 24
           UPDATE_RETRY_SLEEP: 60000
+          MERGE_RETRIES: 24
+          MERGE_RETRY_SLEEP: 60000
           MERGE_METHOD: squash
