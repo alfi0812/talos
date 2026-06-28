@@ -22,3 +22,4 @@ resources:
   - openebs.yaml
   - grafana.yaml
   - grafana-community.yaml
+  - home-operations.yaml
