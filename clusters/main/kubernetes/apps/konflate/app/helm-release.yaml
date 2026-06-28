@@ -1,0 +1,74 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: konflate
+  namespace: konflate
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: konflate
+      version: 0.2.32
+      sourceRef:
+        kind: HelmRepository
+        name: home-operations
+        namespace: flux-system
+      interval: 15m
+  timeout: 20m
+  maxHistory: 3
+  driftDetection:
+    mode: warn
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    config:
+      repo: github://alfi0812/talos
+      closedPrMax: 0
+      closedPrTtl: 720h      
+      statusChecks: true
+      prComments: true
+      publicUrl: https://konflate.${DOMAIN_1}
+      appClientId: "${RENOVATE_APP_ID}"
+    secret:
+      appPrivateKey: "${RENOVATE_APP_KEY}"
+      webhookSecret: "${KONFLATE_WEBHOOK_SECRET}"
+
+    ingress:
+      enabled: true
+      className: external
+      annotations:
+        cert-manager.io/cluster-issuer: domain-1-le-prod
+        cert-manager.io/private-key-rotation-policy: Always
+        gatus.home-operations.com/endpoint: |-
+          conditions: ["[STATUS] == 200"]
+      hosts:
+        - host: konflate.${DOMAIN_1}
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: konflate-tls-0
+          hosts:
+            - konflate.${DOMAIN_1}
+
+    persistence:
+      enabled: true
+
+    monitoring:
+      serviceMonitor:
+        enabled: true
+
+    resources:
+      requests:
+        cpu: 50m
+      limits:
+        memory: 1Gi
