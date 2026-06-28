@@ -17,7 +17,7 @@ resources:
   - truecharts.yaml
 # more goes here!
   - alfi.yaml
-  - twuni.yaml
+  #- twuni.yaml
   - actions-runner-controller.yaml
   - openebs.yaml
   - grafana.yaml
