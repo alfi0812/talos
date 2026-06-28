@@ -37,7 +37,7 @@ spec:
       statusChecks: true
       prComments: true
       publicUrl: https://konflate.${DOMAIN_1}
-      appClientId: "${RENOVATE_APP_ID}"
+      appClientId: '"${RENOVATE_APP_ID}"'
     secret:
       appPrivateKey: "${RENOVATE_APP_KEY}"
       webhookSecret: "${KONFLATE_WEBHOOK_SECRET}"
