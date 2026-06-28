@@ -31,4 +31,3 @@ spec:
     keepHistory: false
   values:
     fullnameOverride: actions-runner-controller
-    dockerRegistryMirror: http://${DOCKERMIRROR_IP}:5000
