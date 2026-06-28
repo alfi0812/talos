@@ -61,4 +61,4 @@ spec:
         volumes:
           - name: talos
             secret:
-              secretName: action-runner
+              secretName: actions-runners
