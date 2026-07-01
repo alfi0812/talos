@@ -28,9 +28,8 @@ spec:
       capabilities:
         add:
           - PERFMON
-    dra:
-      enabled: true
-      deviceClassName: "gpu.intel.com/i915"
+    hostAccess:
+      devDri: "/dev/dri"
     monitoring:
       serviceMonitor:
         enabled: true
