@@ -30,7 +30,7 @@ spec:
           - PERFMON
     dra:
       enabled: true
-      deviceClassName: "gpu.intel.com/i915"
+      deviceClassName: "gpu.intel.com"
     monitoring:
       serviceMonitor:
         enabled: true
