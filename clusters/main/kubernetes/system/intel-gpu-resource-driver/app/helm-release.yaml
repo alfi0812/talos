@@ -9,6 +9,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: intel-gpu-resource-driver
+    namespace: flux-system
   interval: 1h
   values:
     cdi:
