@@ -101,7 +101,7 @@ spec:
             main:
               resources:
                 limits:
-                  gpu.intel.com/i915: 1
+                  gpu.intel.com: 1
                   cpu: 4000m
                   memory: 8Gi
     metrics:
