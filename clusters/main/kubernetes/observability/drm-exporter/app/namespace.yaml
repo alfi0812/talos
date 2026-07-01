@@ -3,4 +3,5 @@ kind: Namespace
 metadata:
   name: drm-exporter
   labels:
+    pod-security.kubernetes.io/enforce: privileged
     resource.kubernetes.io/admin-access: "true"
