@@ -10,6 +10,7 @@ resources:
   - snapshot-controller/ks.yaml
   - volsync/ks.yaml
   - generic-device-plugin/ks.yaml
+  - intel-gpu-resource-driver/ks.yaml
   #- intel-device-plugin-operator/ks.yaml
   #- intel-device-plugin-gpu/ks.yaml
   - system-upgrade
