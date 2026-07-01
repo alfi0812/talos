@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - flux-manifests.yaml
   - tuppr.yaml
+  - intel.yaml
