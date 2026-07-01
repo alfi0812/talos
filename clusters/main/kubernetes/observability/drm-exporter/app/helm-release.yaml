@@ -28,6 +28,9 @@ spec:
       capabilities:
         add:
           - PERFMON
+          - SYS_RAWIO
+    dra:
+      enabled: false
     hostAccess:
       devDri: "/dev/dri"
     monitoring:
