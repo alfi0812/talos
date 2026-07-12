@@ -169,7 +169,7 @@ spec:
           marketplace:
             # renovate: depName="SmartCTL"
             id: 22604
-            revision: 2    
+            revision: 3    
         tdarr:
           enabled: true
           datasource:
