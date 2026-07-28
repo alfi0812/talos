@@ -49,6 +49,7 @@ spec:
                 FORGE_INSTALLER: ''
                 FORGE_INSTALLER_URL: ''
                 GENERATOR_SETTINGS: ''
+                MOTD: "Alfi0812s Modpack Server"
                 ICON: ''
                 JVM_OPTS: ''
                 JVM_XX_OPTS: -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200
