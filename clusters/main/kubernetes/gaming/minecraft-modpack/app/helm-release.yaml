@@ -63,6 +63,7 @@ spec:
                 DISABLE_HEALTHCHECK: false
                 MEMORY: 20G
                 CF_SLUG: all-the-mods-10
+                CF_FILENAME_MATCHER: 7.3
                 OVERRIDE_SERVER_PROPERTIES: false
                 RCON_PASSWORD: ${MINECRAFT_PASSWORD}
                 TYPE: AUTO_CURSEFORGE
