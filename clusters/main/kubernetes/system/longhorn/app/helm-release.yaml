@@ -46,3 +46,5 @@ spec:
     metrics:
       serviceMonitor:
         enabled: true
+    networkPolicies:
+      restrictInternalTraffic: false
