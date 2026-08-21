@@ -24,6 +24,8 @@ spec:
     remediation:
       retries: 3
   values:
+    podOptions:
+      hostNetwork: true
     global:
       stopAll: false
     credentials:
