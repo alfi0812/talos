@@ -62,3 +62,10 @@ spec:
             enabled: true
             trigger:
               schedule: 10 0 * * *
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                TVH_ARGS: "--satip_xml http://192.168.0.1:49000/satipdesc.xml"
