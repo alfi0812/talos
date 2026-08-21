@@ -68,4 +68,4 @@ spec:
           containers:
             main:
               env:
-                TVH_ARGS: "--satip_xml http://192.168.0.1:49000/satipdesc.xml"
+                RUN_OPTS: "--satip_xml http://192.168.0.1:49000/satipdesc.xml"
