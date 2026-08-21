@@ -12,4 +12,5 @@ resources:
   - vaultwarden/ks.yaml  
   - nextcloud/ks.yaml
   - homepage/ks.yaml
+  - tvheadend/ks.yaml
   
