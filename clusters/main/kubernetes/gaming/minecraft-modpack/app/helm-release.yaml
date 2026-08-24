@@ -72,3 +72,4 @@ spec:
                 USE_FLARE_FLAGS: false
                 USE_SIMD_FLAGS: false
                 VIEW_DISTANCE: 10
+                CF_OVERRIDES_SKIP_EXISTING: false
