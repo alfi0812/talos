@@ -69,4 +69,17 @@ spec:
     metrics:
       main:
         enabled: false
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              probes:
+                readiness:
+                  enabled: false
+                liveness:
+                  enabled: false
+                startup:
+                  enabled: false
+    
         
