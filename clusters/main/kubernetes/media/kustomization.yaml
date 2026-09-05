@@ -16,5 +16,6 @@ resources:
   - seerr/ks.yaml
   - tdarr/ks.yaml
   - readarr/ks.yaml
+  - tvheadend/ks.yaml
 components:
   - ../../components/notifications/discord
