@@ -28,7 +28,7 @@ spec:
       stopAll: false
     image:
       repository: ghcr.io/pennydreadful/bookshelf
-      tag: hardcover-v0.4.20@sha256:388eecc94362580eae31ee0a454be6af516f8a311f8432a521c202fb475f4359
+      tag: hardcover-v0.4.20@sha256:c29836a2809f14959213da302fef685bb601d438fbdf0c68370eec1e1c10ca6e
     credentials:
       minio:
         type: s3
