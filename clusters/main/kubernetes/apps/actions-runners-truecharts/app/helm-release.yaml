@@ -50,7 +50,7 @@ spec:
             emptyDir: {}
         containers:
           - name: runner
-            image: oci.trueforge.org/containerforge/actions-runner:2.337.0@sha256:f6fd1359f28cbedb71be5e4f088c1d1745cabe1a12967b479bdd53c3518e8528
+            image: oci.trueforge.org/containerforge/actions-runner:2.337.0@sha256:06b1d0a0b446c2d84f47dd4ce0cd8827c70ceec0a8f471e32303ca96060c99f6
             command:
               - /home/runner/run.sh
             env:
