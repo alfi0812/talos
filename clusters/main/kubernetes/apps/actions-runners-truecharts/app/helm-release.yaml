@@ -30,7 +30,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    minRunners: 3
+    minRunners: 4
     maxRunners: 6
     githubConfigSecret: runner-secret-truecharts
     githubConfigUrl: https://github.com/trueforge-org
