@@ -41,12 +41,16 @@ spec:
     workload:
       main:
         podSpec:
+          # hostname + dns domain make pihole.pihole.svc.cluster.local one of Pi-hole's own names,
+          # so the passwordless API accepts the homepage widget (FTL >= 6.8 rejects unknown Host headers)
+          hostname: pihole
           containers:
             main:
               env:
                 FTLCONF_dns_upstreams: ${BLOCKY_IP}
                 FTLCONF_webserver_api_password: ''
                 FTLCONF_webserver_domain: pihole.${DOMAIN_1}
+                FTLCONF_dns_domain_name: pihole.svc.cluster.local
     service:
       dns:
         loadBalancerIP: ${PIHOLE_IP}
