@@ -46,6 +46,7 @@ spec:
               env:
                 FTLCONF_dns_upstreams: ${BLOCKY_IP}
                 FTLCONF_webserver_api_password: ''
+                FTLCONF_webserver_domain: pihole.${DOMAIN_1}
     service:
       dns:
         loadBalancerIP: ${PIHOLE_IP}
