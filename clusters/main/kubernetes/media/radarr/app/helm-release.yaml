@@ -52,7 +52,7 @@ spec:
           - host: radarr.${DOMAIN_1}
     metrics:
       main:
-        enabled: true
+        enabled: false
     persistence:
       config:
         volsync:
