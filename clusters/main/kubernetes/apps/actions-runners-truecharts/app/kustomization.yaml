@@ -4,3 +4,4 @@ resources:
   - namespace.yaml
   - truecharts.secret.yaml
   - helm-release.yaml
+  - networkpolicy.yaml

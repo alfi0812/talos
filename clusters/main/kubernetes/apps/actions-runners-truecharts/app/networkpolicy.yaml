@@ -1,0 +1,21 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: deny-talos-api
+  namespace: gha-truecharts
+spec:
+  description: Block CI jobs from reaching the Talos API (apid/trustd)
+  endpointSelector: {}
+  # Only deny the ports below; everything else stays allowed
+  enableDefaultDeny:
+    egress: false
+    ingress: false
+  egressDeny:
+    - toEntities:
+        - host
+        - remote-node
+      toPorts:
+        - ports:
+            - port: "50000"
+              endPort: 50001
+              protocol: TCP
