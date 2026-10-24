@@ -4,7 +4,6 @@ resources:
   - namespace.yaml
   - helm-release.yaml
   - rbac.yaml
-  - truecharts.secret.yaml
   - runner.secret.yaml
 components:
   - ../../../../components/notifications/discord

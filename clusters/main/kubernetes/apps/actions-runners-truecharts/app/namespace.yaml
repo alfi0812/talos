@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: gha-truecharts
+    labels:
+        # k3d chart tests need privileged pods
+        pod-security.kubernetes.io/enforce: privileged

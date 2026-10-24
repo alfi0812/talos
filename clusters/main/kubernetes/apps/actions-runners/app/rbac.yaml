@@ -4,19 +4,8 @@ kind: ServiceAccount
 metadata:
   name: actions-runners
   namespace: gha
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: actions-runners
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-  - kind: ServiceAccount
-    name: actions-runners
-    namespace: gha
+# The runner only talks to the Talos API, not to Kubernetes
+automountServiceAccountToken: false
 ---
 apiVersion: talos.dev/v1alpha1
 kind: ServiceAccount
@@ -25,4 +14,5 @@ metadata:
   namespace: gha
 spec:
   roles:
-    - os:admin
+    # Enough for `talosctl image pull`
+    - os:operator

@@ -30,15 +30,14 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    minRunners: 3
-    maxRunners: 12
+    minRunners: 2
+    # Matches max-parallel in image-pull.yaml
+    maxRunners: 4
     githubConfigSecret: runner-secret
     githubConfigUrl: https://github.com/alfi0812/talos
     controllerServiceAccount:
       name: actions-runner-controller
       namespace: gha
-    containerMode:
-      type: dind
     template:
       spec:
         containers:
