@@ -35,10 +35,12 @@ spec:
     resources:
       limits:
         cpu: 8000m
-        memory: 24Gi
+        # 20G heap (MEMORY) + ~2Gi off-heap + growth buffer
+        memory: 26Gi
       requests:
         cpu: 4000m
-        memory: 10Gi
+        # AlwaysPreTouch commits the full heap, so the pod always uses ~22Gi
+        memory: 22Gi
     workload:
       main:
         podSpec:
