@@ -6,7 +6,6 @@ resources:
   - kubernetes-reflector/ks.yaml
   - longhorn/ks.yaml
   - metallb/ks.yaml
-  - openebs/ks.yaml
   - snapshot-controller/ks.yaml
   - volsync/ks.yaml
   - generic-device-plugin/ks.yaml

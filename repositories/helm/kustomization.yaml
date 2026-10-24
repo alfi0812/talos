@@ -19,7 +19,6 @@ resources:
   - alfi.yaml
   - twuni.yaml
   - actions-runner-controller.yaml
-  - openebs.yaml
   - grafana.yaml
   - grafana-community.yaml
   - home-operations.yaml
