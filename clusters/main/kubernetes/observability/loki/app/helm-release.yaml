@@ -14,15 +14,6 @@ spec:
         name: grafana-community
         namespace: flux-system
       interval: 5m
-  install:
-    createNamespace: true
-    crds: CreateReplace
-    remediation:
-      retries: 3
-  upgrade:
-    crds: CreateReplace
-    remediation:
-      retries: 3
   values:
     deploymentMode: SingleBinary
     loki:

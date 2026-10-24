@@ -19,14 +19,6 @@ spec:
   maxHistory: 3
   driftDetection:
     mode: enabled
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   uninstall:
     keepHistory: false
   values:

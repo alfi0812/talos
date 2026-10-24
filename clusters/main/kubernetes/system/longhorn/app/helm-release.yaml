@@ -14,15 +14,6 @@ spec:
         kind: HelmRepository
         name: home-ops-mirror
         namespace: flux-system
-  install:
-    createNamespace: true
-    crds: CreateReplace
-    remediation:
-      retries: 3
-  upgrade:
-    crds: CreateReplace
-    remediation:
-      retries: 3
   values:
     defaultSettings:
       # Increase to 3 for a multi-node cluster

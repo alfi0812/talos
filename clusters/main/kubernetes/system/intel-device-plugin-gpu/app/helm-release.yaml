@@ -13,14 +13,6 @@ spec:
         kind: HelmRepository
         name: home-ops-mirror
         namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   dependsOn:
     - name: intel-device-plugin-operator
       namespace: intel

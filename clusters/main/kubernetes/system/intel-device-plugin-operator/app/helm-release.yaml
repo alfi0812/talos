@@ -13,16 +13,6 @@ spec:
         kind: HelmRepository
         name: home-ops-mirror
         namespace: flux-system
-  install:
-    crds: CreateReplace
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    crds: CreateReplace
-    remediation:
-      strategy: rollback
-      retries: 3
   dependsOn:
     - name: node-feature-discovery
       namespace: kube-system

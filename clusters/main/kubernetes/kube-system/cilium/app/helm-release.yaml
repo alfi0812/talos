@@ -23,14 +23,6 @@ spec:
   maxHistory: 3
   driftDetection:
     mode: warn
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-      remediateLastFailure: true
   uninstall:
     keepHistory: false
   values:
