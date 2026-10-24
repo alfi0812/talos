@@ -60,6 +60,8 @@ spec:
       main:
         cluster:
           singleNode: true
+          # One node: a second instance only doubles disk writes, no failover
+          instances: 1
         monitoring:
           enablePodMonitor: true
         mode: recovery

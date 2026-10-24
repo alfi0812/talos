@@ -54,7 +54,9 @@ spec:
     cnpg:
       main:
         cluster:
-          singleNode: true 
+          singleNode: true
+          # One node: a second instance only doubles disk writes, no failover
+          instances: 1
         monitoring:
           enablePodMonitor: true
     configmap:
