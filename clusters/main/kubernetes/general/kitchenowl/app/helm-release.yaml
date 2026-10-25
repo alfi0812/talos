@@ -84,6 +84,7 @@ spec:
                     expandObjectName: false
                     name: kitchenowl-oidc
                     key: OIDC_CLIENT_SECRET
+                DISABLE_USERNAME_PASSWORD_LOGIN: "true"
                 SMTP_HOST: ${SMTP_HOST}
                 SMTP_PORT: 465
                 SMTP_USER: ${SMTP_USER}
