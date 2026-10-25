@@ -88,3 +88,27 @@ authelia:
             - 'code'
           token_endpoint_auth_method: 'client_secret_basic'
           userinfo_signed_response_alg: 'none'
+        # https://www.authelia.com/integration/openid-connect/clients/actual-budget/
+        - client_id: 'actual-budget'
+          client_name: 'Actual Budget'
+          # PBKDF2 hash; plaintext lives in general/actualserver/app/oidc.secret.yaml
+          client_secret: '$pbkdf2-sha512$310000$Grl3TtAZeE6n1YlF.KTFhg$ZiqF/ZIMgVFx3jJkXQehJqJvbYtS.cq.cKi258WiTDxFMItoSttGVNJq1i9WnetR5kxQ/Uo8e5Q..hir6QsymQ'
+          public: false
+          authorization_policy: 'admins'
+          consent_mode: 'implicit'
+          require_pkce: false
+          pkce_challenge_method: ''
+          redirect_uris:
+            - 'https://actual.${DOMAIN_1}/openid/callback'
+          scopes:
+            - 'openid'
+            - 'profile'
+            - 'groups'
+            - 'email'
+          grant_types:
+            - 'authorization_code'
+          response_types:
+            - 'code'
+          access_token_signed_response_alg: 'none'
+          userinfo_signed_response_alg: 'none'
+          token_endpoint_auth_method: 'client_secret_basic'

@@ -29,18 +29,34 @@ spec:
       main:
         enabled: true
         ingressClassName: internal
+        # Login via Authelia OIDC (see env below), no forward-auth
         integrations:
-          nginx:
-            enabled: true
-            auth:
-              type: "authelia"
-              internalHost: "authelia.authelia.svc.cluster.local:9091"
-              externalHost: "auth.${DOMAIN_1}"
           certManager:
             enabled: true
             certificateIssuer: domain-1-le-prod
         hosts:
           - host: actual.${DOMAIN_1}
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                # https://actualbudget.org/docs/config/oauth-auth
+                # On startup Actual switches its login method to OpenID; the first OpenID login
+                # becomes owner and takes over the budget files of the former password user.
+                ACTUAL_OPENID_DISCOVERY_URL: https://auth.${DOMAIN_1}
+                ACTUAL_OPENID_SERVER_HOSTNAME: https://actual.${DOMAIN_1}
+                ACTUAL_OPENID_CLIENT_ID: actual-budget
+                ACTUAL_OPENID_CLIENT_SECRET:
+                  secretKeyRef:
+                    expandObjectName: false
+                    name: actualserver-oidc
+                    key: ACTUAL_OPENID_CLIENT_SECRET
+                # As in Authelia's tested integration guide
+                ACTUAL_OPENID_AUTH_METHOD: oauth2
+                # Only users created in Actual (matching LLDAP username) may log in
+                ACTUAL_USER_CREATION_MODE: manual
     persistence:
       data:
         volsync:
