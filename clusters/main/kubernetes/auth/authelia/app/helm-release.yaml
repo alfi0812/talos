@@ -127,6 +127,12 @@ spec:
           policy: two_factor
           subject:
             - 'group:admin'
+        # Non-admin users: only the apps listed here (admin ingresses stay admin-only)
+        - domain:
+            - pdf.${DOMAIN_1}
+          policy: one_factor
+          subject:
+            - 'group:users'
       session:
         cookies:
           - domain: '${DOMAIN_0}'
