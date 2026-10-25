@@ -13,6 +13,9 @@ Domains are written as `${DOMAIN_0}` / `${DOMAIN_1}` like in the manifests.
       Both checksums must match.
 - [ ] Take fresh backups: trigger a manual volsync sync for the important apps and a CNPG backup
       per cluster. Afterwards remove `spec.trigger.manual` again so the daily schedule keeps running.
+- [ ] In the commit the new cluster is bootstrapped from: set `dest.enabled: true` for the
+      Stirling-PDF `configs` volsync entry (`general/stirling-pdf/app/helm-release.yaml`).
+      It is `false` on the old cluster because a restore source can only be set when the PVC is created.
 
 ## 1. Verify the fresh install
 

@@ -30,8 +30,10 @@ spec:
           - name: configs
             type: restic
             credentials: minio
+            # Restore can only be added when the PVC is created (dataSourceRef is immutable):
+            # set to true in the rebootstrap commit, see TODO-after-rebootstrap.md
             dest:
-              enabled: true
+              enabled: false
             src:
               enabled: true
               trigger:
