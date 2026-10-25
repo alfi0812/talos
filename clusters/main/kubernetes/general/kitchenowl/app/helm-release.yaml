@@ -75,6 +75,15 @@ spec:
             main:
               env:
                 FRONT_URL: https://kitchenowl.${DOMAIN_1}
+                # Login via Authelia OIDC: https://docs.kitchenowl.org/latest/self-hosting/oidc/
+                # Existing users link their account in Settings -> profile -> Linked Accounts (permanent!)
+                OIDC_ISSUER: https://auth.${DOMAIN_1}
+                OIDC_CLIENT_ID: kitchenowl
+                OIDC_CLIENT_SECRET:
+                  secretKeyRef:
+                    expandObjectName: false
+                    name: kitchenowl-oidc
+                    key: OIDC_CLIENT_SECRET
                 SMTP_HOST: ${SMTP_HOST}
                 SMTP_PORT: 465
                 SMTP_USER: ${SMTP_USER}

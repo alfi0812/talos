@@ -112,3 +112,24 @@ authelia:
           access_token_signed_response_alg: 'none'
           userinfo_signed_response_alg: 'none'
           token_endpoint_auth_method: 'client_secret_basic'
+        # https://docs.kitchenowl.org/latest/self-hosting/oidc/
+        - client_id: 'kitchenowl'
+          client_name: 'KitchenOwl'
+          # PBKDF2 hash; plaintext lives in general/kitchenowl/app/oidc.secret.yaml
+          client_secret: '$pbkdf2-sha512$310000$klEZ7fSH5OfecLaUaN9oVg$JWHNaZ6hyyVbecPzESyOv1uHDXHUjhuPWgu6LPzS78CJpLeJSiPesWbOUoT0TWw/esrn2kJIdaIDU7hFOdwBHg'
+          public: false
+          authorization_policy: 'members'
+          consent_mode: 'implicit'
+          redirect_uris:
+            - 'https://kitchenowl.${DOMAIN_1}/signin/redirect'
+            # Mobile app
+            - 'kitchenowl:/signin/redirect'
+          scopes:
+            - 'openid'
+            - 'profile'
+            - 'email'
+          grant_types:
+            - 'authorization_code'
+          response_types:
+            - 'code'
+          token_endpoint_auth_method: 'client_secret_post'
