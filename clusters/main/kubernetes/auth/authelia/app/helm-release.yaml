@@ -142,9 +142,9 @@ spec:
           policy: two_factor
           subject:
             - 'group:admin'
-      identity_providers:
-        oidc:
-          # hmac_secret and jwks come from /secrets/oidc/oidc.yaml
+      # identity_providers.oidc: policies + clients in oidc-clients.yaml (valuesFrom),
+      # hmac_secret + jwks in oidc.secret.yaml (mounted as second config file).
+      # Do not add an empty identity_providers/oidc key here: it would override valuesFrom.
       session:
         cookies:
           - domain: '${DOMAIN_0}'
