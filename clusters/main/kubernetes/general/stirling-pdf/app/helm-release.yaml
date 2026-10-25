@@ -31,11 +31,6 @@ spec:
                 SECURITY_LOGINMETHOD: all
                 # Must not collide with an LLDAP username (SSO users are named after preferred_username)
                 SECURITY_INITIALLOGIN_USERNAME: local_admin
-                SECURITY_INITIALLOGIN_PASSWORD:
-                  secretKeyRef:
-                    expandObjectName: false
-                    name: stirling-pdf-oidc
-                    key: SECURITY_INITIALLOGIN_PASSWORD
                 SECURITY_OAUTH2_ENABLED: "true"
                 SECURITY_OAUTH2_PROVIDER: authelia
                 SECURITY_OAUTH2_ISSUER: https://auth.${DOMAIN_1}
