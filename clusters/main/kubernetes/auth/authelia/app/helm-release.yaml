@@ -73,6 +73,14 @@ spec:
           method: object_store
           credentials: minio
     persistence:
+      # OIDC signing key + HMAC secret (SOPS, oidc.secret.yaml), loaded as a second config file
+      oidc:
+        enabled: true
+        type: secret
+        objectName: authelia-oidc
+        expandObjectName: false
+        mountPath: /secrets/oidc
+        readOnly: true
       config:
         volsync:
           - name: config
@@ -94,6 +102,8 @@ spec:
                 AUTHELIA_SESSION_SECRET: ${AUTHELIA_SESSION_KEY}
                 AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET: ${AUTHELIA_JWT_KEY}
                 AUTHELIA_STORAGE_ENCRYPTION_KEY: ${AUTHELIA_ENCRYPTION_KEY}
+                # Merge the secret OIDC config (keys) into the main config
+                X_AUTHELIA_CONFIG: "/configuration.yaml,/secrets/oidc/oidc.yaml"
     authelia:
       server:
         buffers:
@@ -133,6 +143,44 @@ spec:
           policy: one_factor
           subject:
             - 'group:users'
+      identity_providers:
+        oidc:
+          # hmac_secret and jwks come from /secrets/oidc/oidc.yaml
+          authorization_policies:
+            # Admins only, with 2FA
+            admins:
+              default_policy: deny
+              rules:
+                - policy: two_factor
+                  subject: 'group:admin'
+            # Admins with 2FA, regular users with password only
+            members:
+              default_policy: deny
+              rules:
+                - policy: two_factor
+                  subject: 'group:admin'
+                - policy: one_factor
+                  subject: 'group:users'
+          clients:
+            # https://gethomepage.dev/installation/#security-authentication
+            - client_id: 'homepage'
+              client_name: 'Homepage'
+              # PBKDF2 hash; plaintext lives in general/homepage/app/oidc.secret.yaml
+              client_secret: '$pbkdf2-sha512$310000$.73vCp9WK2P7qwibTUf.Bg$yt2aP.rd61vj8tQGrNcBRhl81kfiXHQW57l/d3kEjoINsVm8QcJhl70IdCe1CCTsILyWLgEcn9BRZiZ0sNI63A'
+              public: false
+              authorization_policy: 'admins'
+              consent_mode: 'implicit'
+              redirect_uris:
+                - 'https://home.${DOMAIN_1}/api/auth/callback/homepage-oidc'
+              scopes:
+                - 'openid'
+                - 'email'
+                - 'profile'
+              grant_types:
+                - 'authorization_code'
+              response_types:
+                - 'code'
+              token_endpoint_auth_method: 'client_secret_basic'
       session:
         cookies:
           - domain: '${DOMAIN_0}'

@@ -3,5 +3,6 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - helm-release.yaml
+  - oidc.secret.yaml
 components:
   - ../../../../components/notifications/discord
