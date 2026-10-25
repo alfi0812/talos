@@ -82,8 +82,7 @@ spec:
         enabled: true
         user: sonarr
         database: sonarr
-        # Switch to recovery once the first backup with data exists in MinIO
-        mode: standalone
+        mode: recovery
         cluster:
           singleNode: true
           # One node: a second instance only doubles disk writes, no failover
@@ -99,3 +98,6 @@ spec:
               backupOwnerReference: self
               immediate: true
               suspend: false
+        recovery:
+          method: object_store
+          credentials: minio
