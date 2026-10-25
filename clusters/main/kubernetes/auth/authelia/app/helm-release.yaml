@@ -41,6 +41,16 @@ spec:
               certificateIssuer: domain-1-le-prod
           hosts:
             - host: auth.${DOMAIN_1}
+        # Second login URL so Authelia can set its session cookie on DOMAIN_0
+        domain0:
+          enabled: true
+          ingressClassName: external
+          integrations:
+            certManager:
+              enabled: true
+              certificateIssuer: domain-0-le-prod
+          hosts:
+            - host: auth.${DOMAIN_0}
     cnpg:
       main:
         mode: recovery
@@ -110,6 +120,8 @@ spec:
         default_policy: 'deny'
         rules:
         - domain:
+            - ${DOMAIN_0}
+            - '*.${DOMAIN_0}'
             - ${DOMAIN_1}
             - '*.${DOMAIN_1}'
           policy: two_factor
@@ -117,6 +129,8 @@ spec:
             - 'group:admin'
       session:
         cookies:
+          - domain: '${DOMAIN_0}'
+            authelia_url: 'https://auth.${DOMAIN_0}'
           - domain: '${DOMAIN_1}'
             authelia_url: 'https://auth.${DOMAIN_1}'
             default_redirection_url: 'https://www.${DOMAIN_1}'
