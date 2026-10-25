@@ -4,5 +4,16 @@ resources:
   - namespace.yaml
   - helm-release.yaml
   - oidc.secret.yaml
+configMapGenerator:
+  # OIDC clients, merged into the HelmRelease via spec.valuesFrom
+  - name: authelia-oidc-clients
+    namespace: authelia
+    files:
+      - values.yaml=oidc-clients.yaml
+    options:
+      disableNameSuffixHash: true
+      labels:
+        # Let helm-controller reconcile as soon as the clients change
+        reconcile.fluxcd.io/watch: Enabled
 components:
   - ../../../../components/notifications/discord

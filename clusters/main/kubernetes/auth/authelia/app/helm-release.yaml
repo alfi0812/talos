@@ -22,6 +22,11 @@ spec:
   dependsOn:
     - name: lldap
       namespace: lldap
+  # OIDC clients live in oidc-clients.yaml
+  valuesFrom:
+    - kind: ConfigMap
+      name: authelia-oidc-clients
+      valuesKey: values.yaml
   values:
     credentials:
       minio:
@@ -137,12 +142,6 @@ spec:
           policy: two_factor
           subject:
             - 'group:admin'
-        # Non-admin users: only the apps listed here (admin ingresses stay admin-only)
-        - domain:
-            - pdf.${DOMAIN_1}
-          policy: one_factor
-          subject:
-            - 'group:users'
       identity_providers:
         oidc:
           # hmac_secret and jwks come from /secrets/oidc/oidc.yaml
@@ -161,26 +160,6 @@ spec:
                   subject: 'group:admin'
                 - policy: one_factor
                   subject: 'group:users'
-          clients:
-            # https://gethomepage.dev/installation/#security-authentication
-            - client_id: 'homepage'
-              client_name: 'Homepage'
-              # PBKDF2 hash; plaintext lives in general/homepage/app/oidc.secret.yaml
-              client_secret: '$pbkdf2-sha512$310000$.73vCp9WK2P7qwibTUf.Bg$yt2aP.rd61vj8tQGrNcBRhl81kfiXHQW57l/d3kEjoINsVm8QcJhl70IdCe1CCTsILyWLgEcn9BRZiZ0sNI63A'
-              public: false
-              authorization_policy: 'admins'
-              consent_mode: 'implicit'
-              redirect_uris:
-                - 'https://home.${DOMAIN_1}/api/auth/callback/homepage-oidc'
-              scopes:
-                - 'openid'
-                - 'email'
-                - 'profile'
-              grant_types:
-                - 'authorization_code'
-              response_types:
-                - 'code'
-              token_endpoint_auth_method: 'client_secret_basic'
       session:
         cookies:
           - domain: '${DOMAIN_0}'

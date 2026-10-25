@@ -24,17 +24,37 @@ spec:
               env:
                 LANGS: en_US, de_DE
                 INSTALL_BOOK_AND_ADVANCED_HTML_OPS: true
+                # Login via Authelia OIDC: https://docs.stirlingpdf.com/Server/Security/OAuth-SSO/
+                DOCKER_ENABLE_SECURITY: "true"
+                SECURITY_ENABLELOGIN: "true"
+                # 'all' keeps the local admin login; switch to 'oauth2' once an SSO user is Admin
+                SECURITY_LOGINMETHOD: all
+                SECURITY_INITIALLOGIN_USERNAME: admin
+                SECURITY_INITIALLOGIN_PASSWORD:
+                  secretKeyRef:
+                    expandObjectName: false
+                    name: stirling-pdf-oidc
+                    key: SECURITY_INITIALLOGIN_PASSWORD
+                SECURITY_OAUTH2_ENABLED: "true"
+                SECURITY_OAUTH2_PROVIDER: authelia
+                SECURITY_OAUTH2_ISSUER: https://auth.${DOMAIN_1}
+                SECURITY_OAUTH2_CLIENTID: stirling-pdf
+                SECURITY_OAUTH2_CLIENTSECRET:
+                  secretKeyRef:
+                    expandObjectName: false
+                    name: stirling-pdf-oidc
+                    key: SECURITY_OAUTH2_CLIENTSECRET
+                SECURITY_OAUTH2_SCOPES: openid, profile, email
+                SECURITY_OAUTH2_USEASUSERNAME: preferred_username
+                SECURITY_OAUTH2_AUTOCREATEUSER: "true"
+                SECURITY_OAUTH2_BLOCKREGISTRATION: "false"
+                SECURITY_OAUTH2_REDIRECTBASEURL: https://pdf.${DOMAIN_1}
     ingress:
       main:
         enabled: true
         ingressClassName: external
+        # Login via Authelia OIDC (see env above), no forward-auth
         integrations:
-          nginx:
-            enabled: true
-            auth:
-              type: "authelia"
-              internalHost: "authelia.authelia.svc.cluster.local:9091"
-              externalHost: "auth.${DOMAIN_1}"
           certManager:
             enabled: true
             certificateIssuer: domain-1-le-prod

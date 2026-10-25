@@ -1,0 +1,45 @@
+# OIDC clients for Authelia, merged into the HelmRelease values via spec.valuesFrom.
+# Keep all clients in this one file: lists are not merged across value sources.
+# Client secrets are PBKDF2 hashes; plaintext lives in each app's oidc.secret.yaml.
+authelia:
+  identity_providers:
+    oidc:
+      clients:
+        # https://gethomepage.dev/installation/#security-authentication
+        - client_id: 'homepage'
+          client_name: 'Homepage'
+          # PBKDF2 hash; plaintext lives in general/homepage/app/oidc.secret.yaml
+          client_secret: '$pbkdf2-sha512$310000$.73vCp9WK2P7qwibTUf.Bg$yt2aP.rd61vj8tQGrNcBRhl81kfiXHQW57l/d3kEjoINsVm8QcJhl70IdCe1CCTsILyWLgEcn9BRZiZ0sNI63A'
+          public: false
+          authorization_policy: 'admins'
+          consent_mode: 'implicit'
+          redirect_uris:
+            - 'https://home.${DOMAIN_1}/api/auth/callback/homepage-oidc'
+          scopes:
+            - 'openid'
+            - 'email'
+            - 'profile'
+          grant_types:
+            - 'authorization_code'
+          response_types:
+            - 'code'
+          token_endpoint_auth_method: 'client_secret_basic'
+        # https://docs.stirlingpdf.com/Server/Security/OAuth-SSO/
+        - client_id: 'stirling-pdf'
+          client_name: 'Stirling-PDF'
+          # PBKDF2 hash; plaintext lives in general/stirling-pdf/app/oidc.secret.yaml
+          client_secret: '$pbkdf2-sha512$310000$TbBxlfiZgpfDF4SrnDjkLA$QlCIkI00VWFouCi8ex9hMrUtB5fpyHjBp8G0IvKbiTacHhecsGF3dOW7i2m9dwf1o8SthxmhR1ipEkiKi1JBhg'
+          public: false
+          authorization_policy: 'members'
+          consent_mode: 'implicit'
+          redirect_uris:
+            - 'https://pdf.${DOMAIN_1}/login/oauth2/code/authelia'
+          scopes:
+            - 'openid'
+            - 'email'
+            - 'profile'
+          grant_types:
+            - 'authorization_code'
+          response_types:
+            - 'code'
+          token_endpoint_auth_method: 'client_secret_basic'
