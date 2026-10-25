@@ -41,6 +41,26 @@ spec:
             certificateIssuer: domain-1-le-prod
         hosts:
           - host: anime.${DOMAIN_1}
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                SONARR__LOG__LEVEL: info
+                # Keep only file logs; no separate log database in Postgres
+                SONARR__LOG__DBENABLED: "False"
+                SONARR__POSTGRES__HOST:
+                  secretKeyRef:
+                    name: cnpg-main-urls
+                    key: host
+                SONARR__POSTGRES__PORT: "5432"
+                SONARR__POSTGRES__USER: sonarr
+                SONARR__POSTGRES__PASSWORD:
+                  secretKeyRef:
+                    name: cnpg-main-user
+                    key: password
+                SONARR__POSTGRES__MAINDB: sonarr
     persistence:
       config:
         volsync:
