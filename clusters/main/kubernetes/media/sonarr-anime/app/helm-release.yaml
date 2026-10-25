@@ -57,3 +57,25 @@ spec:
         enabled: true
         existingClaim: media-nfs-pvc
         mountPath: /Media
+    cnpg:
+      main:
+        enabled: true
+        user: sonarr
+        database: sonarr
+        # Switch to recovery once the first backup with data exists in MinIO
+        mode: standalone
+        cluster:
+          singleNode: true
+          # One node: a second instance only doubles disk writes, no failover
+          instances: 1
+        monitoring:
+          enablePodMonitor: true
+        backups:
+          enabled: true
+          credentials: minio
+          scheduledBackups:
+            - name: daily-backup
+              schedule: "0 25 0 * * *"
+              backupOwnerReference: self
+              immediate: true
+              suspend: false
