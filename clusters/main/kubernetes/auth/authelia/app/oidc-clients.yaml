@@ -115,6 +115,8 @@ authelia:
         # https://docs.kitchenowl.org/latest/self-hosting/oidc/
         - client_id: 'kitchenowl'
           client_name: 'KitchenOwl'
+          # KitchenOwl reads email/username from the ID token
+          claims_policy: 'id_token_profile'
           # PBKDF2 hash; plaintext lives in general/kitchenowl/app/oidc.secret.yaml
           client_secret: '$pbkdf2-sha512$310000$klEZ7fSH5OfecLaUaN9oVg$JWHNaZ6hyyVbecPzESyOv1uHDXHUjhuPWgu6LPzS78CJpLeJSiPesWbOUoT0TWw/esrn2kJIdaIDU7hFOdwBHg'
           public: false

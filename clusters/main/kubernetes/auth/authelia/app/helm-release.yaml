@@ -145,6 +145,14 @@ spec:
       identity_providers:
         oidc:
           # hmac_secret and jwks come from /secrets/oidc/oidc.yaml
+          claims_policies:
+            # For apps that read the user only from the ID token (Authelia puts just 'sub' there by default)
+            id_token_profile:
+              id_token:
+                - 'email'
+                - 'email_verified'
+                - 'preferred_username'
+                - 'name'
           authorization_policies:
             # Admins only, with 2FA
             admins:
