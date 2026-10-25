@@ -42,18 +42,33 @@ spec:
       main:
         enabled: true
         ingressClassName: internal
+        # Login via Authelia OIDC (see env below), no forward-auth
         integrations:
-          nginx:
-            enabled: true
-            auth:
-              type: "authelia"
-              internalHost: "authelia.authelia.svc.cluster.local:9091"
-              externalHost: "auth.${DOMAIN_1}"
           certManager:
             enabled: true
             certificateIssuer: domain-1-le-prod
         hosts:
           - host: vpn.${DOMAIN_1}
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                # https://wg-easy.github.io/wg-easy/latest/advanced/config/external-authentication/
+                OAUTH_PROVIDERS: oidc
+                OAUTH_OIDC_SERVER: https://auth.${DOMAIN_1}
+                OAUTH_OIDC_CLIENT_ID: wg-easy
+                OAUTH_OIDC_NAME: Authelia
+                OAUTH_OIDC_CLIENT_SECRET:
+                  secretKeyRef:
+                    expandObjectName: false
+                    name: wg-easy-oidc
+                    key: OAUTH_OIDC_CLIENT_SECRET
+                # Every OAuth user would become admin (no roles yet): link accounts manually instead
+                OAUTH_AUTO_REGISTER: "false"
+                # Straight to Authelia; fallback: /login?auto_launch=false
+                OAUTH_AUTO_LAUNCH: oidc
     persistence:
       config:
         volsync:

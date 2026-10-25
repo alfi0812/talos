@@ -43,3 +43,25 @@ authelia:
           response_types:
             - 'code'
           token_endpoint_auth_method: 'client_secret_basic'
+        # https://wg-easy.github.io/wg-easy/latest/advanced/config/external-authentication/
+        - client_id: 'wg-easy'
+          client_name: 'wg-easy'
+          # PBKDF2 hash; plaintext lives in networking/wg-easy/app/oidc.secret.yaml
+          client_secret: '$pbkdf2-sha512$310000$MIKq27sbyoPOQfgzEifoIg$2ETMS4YUoEPZZ8bYuUeI4vNTm/PbsI6Hwk/xb6rIe4Du3pLv05YDWNu3jC7C/o23HTe1PNQCivX0NhByVRD/WQ'
+          public: false
+          authorization_policy: 'admins'
+          consent_mode: 'implicit'
+          require_pkce: true
+          pkce_challenge_method: 'S256'
+          redirect_uris:
+            - 'https://vpn.${DOMAIN_1}/api/auth/oidc/callback'
+            - 'https://vpn.${DOMAIN_1}/api/auth/oidc/link'
+          scopes:
+            - 'openid'
+            - 'email'
+            - 'profile'
+          grant_types:
+            - 'authorization_code'
+          response_types:
+            - 'code'
+          token_endpoint_auth_method: 'client_secret_post'
