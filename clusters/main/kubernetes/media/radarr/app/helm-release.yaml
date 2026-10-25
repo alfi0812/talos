@@ -51,6 +51,26 @@ spec:
       requests:
         cpu: 1000m
         memory: 1Gi 
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                RADARR__LOG__LEVEL: info
+                # Keep only file logs; no separate log database in Postgres
+                RADARR__LOG__DBENABLED: "false"
+                RADARR__POSTGRES__HOST:
+                  secretKeyRef:
+                    name: cnpg-main-urls
+                    key: host
+                RADARR__POSTGRES__PORT: "5432"
+                RADARR__POSTGRES__USER: radarr
+                RADARR__POSTGRES__PASSWORD:
+                  secretKeyRef:
+                    name: cnpg-main-user
+                    key: password
+                RADARR__POSTGRES__MAINDB: radarr
     persistence:
       config:
         volsync:
