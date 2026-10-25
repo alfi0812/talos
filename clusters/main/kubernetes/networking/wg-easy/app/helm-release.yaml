@@ -69,6 +69,8 @@ spec:
                 OAUTH_AUTO_REGISTER: "false"
                 # Straight to Authelia; fallback: /login?auto_launch=false
                 OAUTH_AUTO_LAUNCH: oidc
+                # SSO only (admin is linked to Authelia); set to "false" to get password login back
+                DISABLE_PASSWORD_AUTH: "true"
     persistence:
       config:
         volsync:
