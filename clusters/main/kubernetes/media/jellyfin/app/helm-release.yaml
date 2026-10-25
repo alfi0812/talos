@@ -79,7 +79,12 @@ spec:
               resources:
                 limits:
                   gpu.intel.com/i915: 1
-                  cpu: 8000m
+                  # Segment detection/scans are CPU-bound; was throttled at 8 cores
+                  cpu: 16000m
                   memory: 16Gi
+                requests:
+                  cpu: 1000m
+                  # Jellyfin itself uses ~1.3Gi (the rest is reclaimable file cache)
+                  memory: 2Gi
     autodiscovery:
       enabled: true
