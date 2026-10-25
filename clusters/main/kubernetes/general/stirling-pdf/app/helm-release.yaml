@@ -27,8 +27,10 @@ spec:
                 # Login via Authelia OIDC: https://docs.stirlingpdf.com/Server/Security/OAuth-SSO/
                 DOCKER_ENABLE_SECURITY: "true"
                 SECURITY_ENABLELOGIN: "true"
-                # 'all' keeps the local admin login; switch to 'oauth2' once an SSO user is Admin
-                SECURITY_LOGINMETHOD: all
+                # SSO only; set back to 'all' to use the local fallback admin (local_admin)
+                SECURITY_LOGINMETHOD: oauth2
+                # Skip the login page and go straight to Authelia
+                SECURITY_SSOAUTOLOGIN: "true"
                 # Must not collide with an LLDAP username (SSO users are named after preferred_username)
                 SECURITY_INITIALLOGIN_USERNAME: local_admin
                 SECURITY_OAUTH2_ENABLED: "true"
