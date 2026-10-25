@@ -23,20 +23,39 @@ spec:
               env:
                 GF_SERVER_ROOT_URL: https://grafana.${DOMAIN_1}
                 GF_AUTH_DISABLE_LOGIN_FORM: true
-                GF_AUTH_ANONYMOUS_ENABLED: true
+                # No forward-auth anymore: anonymous access must stay off
+                GF_AUTH_ANONYMOUS_ENABLED: false
                 GF_AUTH_OAUTH_AUTO_LOGIN: true
-                GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+                # Login via Authelia OIDC: https://www.authelia.com/integration/openid-connect/clients/grafana/
+                GF_AUTH_GENERIC_OAUTH_ENABLED: true
+                GF_AUTH_GENERIC_OAUTH_NAME: Authelia
+                GF_AUTH_GENERIC_OAUTH_ICON: signin
+                GF_AUTH_GENERIC_OAUTH_CLIENT_ID: grafana
+                GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET:
+                  secretKeyRef:
+                    expandObjectName: false
+                    name: grafana-oidc
+                    key: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+                GF_AUTH_GENERIC_OAUTH_SCOPES: openid profile email groups
+                GF_AUTH_GENERIC_OAUTH_EMPTY_SCOPES: false
+                GF_AUTH_GENERIC_OAUTH_AUTH_URL: https://auth.${DOMAIN_1}/api/oidc/authorization
+                GF_AUTH_GENERIC_OAUTH_TOKEN_URL: https://auth.${DOMAIN_1}/api/oidc/token
+                GF_AUTH_GENERIC_OAUTH_API_URL: https://auth.${DOMAIN_1}/api/oidc/userinfo
+                GF_AUTH_GENERIC_OAUTH_AUTH_STYLE: InHeader
+                GF_AUTH_GENERIC_OAUTH_USE_PKCE: true
+                # Email as login: the local 'admin' user would collide with the LLDAP username 'admin'
+                GF_AUTH_GENERIC_OAUTH_LOGIN_ATTRIBUTE_PATH: email
+                GF_AUTH_GENERIC_OAUTH_NAME_ATTRIBUTE_PATH: name
+                GF_AUTH_GENERIC_OAUTH_GROUPS_ATTRIBUTE_PATH: groups
+                # LLDAP group admin -> Grafana server admin, everyone else read-only
+                GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups[*], 'admin') && 'GrafanaAdmin' || 'Viewer'"
+                GF_AUTH_GENERIC_OAUTH_ALLOW_ASSIGN_GRAFANA_ADMIN: true
     ingress:
       main:
         enabled: true
         ingressClassName: internal
+        # Login via Authelia OIDC (see env above), no forward-auth
         integrations:
-          nginx:
-            enabled: true
-            auth:
-              type: "authelia"
-              internalHost: "authelia.authelia.svc.cluster.local:9091"
-              externalHost: "auth.${DOMAIN_1}"
           certManager:
             enabled: true
             certificateIssuer: domain-1-le-prod

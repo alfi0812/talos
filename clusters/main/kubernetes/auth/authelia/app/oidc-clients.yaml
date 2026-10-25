@@ -65,3 +65,26 @@ authelia:
           response_types:
             - 'code'
           token_endpoint_auth_method: 'client_secret_post'
+        # https://www.authelia.com/integration/openid-connect/clients/grafana/
+        - client_id: 'grafana'
+          client_name: 'Grafana'
+          # PBKDF2 hash; plaintext lives in observability/grafana/app/oidc.secret.yaml
+          client_secret: '$pbkdf2-sha512$310000$NkkiBXk3buqm/DkE6R/VPg$juuuBly0Ec5hNaV/QnN0xDTLFx0kvBso6N0S/oZtYv0/9tz5PRwq.v3bTnCpft8WWBs5w6wz1VOKKlh82j7ywA'
+          public: false
+          authorization_policy: 'admins'
+          consent_mode: 'implicit'
+          require_pkce: true
+          pkce_challenge_method: 'S256'
+          redirect_uris:
+            - 'https://grafana.${DOMAIN_1}/login/generic_oauth'
+          scopes:
+            - 'openid'
+            - 'profile'
+            - 'email'
+            - 'groups'
+          grant_types:
+            - 'authorization_code'
+          response_types:
+            - 'code'
+          token_endpoint_auth_method: 'client_secret_basic'
+          userinfo_signed_response_alg: 'none'
