@@ -29,7 +29,8 @@ spec:
                 SECURITY_ENABLELOGIN: "true"
                 # 'all' keeps the local admin login; switch to 'oauth2' once an SSO user is Admin
                 SECURITY_LOGINMETHOD: all
-                SECURITY_INITIALLOGIN_USERNAME: admin
+                # Must not collide with an LLDAP username (SSO users are named after preferred_username)
+                SECURITY_INITIALLOGIN_USERNAME: local_admin
                 SECURITY_INITIALLOGIN_PASSWORD:
                   secretKeyRef:
                     expandObjectName: false
