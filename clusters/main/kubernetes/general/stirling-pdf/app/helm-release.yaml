@@ -29,8 +29,14 @@ spec:
         enabled: true
         ingressClassName: external
         integrations:
+          nginx:
+            enabled: true
+            auth:
+              type: "authelia"
+              internalHost: "authelia.authelia.svc.cluster.local:9091"
+              externalHost: "auth.${DOMAIN_1}"
           certManager:
             enabled: true
-            certificateIssuer: domain-0-le-prod
+            certificateIssuer: domain-1-le-prod
         hosts:
-          - host: pdf.${DOMAIN_0}
+          - host: pdf.${DOMAIN_1}
