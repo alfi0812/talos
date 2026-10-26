@@ -159,3 +159,41 @@ authelia:
           response_types:
             - 'code'
           token_endpoint_auth_method: 'client_secret_post'
+        # Sonarr v5 OIDC (single allowed user, see SONARR__AUTH__OIDCUSERIDENTIFIER)
+        - client_id: 'sonarr'
+          client_name: 'Sonarr'
+          # PBKDF2 hash; plaintext lives in media/sonarr/app/oidc.secret.yaml
+          client_secret: '$pbkdf2-sha512$310000$kjM2xq.otpFiw67uOoUG/g$PxsMzJNs1R5W.fYHE0jh2EE1f7b06xNuNQ/3oE5Vjj/MflWe9onwkloABIH51e186Jvrjrj2xxIwI.PpRy4yxg'
+          public: false
+          authorization_policy: 'admins'
+          consent_mode: 'implicit'
+          redirect_uris:
+            - 'https://sonarr.${DOMAIN_1}/signin-oidc'
+          scopes:
+            - 'openid'
+            - 'profile'
+            - 'email'
+          grant_types:
+            - 'authorization_code'
+          response_types:
+            - 'code'
+          token_endpoint_auth_method: 'client_secret_post'
+        # Sonarr v5 OIDC (single allowed user, see SONARR__AUTH__OIDCUSERIDENTIFIER)
+        - client_id: 'sonarr-anime'
+          client_name: 'Sonarr Anime'
+          # PBKDF2 hash; plaintext lives in media/sonarr-anime/app/oidc.secret.yaml
+          client_secret: '$pbkdf2-sha512$310000$/vuX4T.rydjzWtor59W2YA$6IXDXtOBgEQaRzWkPohTHMKqD6ZH0fAVhK6dm1Q8NI2Cqvr2RyBcfV6znpih2ykV6jNvuJYVHDslyLZxN8WC4g'
+          public: false
+          authorization_policy: 'admins'
+          consent_mode: 'implicit'
+          redirect_uris:
+            - 'https://anime.${DOMAIN_1}/signin-oidc'
+          scopes:
+            - 'openid'
+            - 'profile'
+            - 'email'
+          grant_types:
+            - 'authorization_code'
+          response_types:
+            - 'code'
+          token_endpoint_auth_method: 'client_secret_post'
