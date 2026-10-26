@@ -186,10 +186,18 @@ if yq -e '
   changed=true
 fi
 
-# Remove cnpg for ephemeral CI cluster
-if yq -e 'has("cnpg")' "$VALUES_FILE" >/dev/null 2>&1; then
-  yq -i 'del(.cnpg)' "$VALUES_FILE"
-  echo "      ⚠️ CNPG removed for CI"
+# CNPG: keep the cluster (apps reference its secrets, e.g. cnpg-main-urls), but drop
+# backup/restore: CI has no S3, so start every database empty in standalone mode
+if yq -e '(.cnpg // {}) | to_entries[] | select(.value.backups != null or .value.recovery != null or .value.mode == "recovery")' "$VALUES_FILE" >/dev/null 2>&1; then
+  yq -i '
+    .cnpg |= with_entries(
+      .value |= (
+        del(.backups) | del(.recovery)
+        | (select(.mode == "recovery") | .mode) = "standalone"
+      )
+    )
+  ' "$VALUES_FILE"
+  echo "      ⚠️ CNPG backups/recovery removed, mode set to standalone for CI"
   changed=true
 fi
 
@@ -236,11 +244,15 @@ print_section "🔧 Installing dependencies"
 
 RENDERED="$(mktemp)"
 
-helm template "$RELEASE_NAME" "$CHART_REF" \
+if ! helm template "$RELEASE_NAME" "$CHART_REF" \
   --version "$CHART_VERSION" \
   --namespace "$NAMESPACE" \
-  --values "$VALUES_FILE" \
-  > "$RENDERED" 2>/dev/null
+  "${HELM_VALUES_ARGS[@]}" \
+  > "$RENDERED" 2> "$RENDERED.err"; then
+  echo "❌ helm template failed:"
+  cat "$RENDERED.err"
+  exit 1
+fi
 
 # --------------------------------------------------
 # Detect dependencies
@@ -340,6 +352,25 @@ if $install_metallb; then
 
   echo "📡 Done installing MetalLB"
   echo "::endgroup::"
+fi
+
+# --------------------------------------------------
+# Dummy secrets for values that reference Secrets outside the chart
+# (expandObjectName: false, e.g. SOPS-encrypted oidc.secret.yaml)
+# --------------------------------------------------
+EXTERNAL_SECRETS="$(yq -o=json '[.. | select(type == "!!map" and has("secretKeyRef")) | .secretKeyRef | select(.expandObjectName == false) | {"name": .name, "key": .key}]' "$VALUES_FILE")"
+
+if [[ "$(jq 'length' <<< "$EXTERNAL_SECRETS")" -gt 0 ]]; then
+  print_section "🔑 Creating dummy external secrets"
+  kubectl create namespace "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f - >/dev/null
+  for name in $(jq -r '.[].name' <<< "$EXTERNAL_SECRETS" | sort -u); do
+    args=()
+    for key in $(jq -r --arg n "$name" '.[] | select(.name == $n) | .key' <<< "$EXTERNAL_SECRETS" | sort -u); do
+      args+=(--from-literal="$key=ci-dummy-value")
+    done
+    kubectl -n "$NAMESPACE" create secret generic "$name" "${args[@]}" --dry-run=client -o yaml | kubectl apply -f - >/dev/null
+    echo "      🔑 $name (${#args[@]} key(s))"
+  done
 fi
 
 # --------------------------------------------------
