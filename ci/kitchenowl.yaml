@@ -1,0 +1,10 @@
+# KitchenOwl fetches the OIDC discovery document at startup and crashes if the
+# issuer is unreachable (https://auth.<dummy domain> in CI). An empty issuer
+# skips OIDC setup.
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          env:
+            OIDC_ISSUER: ""
