@@ -1,0 +1,10 @@
+# A fresh wg-easy DB uses the default iptables PostUp hooks; the CI runner kernel
+# lacks ip6_tables, so wg-quick fails. The live install uses nft hooks set in the UI.
+# Same fix as the TrueCharts chart CI (charts/stable/wg-easy/ci/ci-values.yaml).
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          env:
+            DISABLE_IPV6: true
