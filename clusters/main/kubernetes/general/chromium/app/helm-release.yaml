@@ -61,6 +61,10 @@ spec:
                 CUSTOM_RES_W: null
                 EXTRA_PARAMETERS: null
     persistence:
+      browsercache:
+        enabled: true
+        type: emptyDir
+        mountPath: /config/.cache
       datadir:
         mountPath: /config
         volsync:
