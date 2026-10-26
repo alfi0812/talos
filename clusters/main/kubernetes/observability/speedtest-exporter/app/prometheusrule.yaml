@@ -13,47 +13,51 @@ spec:
           annotations:
             description: Speedtest Exporter has disappeared from Prometheus target discovery.
             summary: Speedtest Exporter is down.
+          # The exporter is scraped hourly, so 'up' goes stale between scrapes: look back over
+          # 75m instead of using absent() with 'for', which went pending after every scrape
           expr: |
-            absent(up{job=~".*speedtest-exporter.*"} == 1)
-          for: 75m
+            (max_over_time(up{job=~".*speedtest-exporter.*"}[75m]) == 0)
+              or absent_over_time(up{job=~".*speedtest-exporter.*"}[75m])
+          for: 0m
           labels:
             severity: critical
+        # Median over 4h (~4 hourly tests): one bad test no longer fires an alert, two do
         - alert: SpeedtestSlowInternetDownload
           annotations:
-            description: Internet download speed is averaging {{ humanize $value }} Mbps.
+            description: Internet download speed has a median of {{ humanize $value }} Mbps.
             summary: SpeedTest slow internet download.
           expr: |
-            avg_over_time(speedtest_download_bits_per_second{job=~".*speedtest-exporter.*"}[4h])
+            quantile_over_time(0.5, speedtest_download_bits_per_second{job=~".*speedtest-exporter.*"}[4h])
               < 240e6
           for: 0m
           labels:
             severity: warning
         - alert: SpeedtestSlowInternetUpload
           annotations:
-            description: Internet upload speed is averaging {{ humanize $value }} Mbps.
+            description: Internet upload speed has a median of {{ humanize $value }} Mbps.
             summary: SpeedTest slow internet upload.
           expr: |
-            avg_over_time(speedtest_upload_bits_per_second{job=~".*speedtest-exporter.*"}[4h])
+            quantile_over_time(0.5, speedtest_upload_bits_per_second{job=~".*speedtest-exporter.*"}[4h])
               < 140e6
           for: 0m
           labels:
             severity: warning
         - alert: SpeedtestHighPingLatency
           annotations:
-            description: Internet ping latency is averaging {{ humanize $value }} ms.
+            description: Internet ping latency has a median of {{ humanize $value }} ms.
             summary: SpeedTest high ping latency.
           expr: |
-            avg_over_time(speedtest_ping_latency_milliseconds{job=~".*speedtest-exporter.*"}[4h])
+            quantile_over_time(0.5, speedtest_ping_latency_milliseconds{job=~".*speedtest-exporter.*"}[4h])
               > 20
           for: 0m
           labels:
             severity: warning
         - alert: SpeedtestHighJitterLatency
           annotations:
-            description: Internet jitter latency is averaging {{ humanize $value }} ms.
+            description: Internet jitter latency has a median of {{ humanize $value }} ms.
             summary: SpeedTest high jitter latency.
           expr: |
-            avg_over_time(speedtest_jitter_latency_milliseconds{job=~".*speedtest-exporter.*"}[4h])
+            quantile_over_time(0.5, speedtest_jitter_latency_milliseconds{job=~".*speedtest-exporter.*"}[4h])
               > 30
           for: 0m
           labels:
