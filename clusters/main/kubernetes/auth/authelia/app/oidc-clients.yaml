@@ -240,3 +240,29 @@ authelia:
           response_types:
             - 'code'
           token_endpoint_auth_method: 'client_secret_post'
+        # https://github.com/dani-garcia/vaultwarden/wiki/Enabling-SSO-support-using-OpenId-Connect
+        # Existing accounts are linked by email on the first SSO login; the vault still needs the master password
+        - client_id: 'vaultwarden'
+          client_name: 'Vaultwarden'
+          # PBKDF2 hash; plaintext lives in general/vaultwarden/app/oidc.secret.yaml
+          client_secret: '$pbkdf2-sha512$310000$NLa4KL8AC.z.gfzD.XgRwQ$IEgttuln.kEq6QjeElC40hST0dZiBOCgbexcr.oSp0wxoykyqAb14wIpginZJTj0qvHr6pMZqjhbHX61FpUDUA'
+          public: false
+          authorization_policy: 'members'
+          consent_mode: 'implicit'
+          claims_policy: 'id_token_profile'
+          require_pkce: true
+          pkce_challenge_method: 'S256'
+          redirect_uris:
+            - 'https://vault.${DOMAIN_1}/identity/connect/oidc-signin'
+          # offline_access: refresh token, so Vaultwarden can extend the session
+          scopes:
+            - 'openid'
+            - 'profile'
+            - 'email'
+            - 'offline_access'
+          grant_types:
+            - 'authorization_code'
+            - 'refresh_token'
+          response_types:
+            - 'code'
+          token_endpoint_auth_method: 'client_secret_basic'
