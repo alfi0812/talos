@@ -13,6 +13,14 @@ authelia:
             - 'email_verified'
             - 'preferred_username'
             - 'name'
+        # Same, plus 'groups' for apps that map roles from the ID token (Grafana)
+        id_token_profile_groups:
+          id_token:
+            - 'email'
+            - 'email_verified'
+            - 'preferred_username'
+            - 'name'
+            - 'groups'
       authorization_policies:
         # Admins only, with 2FA
         admins:
@@ -96,6 +104,8 @@ authelia:
           client_secret: '$pbkdf2-sha512$310000$NkkiBXk3buqm/DkE6R/VPg$juuuBly0Ec5hNaV/QnN0xDTLFx0kvBso6N0S/oZtYv0/9tz5PRwq.v3bTnCpft8WWBs5w6wz1VOKKlh82j7ywA'
           public: false
           authorization_policy: 'admins'
+          # Grafana evaluates the role mapping against the ID token first; without groups there it falls back to Viewer
+          claims_policy: 'id_token_profile_groups'
           consent_mode: 'implicit'
           require_pkce: true
           pkce_challenge_method: 'S256'
