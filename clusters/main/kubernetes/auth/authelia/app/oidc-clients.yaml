@@ -228,10 +228,13 @@ authelia:
           claims_policy: 'id_token_profile'
           redirect_uris:
             - 'https://nextcloud.${DOMAIN_1}/apps/user_oidc/code'
+          # user_oidc always requests the 'groups' claim (Authelia rejects the login without
+          # this scope), even with group provisioning off
           scopes:
             - 'openid'
             - 'profile'
             - 'email'
+            - 'groups'
           grant_types:
             - 'authorization_code'
           response_types:
