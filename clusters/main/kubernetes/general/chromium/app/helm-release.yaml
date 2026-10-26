@@ -60,6 +60,9 @@ spec:
                 CUSTOM_RES_H: null
                 CUSTOM_RES_W: null
                 EXTRA_PARAMETERS: null
+              resources:
+                limits:
+                  gpu.intel.com/i915: 1
     persistence:
       browsercache:
         enabled: true
