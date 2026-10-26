@@ -126,3 +126,17 @@ spec:
               advanced: false
               env:
                 EXPERIMENTAL_CLIENT_FEATURE_FLAGS: autofill-overlay,autofill-v2
+                # SSO via Authelia: https://github.com/dani-garcia/vaultwarden/wiki/Enabling-SSO-support-using-OpenId-Connect
+                # Existing accounts are linked by email on the first SSO login (SSO_SIGNUPS_MATCH_EMAIL,
+                # default true); the master password still unlocks the vault
+                SSO_ENABLED: "true"
+                # Keep email + master password login for existing apps/devices
+                SSO_ONLY: "false"
+                SSO_AUTHORITY: https://auth.${DOMAIN_1}
+                SSO_SCOPES: openid profile email offline_access
+                SSO_CLIENT_ID: vaultwarden
+                SSO_CLIENT_SECRET:
+                  secretKeyRef:
+                    expandObjectName: false
+                    name: vaultwarden-oidc
+                    key: SSO_CLIENT_SECRET
