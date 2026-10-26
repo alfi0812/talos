@@ -266,3 +266,27 @@ authelia:
           response_types:
             - 'code'
           token_endpoint_auth_method: 'client_secret_basic'
+        # https://github.com/MaxRink/jellyfin-plugin-sso (provider name 'authelia')
+        # Configured in the plugin (stored in /data/plugins/configurations); password login is off
+        # for linked accounts (enforceSsoOnly), apps log in via Quick Connect
+        - client_id: 'jellyfin'
+          client_name: 'Jellyfin'
+          # PBKDF2 hash; plaintext lives in media/jellyfin/app/oidc.secret.yaml
+          client_secret: '$pbkdf2-sha512$310000$TnpXMHINVdDt1lAeFaCw6A$MikDGc5KXSd50BlgkFDo.GbPneYWm3lveJzn5payJpdpYfaHpbRJGii12QVc9rLPgqe1rV9sOh8dq.lCRhL13A'
+          public: false
+          authorization_policy: 'members'
+          consent_mode: 'implicit'
+          claims_policy: 'id_token_profile'
+          redirect_uris:
+            - 'https://jellyfin.${DOMAIN_1}/sso/OID/redirect/authelia'
+          # 'groups' only so a request for the groups claim is not rejected; roles are not used
+          scopes:
+            - 'openid'
+            - 'profile'
+            - 'email'
+            - 'groups'
+          grant_types:
+            - 'authorization_code'
+          response_types:
+            - 'code'
+          token_endpoint_auth_method: 'client_secret_post'
