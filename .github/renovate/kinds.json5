@@ -2,7 +2,24 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   flux: {
     managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
-    branchPrefix: "renovate/flux-"
+    branchPrefix: "renovate/flux-",
+    // Resolve HelmRelease sourceRefs without the HelmRepository files in repositories/helm/.
+    // Without this, re-extracting a single helm-release.yaml on an existing branch yields a
+    // different deps list ("Rebasing branch after deps list has changed") and every flux PR
+    // is rebased after each merge to main. Keep in sync with repositories/helm/*.yaml.
+    registryAliases: {
+      truecharts: "oci://oci.trueforge.org/truecharts",
+      "home-ops-mirror": "oci://ghcr.io/home-operations/charts-mirror",
+      "home-operations": "oci://ghcr.io/home-operations/charts",
+      "actions-runner-controller": "oci://ghcr.io/actions/actions-runner-controller-charts",
+      "prometheus-community": "oci://ghcr.io/prometheus-community/charts",
+      "node-feature-discovery": "oci://registry.k8s.io/nfd/charts",
+      "grafana-community": "oci://ghcr.io/grafana-community/helm-charts",
+      "cloudnative-pg": "oci://ghcr.io/cloudnative-pg/charts",
+      metallb: "oci://quay.io/metallb/chart",
+      jetstack: "oci://quay.io/jetstack/charts",
+      cilium: "oci://quay.io/cilium/charts",
+    },
   },
   kubernetes: {
     managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
