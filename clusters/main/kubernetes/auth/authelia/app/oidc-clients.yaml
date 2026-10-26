@@ -216,3 +216,24 @@ authelia:
           response_types:
             - 'code'
           token_endpoint_auth_method: 'client_secret_post'
+        # https://www.authelia.com/integration/openid-connect/clients/nextcloud/ (user_oidc app)
+        # Configured in Nextcloud via occ user_oidc:provider (stored in the Nextcloud DB)
+        - client_id: 'nextcloud'
+          client_name: 'Nextcloud'
+          # PBKDF2 hash; plaintext lives in general/nextcloud/app/oidc.secret.yaml
+          client_secret: '$pbkdf2-sha512$310000$/6ywusf7OjfurAQdMYtWAQ$9mI99N2vF0un4Fo2cvhB6FDlsOVOlkv0FE3OP5n0HU1QRvN5zxNQzteySabNe0ddy9YJoIvqgWGSLkXUiHCNuw'
+          public: false
+          authorization_policy: 'members'
+          consent_mode: 'implicit'
+          claims_policy: 'id_token_profile'
+          redirect_uris:
+            - 'https://nextcloud.${DOMAIN_1}/apps/user_oidc/code'
+          scopes:
+            - 'openid'
+            - 'profile'
+            - 'email'
+          grant_types:
+            - 'authorization_code'
+          response_types:
+            - 'code'
+          token_endpoint_auth_method: 'client_secret_post'
