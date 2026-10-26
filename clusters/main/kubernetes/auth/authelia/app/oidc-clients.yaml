@@ -197,3 +197,22 @@ authelia:
           response_types:
             - 'code'
           token_endpoint_auth_method: 'client_secret_post'
+        # Radarr v7 OIDC (single allowed user, see RADARR__AUTH__OIDCUSERIDENTIFIER)
+        - client_id: 'radarr'
+          client_name: 'Radarr'
+          # PBKDF2 hash; plaintext lives in media/radarr/app/oidc.secret.yaml
+          client_secret: '$pbkdf2-sha512$310000$hXUqilpiaGOQyd2ReSq1kA$OfMKd/cPmw8i7b8eh0dnZcgvPmLlowutTJHUKQgO2ob29omDfOeHBKVuyEsKjfKeIthnTBzN62zv0THHL0zE6w'
+          public: false
+          authorization_policy: 'admins'
+          consent_mode: 'implicit'
+          redirect_uris:
+            - 'https://radarr.${DOMAIN_1}/signin-oidc'
+          scopes:
+            - 'openid'
+            - 'profile'
+            - 'email'
+          grant_types:
+            - 'authorization_code'
+          response_types:
+            - 'code'
+          token_endpoint_auth_method: 'client_secret_post'

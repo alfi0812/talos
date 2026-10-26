@@ -29,13 +29,8 @@ spec:
       main:
         enabled: true
         ingressClassName: internal
+        # Login via Authelia OIDC (see env below), no forward-auth
         integrations:
-          nginx:
-            enabled: true
-            auth:
-              type: "authelia"
-              internalHost: "authelia.authelia.svc.cluster.local:9091"
-              externalHost: "auth.${DOMAIN_1}"
           certManager:
             enabled: true
             certificateIssuer: domain-1-le-prod
@@ -71,6 +66,25 @@ spec:
                     name: cnpg-main-user
                     key: password
                 RADARR__POSTGRES__MAINDB: radarr
+                # Login via Authelia OIDC (Radarr v7); only the one user in OIDCUSERIDENTIFIER gets in
+                RADARR__AUTH__METHOD: Oidc
+                # No forward-auth anymore: never skip auth for "local" (= any LAN) addresses
+                RADARR__AUTH__REQUIRED: Enabled
+                # Trust X-Forwarded-Proto/Host from nginx (pod network), so the OIDC
+                # redirect_uri is https://<host>/signin-oidc instead of http://
+                RADARR__SERVER__TRUSTEDNETWORKS: ${PODNET}
+                RADARR__AUTH__OIDCAUTHORITY: https://auth.${DOMAIN_1}
+                RADARR__AUTH__OIDCCLIENTID: radarr
+                RADARR__AUTH__OIDCCLIENTSECRET:
+                  secretKeyRef:
+                    expandObjectName: false
+                    name: radarr-oidc
+                    key: RADARR__AUTH__OIDCCLIENTSECRET
+                RADARR__AUTH__OIDCUSERIDENTIFIER:
+                  secretKeyRef:
+                    expandObjectName: false
+                    name: radarr-oidc
+                    key: RADARR__AUTH__OIDCUSERIDENTIFIER
     persistence:
       config:
         volsync:
