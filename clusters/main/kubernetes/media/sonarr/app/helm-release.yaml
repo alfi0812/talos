@@ -60,6 +60,9 @@ spec:
                 SONARR__AUTH__METHOD: Oidc
                 # No forward-auth anymore: never skip auth for "local" (= any LAN) addresses
                 SONARR__AUTH__REQUIRED: Enabled
+                # Trust X-Forwarded-Proto/Host from nginx (pod network), so the OIDC
+                # redirect_uri is https://<host>/signin-oidc instead of http://
+                SONARR__SERVER__TRUSTEDNETWORKS: ${PODNET}
                 SONARR__AUTH__OIDCAUTHORITY: https://auth.${DOMAIN_1}
                 SONARR__AUTH__OIDCCLIENTID: sonarr
                 SONARR__AUTH__OIDCCLIENTSECRET:
