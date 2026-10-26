@@ -32,6 +32,12 @@ spec:
         hosts:
         - host: talos-kvm.${DOMAIN_1}
         integrations:
+          nginx:
+            enabled: true
+            auth:
+              type: "authelia"
+              internalHost: "authelia.authelia.svc.cluster.local:9091"
+              externalHost: "auth.${DOMAIN_1}"
           certManager:
             certificateIssuer: domain-1-le-prod
             enabled: true
