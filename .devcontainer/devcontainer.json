@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
   "name": "TalosCluster",
-  "image": "oci.trueforge.org/containerforge/devcontainer:4.1.1@sha256:b1eb79db015d08400aa2ebd86cf9a037d7cd1ab2dc43a7d54781f2ef83762749",
+  "image": "oci.trueforge.org/containerforge/devcontainer:4.1.1@sha256:35dcbb1cd0b4a40c90561ba065b3c193ba820d564005ce7a3d1e389c68743069",
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "moby": false,
