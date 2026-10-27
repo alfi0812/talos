@@ -2,6 +2,14 @@
   "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
   "name": "TalosCluster",
   "image": "oci.trueforge.org/containerforge/devcontainer:4.1.1@sha256:712f7f473a88d81bd4129827187fc46bee90a44c265ebd57031c876fe863e01e",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": false,
+      "installDockerBuildx": false,
+      "installDockerComposeSwitch": false,
+      "dockerDashComposeVersion": "none"
+    }
+  },
   "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
   "customizations": {
     "vscode": {
