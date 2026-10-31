@@ -24,7 +24,7 @@
       "description": ["Intel Device Plugins Group"],
       "groupName": "Intel-Device-Plugins",
       "matchPackagePatterns": ["intel-device-plugins"],
-      "matchDatasources": ["helm"],
+      "matchDatasources": ["docker", "helm"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       }
