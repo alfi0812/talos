@@ -263,6 +263,8 @@ install_ingress=false
 install_certmanager=false
 install_prometheus=false
 install_metallb=false
+install_intel_crds=false
+install_nfd_crds=false
 
 grep -q "postgresql.cnpg.io" "$RENDERED" && install_cnpg=true
 # grep -q "volsync.backube" "$RENDERED" && install_volsync=true
@@ -270,6 +272,8 @@ grep -q "kind: Ingress" "$RENDERED" && install_ingress=true
 grep -q "cert-manager.io" "$RENDERED" && [[ "$CHART_NAME" != "cert-manager" ]] && install_certmanager=true 
 grep -q "monitoring.coreos.com" "$RENDERED" && install_prometheus=true
 grep -q "metallb.io" "$RENDERED" && install_metallb=true
+grep -q "deviceplugin.intel.com" "$RENDERED" && install_intel_crds=true
+grep -q "nfd.k8s-sigs.io" "$RENDERED" && install_nfd_crds=true
 
 echo "🔎 Dependencies:"
 echo "     CNPG:        $install_cnpg"
@@ -278,6 +282,8 @@ echo "     Ingress:     $install_ingress"
 echo "     CertManager: $install_certmanager"
 echo "     Prometheus:  $install_prometheus"
 echo "     MetalLB:     $install_metallb"
+echo "     Intel CRDs:  $install_intel_crds"
+echo "     NFD CRDs:    $install_nfd_crds"
 
 # --------------------------------------------------
 # Install dependencies
@@ -353,6 +359,30 @@ if $install_metallb; then
   fi
 
   echo "📡 Done installing MetalLB"
+  echo "::endgroup::"
+fi
+
+if $install_intel_crds; then
+  echo "::group::🧩 Installing Intel Device Plugins CRDs..."
+  INTEL_VERSION="$(yq '.spec.chart.spec.version' clusters/main/kubernetes/system/intel-device-plugin-operator/app/helm-release.yaml)"
+  helm show crds oci://ghcr.io/intel/helm-charts/intel-device-plugins-operator --version "$INTEL_VERSION" | kubectl apply --server-side -f -
+  if [[ "$?" != "0" ]]; then
+      echo "❌ Failed to install Intel Device Plugins CRDs"
+      exit 1
+  fi
+  echo "🧩 Done installing Intel Device Plugins CRDs"
+  echo "::endgroup::"
+fi
+
+if $install_nfd_crds; then
+  echo "::group::🏷️ Installing Node Feature Discovery CRDs..."
+  NFD_VERSION="$(yq '.spec.chart.spec.version' clusters/main/kubernetes/kube-system/node-feature-discovery/app/helm-release.yaml)"
+  helm show crds oci://registry.k8s.io/nfd/charts/node-feature-discovery --version "$NFD_VERSION" | kubectl apply --server-side -f -
+  if [[ "$?" != "0" ]]; then
+      echo "❌ Failed to install Node Feature Discovery CRDs"
+      exit 1
+  fi
+  echo "🏷️ Done installing Node Feature Discovery CRDs"
   echo "::endgroup::"
 fi
 
