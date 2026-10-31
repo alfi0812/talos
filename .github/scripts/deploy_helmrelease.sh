@@ -308,7 +308,9 @@ fi
 
 if $install_ingress; then
   echo "::group::🌐 Installing ingress-nginx..."
-  helm install ingress-nginx oci://ghcr.io/home-operations/charts-mirror/ingress-nginx --namespace ingress-nginx --create-namespace \
+  # Tags in this registry are v-prefixed, helm can't resolve those without an exact version
+  INGRESS_VERSION="$(yq '.spec.chart.spec.version' clusters/main/kubernetes/networking/nginx-internal/app/helm-release.yaml)"
+  helm install ingress-nginx oci://registry.k8s.io/ingress-nginx/charts/ingress-nginx --version "$INGRESS_VERSION" --namespace ingress-nginx --create-namespace \
       --set controller.ingressClassResource.default=true --set controller.publishService.enabled=false --set controller.service.type="ClusterIP" --set controller.config.allow-snippet-annotations=true --set controller.config.annotations-risk-level="Critical" --wait
   if [[ "$?" != "0" ]]; then
       echo "❌ Failed to install ingress-nginx"

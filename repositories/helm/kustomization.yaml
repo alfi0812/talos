@@ -8,6 +8,8 @@ resources:
   - cloudnative-pg.yaml
   - cilium.yaml
   - home-ops-mirror.yaml
+  - ingress-nginx.yaml
+  - intel.yaml
   - jetstack.yaml
   - kustomization.yaml
   - metallb.yaml

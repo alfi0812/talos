@@ -11,6 +11,8 @@
       truecharts: "oci://oci.trueforge.org/truecharts",
       "home-ops-mirror": "oci://ghcr.io/home-operations/charts-mirror",
       "home-operations": "oci://ghcr.io/home-operations/charts",
+      "ingress-nginx": "oci://registry.k8s.io/ingress-nginx/charts",
+      intel: "oci://ghcr.io/intel/helm-charts",
       "actions-runner-controller": "oci://ghcr.io/actions/actions-runner-controller-charts",
       "prometheus-community": "oci://ghcr.io/prometheus-community/charts",
       "node-feature-discovery": "oci://registry.k8s.io/nfd/charts",

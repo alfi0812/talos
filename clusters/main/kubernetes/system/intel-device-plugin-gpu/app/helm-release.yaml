@@ -11,7 +11,7 @@ spec:
       version: 0.34.1
       sourceRef:
         kind: HelmRepository
-        name: home-ops-mirror
+        name: intel
         namespace: flux-system
   dependsOn:
     - name: intel-device-plugin-operator
