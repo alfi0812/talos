@@ -1,0 +1,8 @@
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          resources:
+            limits:
+              gpu.intel.com/i915: 0
