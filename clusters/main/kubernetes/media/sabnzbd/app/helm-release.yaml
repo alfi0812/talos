@@ -77,9 +77,10 @@ spec:
       requests:
         cpu: 2000m
         memory: 4Gi 
+    exportarr:
+      apiKey: ${API_SABNZBD}
     metrics:
       main:
         enabled: true
-        apiKey: ${API_SABNZBD}
         prometheusRule:
           enabled: false
