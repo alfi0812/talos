@@ -123,7 +123,6 @@ spec:
         podSpec:
           containers:
             main:
-              advanced: false
               env:
                 # SSO via Authelia: https://github.com/dani-garcia/vaultwarden/wiki/Enabling-SSO-support-using-OpenId-Connect
                 # Existing accounts are linked by email on the first SSO login (SSO_SIGNUPS_MATCH_EMAIL,
