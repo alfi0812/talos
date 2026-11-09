@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: tvheadend
-      version: 24.1.2
+      version: 24.1.4
       sourceRef:
         kind: HelmRepository
         name: truecharts
