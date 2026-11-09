@@ -62,7 +62,7 @@ spec:
           title: |-
             {{- if eq .Status "firing" }}🚨 **ALERT FIRING** 🚨{{- else }}✅ **ALERT RESOLVED** ✅{{- end }}
           message: |-
-            {{- range .Alerts }}
+            {{- range $i, $a := .Alerts }}{{- if lt $i 5 }}
 
             {{- if eq .Labels.severity "critical" }}
             🚨 **Severity:** `CRITICAL`
@@ -130,4 +130,8 @@ spec:
             🕐 Duration: {{ .StartsAt | since | humanizeDuration }}
             {{- end }}
 
+            {{- end }}{{- end }}
+            {{- if gt (len .Alerts) 5 }}
+
+            …{{ len .Alerts }} alerts in total; only the first 5 are shown
             {{- end }}
