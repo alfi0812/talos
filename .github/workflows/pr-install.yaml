@@ -201,12 +201,15 @@ jobs:
         with:
           version: v4.3.1
 
-      # Ubuntu 26.04 defaults kernel.apparmor_restrict_unprivileged_unconfined=1,
-      # which stacks containerd's AppArmor profile and denies in-container
-      # operations (e.g. wg-easy: "/usr/bin/readlink: Permission denied").
-      # https://github.com/containerd/containerd/issues/14485
-      - name: Relax AppArmor unconfined restriction
-        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_unconfined=0 || true
+      # Ubuntu 26.04 ships a path-attached AppArmor profile for wg-quick
+      # (/etc/apparmor.d/wg-quick). It also attaches to /usr/bin/wg-quick inside
+      # privileged (unconfined) containers and denies exec of busybox applets,
+      # breaking wg-easy ("/usr/bin/readlink: Permission denied").
+      - name: Unload host wg-quick AppArmor profile
+        run: |
+          if [ -f /etc/apparmor.d/wg-quick ]; then
+            sudo apparmor_parser -R /etc/apparmor.d/wg-quick || true
+          fi
 
       - name: Create k3d cluster
         uses: nolar/setup-k3d-k3s@v1
@@ -226,129 +229,3 @@ jobs:
         run: |
           chmod +x .github/scripts/deploy_helmrelease.sh
           bash .github/scripts/deploy_helmrelease.sh "${{ matrix.helmrelease }}"
-
-      # TEMP diagnostics for ubuntu-26.04 exec denials (remove once understood)
-      - name: Diagnostics on failure
-        if: failure()
-        run: |
-          set -x
-          uname -a
-          sysctl -a 2>/dev/null | grep -iE 'apparmor|userns|landlock' || true
-          cat /sys/kernel/security/lsm || true
-          sudo aa-status 2>&1 | head -80 || true
-          ls /etc/apparmor.d/ | head -200 || true
-          grep -rlE 'busybox|readlink' /etc/apparmor.d/ 2>/dev/null || true
-          sudo dmesg | grep -iE 'apparmor|denied|audit|landlock' | tail -100 || true
-          sudo journalctl -k --no-pager | grep -iE 'apparmor|denied' | tail -100 || true
-          docker info 2>&1 | grep -iE 'security|apparmor|seccomp|cgroup|runtime|version' || true
-          docker inspect k3d-k3s-default-server-0 --format '{{.AppArmorProfile}} {{.HostConfig.Privileged}} {{.HostConfig.SecurityOpt}}' || true
-          docker exec k3d-k3s-default-server-0 sh -c 'cat /proc/self/attr/current; cat /proc/self/attr/apparmor/current' || true
-          pod=$(kubectl get pod -A -o name -l app.kubernetes.io/name=wg-easy | head -1)
-          ns=$(kubectl get pod -A -l app.kubernetes.io/name=wg-easy -o jsonpath='{.items[0].metadata.namespace}')
-          echo "pod=$pod ns=$ns"
-          k() { kubectl -n "$ns" exec "$pod" -- "$@" 2>&1 || true; }
-          k sh -c 'id; cat /proc/self/attr/current; cat /proc/self/attr/apparmor/current; grep -E "Cap|NoNewPrivs|Seccomp" /proc/self/status'
-          k ls -la /usr/bin/readlink /bin/busybox /bin/sh /bin/bash
-          k /bin/busybox readlink -f /usr/bin/wg-quick
-          k /usr/bin/readlink -f /usr/bin/wg-quick
-          k bash -c 'readlink -f /usr/bin/wg-quick; echo rc=$?'
-          k sh -c 'mount | grep -E " / |overlay"'
-          sudo dmesg | grep -iE 'apparmor|denied' | tail -30 || true
-
-  test-summary:
-    name: Summary
-    runs-on: ubuntu-latest
-    needs:
-      - detect
-      - test
-    if: always()
-
-    steps:
-      - name: Build GitHub summary
-        run: |
-          {
-            echo "## HelmRelease test summary"
-            echo ""
-
-            echo "### Detect job"
-            echo "- Result: **${{ needs.detect.result }}**"
-            echo ""
-
-            echo "### Test matrix job"
-            echo "- Result: **${{ needs.test.result }}**"
-            echo ""
-
-            if [ "${{ needs.test.result }}" = "skipped" ]; then
-              echo "ℹ️ No HelmReleases required testing."
-            elif [ "${{ needs.test.result }}" = "success" ]; then
-              echo "✅ All HelmRelease tests passed."
-            else
-              echo "❌ One or more HelmRelease tests failed."
-            fi
-          } >> "$GITHUB_STEP_SUMMARY"
-      - name: Generate Token
-        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
-        id: app-token
-        with:
-          app-id: ${{ secrets.BOT_APP_ID }}
-          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
-      - name: Add PR Comment
-        if: github.event_name == 'pull_request'
-        continue-on-error: true
-        uses: mshick/add-pr-comment@9302b90c1c7d26c4aebe20b7846b4a8a434bee94
-        with:
-          repo-token: ${{ steps.app-token.outputs.token }}
-          message-id: "${{ github.event.pull_request.number }}/helmrelease-tests"
-          header: "HelmRelease CI"
-          message: |
-            ## 🚀 HelmRelease CI Report
-
-            ### Overall Status
-
-            | Stage | Result |
-            |-------|--------|
-            | 🔍 Detect HelmReleases | **${{ needs.detect.result }}** |
-            | 🧪 Helm Tests | **${{ needs.test.result }}** |
-
-            ---
-
-            ### 🧪 HelmReleases Tested
-
-            ${{ needs.detect.outputs.tested }}
-
-            ---
-
-            ### ⏭️ HelmReleases Skipped
-
-            ${{ needs.detect.outputs.skipped }}
-
-            ---
-
-            ### Result
-
-            ${{ needs.test.result == 'skipped' && 'ℹ️ **No HelmReleases required testing**' || '' }}
-
-            ${{ needs.test.result == 'success' && '✅ **All HelmRelease tests passed**' || '' }}
-
-            ${{ needs.test.result == 'failure' && '❌ **One or more HelmRelease tests failed**\n\nCheck workflow logs for details.' || '' }}
-
-            ${{ needs.test.result == 'cancelled' && '⚠️ **Tests were cancelled**' || '' }}
-
-      - name: Enforce final status
-        run: |
-          # Detect must succeed
-          if [ "${{ needs.detect.result }}" != "success" ]; then
-            echo "Detect job failed"
-            exit 1
-          fi
-
-          # Test may be success OR skipped (no releases changed)
-          if [ "${{ needs.test.result }}" != "success" ] && \
-             [ "${{ needs.test.result }}" != "skipped" ]; then
-            echo "HelmRelease tests failed"
-            exit 1
-          fi
-
-          echo "All checks passed"
-
-  
