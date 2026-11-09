@@ -201,6 +201,25 @@ jobs:
         with:
           version: v4.3.1
 
+      # Ubuntu 26.04 ships a path-attached AppArmor profile for wg-quick
+      # (/etc/apparmor.d/wg-quick). It also attaches to /usr/bin/wg-quick inside
+      # privileged (unconfined) containers and denies exec of busybox applets,
+      # breaking wg-easy ("/usr/bin/readlink: Permission denied").
+      - name: Unload host wg-quick AppArmor profile
+        run: |
+          if [ -f /etc/apparmor.d/wg-quick ]; then
+            sudo apparmor_parser -R /etc/apparmor.d/wg-quick || true
+          fi
+
+      # wg-easy's default PostUp hooks use legacy iptables (nat/filter tables);
+      # the ubuntu-26.04 kernel does not autoload those modules.
+      - name: Load legacy iptables kernel modules
+        run: |
+          for m in ip_tables iptable_nat iptable_filter; do
+            sudo modprobe "$m" || echo "::warning::module $m not available"
+          done
+          lsmod | grep -E '^(ip_tables|iptable_)' || true
+
       - name: Create k3d cluster
         uses: nolar/setup-k3d-k3s@v1
         with:
