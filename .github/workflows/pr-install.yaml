@@ -227,6 +227,34 @@ jobs:
           chmod +x .github/scripts/deploy_helmrelease.sh
           bash .github/scripts/deploy_helmrelease.sh "${{ matrix.helmrelease }}"
 
+      # TEMP diagnostics for ubuntu-26.04 exec denials (remove once understood)
+      - name: Diagnostics on failure
+        if: failure()
+        run: |
+          set -x
+          uname -a
+          sysctl -a 2>/dev/null | grep -iE 'apparmor|userns|landlock' || true
+          cat /sys/kernel/security/lsm || true
+          sudo aa-status 2>&1 | head -80 || true
+          ls /etc/apparmor.d/ | head -200 || true
+          grep -rlE 'busybox|readlink' /etc/apparmor.d/ 2>/dev/null || true
+          sudo dmesg | grep -iE 'apparmor|denied|audit|landlock' | tail -100 || true
+          sudo journalctl -k --no-pager | grep -iE 'apparmor|denied' | tail -100 || true
+          docker info 2>&1 | grep -iE 'security|apparmor|seccomp|cgroup|runtime|version' || true
+          docker inspect k3d-k3s-default-server-0 --format '{{.AppArmorProfile}} {{.HostConfig.Privileged}} {{.HostConfig.SecurityOpt}}' || true
+          docker exec k3d-k3s-default-server-0 sh -c 'cat /proc/self/attr/current; cat /proc/self/attr/apparmor/current' || true
+          pod=$(kubectl get pod -A -o name -l app.kubernetes.io/name=wg-easy | head -1)
+          ns=$(kubectl get pod -A -l app.kubernetes.io/name=wg-easy -o jsonpath='{.items[0].metadata.namespace}')
+          echo "pod=$pod ns=$ns"
+          k() { kubectl -n "$ns" exec "$pod" -- "$@" 2>&1 || true; }
+          k sh -c 'id; cat /proc/self/attr/current; cat /proc/self/attr/apparmor/current; grep -E "Cap|NoNewPrivs|Seccomp" /proc/self/status'
+          k ls -la /usr/bin/readlink /bin/busybox /bin/sh /bin/bash
+          k /bin/busybox readlink -f /usr/bin/wg-quick
+          k /usr/bin/readlink -f /usr/bin/wg-quick
+          k bash -c 'readlink -f /usr/bin/wg-quick; echo rc=$?'
+          k sh -c 'mount | grep -E " / |overlay"'
+          sudo dmesg | grep -iE 'apparmor|denied' | tail -30 || true
+
   test-summary:
     name: Summary
     runs-on: ubuntu-latest
