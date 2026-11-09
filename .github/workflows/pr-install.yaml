@@ -201,6 +201,13 @@ jobs:
         with:
           version: v4.3.1
 
+      # Ubuntu 26.04 defaults kernel.apparmor_restrict_unprivileged_unconfined=1,
+      # which stacks containerd's AppArmor profile and denies in-container
+      # operations (e.g. wg-easy: "/usr/bin/readlink: Permission denied").
+      # https://github.com/containerd/containerd/issues/14485
+      - name: Relax AppArmor unconfined restriction
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_unconfined=0 || true
+
       - name: Create k3d cluster
         uses: nolar/setup-k3d-k3s@v1
         with:
