@@ -21,3 +21,18 @@ spec:
       rbacPrometheus: false
       serviceMonitor:
         enabled: true
+  # Single-node cluster: statuscleaner uses hostNetwork + port 19443, so a
+  # RollingUpdate can never schedule the new pod while the old one holds the
+  # port. Recreate stops the old pod first.
+  # https://github.com/metallb/metallb/issues/3184
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: metallb-frr-k8s-statuscleaner
+            patch: |
+              - op: add
+                path: /spec/strategy
+                value:
+                  type: Recreate
