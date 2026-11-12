@@ -112,7 +112,21 @@ spec:
             enabled: true
             trigger:
               schedule: 20 1 * * *
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              resources:
+                limits:
+                  memory: 6Gi
     nextcloud:
+      # Chart default (180 children) lets a sync burst outgrow the memory limit
+      php:
+        pm_max_children: 40
+        pm_start_servers: 6
+        pm_min_spare_servers: 4
+        pm_max_spare_servers: 10
       collabora:
         enabled: true
       credentials:
