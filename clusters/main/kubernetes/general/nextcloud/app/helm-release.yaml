@@ -155,6 +155,8 @@ spec:
         - JPEG
         - Krita
         - MarkDown
+        # Video thumbnails via ffmpeg (bundled in the image)
+        - Movie
         - MP3
         - OpenDocument
         - PNG
