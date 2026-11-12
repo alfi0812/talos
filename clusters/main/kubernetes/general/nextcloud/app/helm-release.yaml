@@ -136,6 +136,11 @@ spec:
         accessIP: ${NGINX_EXTERNAL_IP}
         default_phone_region: DE
       previews:
+        # Let imaginary (libvips) handle 108MP phone photos instead of rejecting them (422),
+        # which made PHP decode them in-process at ~0.5GB each and OOMKill the pod
+        max_allowed_resolution: 120.0
+        # Nextcloud default; PHP fallback skips huge images instead of decoding them
+        max_memory: 256
         providers:
         - BMP
         - GIF
