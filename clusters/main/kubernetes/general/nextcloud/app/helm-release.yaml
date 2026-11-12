@@ -120,6 +120,14 @@ spec:
               resources:
                 limits:
                   memory: 6Gi
+      imaginary:
+        podSpec:
+          containers:
+            imaginary:
+              resources:
+                limits:
+                  # autorotate fully decodes 108MP photos (~0.3-0.65GB each) at concurrency 10
+                  memory: 8Gi
     nextcloud:
       # Chart default (180 children) lets a sync burst outgrow the memory limit
       php:
