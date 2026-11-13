@@ -199,7 +199,7 @@ jobs:
       - name: Install helm
         uses: azure/setup-helm@2f5e7bc67f1f9972ab16657bb795f36d8f04de0e # v5.1.0
         with:
-          version: v4.3.1
+          version: v4.3.2
 
       # Ubuntu 26.04 ships a path-attached AppArmor profile for wg-quick
       # (/etc/apparmor.d/wg-quick). It also attaches to /usr/bin/wg-quick inside
