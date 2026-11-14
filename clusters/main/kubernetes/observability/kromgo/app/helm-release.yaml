@@ -66,7 +66,7 @@ spec:
 
         - id: flux_version
           query: label_replace(gotk_resource_info{exported_namespace="flux-system",name="flux",customresource_kind="Kustomization"}, "revision", "$1", "revision", "v(.+)@sha256:.+")
-          title: Flux
+          # title: Flux
           icon: si:flux
           valueExpr: labels["revision"]
           colorExpr: '"blue"'           
