@@ -4,22 +4,22 @@
 
 *A self-hosted, GitOps-driven Kubernetes cluster built on Talos Linux, focused on reliability, observability, and clean automation.*
 
-![TrueNAS](https://kromgo.alfi0812.de/badges/truenas_version)&nbsp;&nbsp;
-![Talos](https://kromgo.alfi0812.de/badges/talos_version)&nbsp;&nbsp;
-![Kubernetes](https://kromgo.alfi0812.de/badges/kubernetes_version)&nbsp;&nbsp;
-![Flux](https://kromgo.alfi0812.de/badges/flux_version)&nbsp;&nbsp;
+[![TrueNAS](https://kromgo.alfi0812.de/badges/truenas_version)](https://www.truenas.com/)&nbsp;&nbsp;
+[![Talos](https://kromgo.alfi0812.de/badges/talos_version)](https://www.talos.dev/)&nbsp;&nbsp;
+[![Kubernetes](https://kromgo.alfi0812.de/badges/kubernetes_version)](https://kubernetes.io/)&nbsp;&nbsp;
+[![Flux](https://kromgo.alfi0812.de/badges/flux_version)](https://fluxcd.io/)&nbsp;&nbsp;
 
 [![Home-Internet](https://kromgo.boemeltrein.nl/badges/buddy_ping)](https://status.goeppel.dev)&nbsp;&nbsp;
 [![Status-Page](https://kromgo.boemeltrein.nl/badges/buddy_status_page)](https://status.goeppel.dev)&nbsp;&nbsp;
 [![Alertmanager](https://kromgo.boemeltrein.nl/badges/buddy_heartbeat)](https://status.goeppel.dev)
 
-![Age-Days](https://kromgo.alfi0812.de/badges/cluster_age_days)&nbsp;&nbsp;
-![Uptime-Days](https://kromgo.alfi0812.de/badges/cluster_uptime_days)&nbsp;&nbsp;
-![Node-Count](https://kromgo.alfi0812.de/badges/cluster_node_count)&nbsp;&nbsp;
-![Pod-Count](https://kromgo.alfi0812.de/badges/cluster_pod_count)&nbsp;&nbsp;
-![Alerts](https://kromgo.alfi0812.de/badges/cluster_alert_count)&nbsp;&nbsp;
-![CPU-Usage](https://kromgo.alfi0812.de/badges/cluster_cpu_usage)&nbsp;&nbsp;
-![Memory-Usage](https://kromgo.alfi0812.de/badges/cluster_memory_usage)&nbsp;&nbsp;
+[![Age-Days](https://kromgo.alfi0812.de/badges/cluster_age_days)](https://kromgo.alfi0812.de)&nbsp;&nbsp;
+[![Uptime-Days](https://kromgo.alfi0812.de/badges/cluster_uptime_days)](https://kromgo.alfi0812.de)&nbsp;&nbsp;
+[![Node-Count](https://kromgo.alfi0812.de/badges/cluster_node_count)](https://kromgo.alfi0812.de)&nbsp;&nbsp;
+[![Pod-Count](https://kromgo.alfi0812.de/badges/cluster_pod_count)](https://kromgo.alfi0812.de)&nbsp;&nbsp;
+[![Alerts](https://kromgo.alfi0812.de/badges/cluster_alert_count)](https://kromgo.alfi0812.de)&nbsp;&nbsp;
+[![CPU-Usage](https://kromgo.alfi0812.de/badges/cluster_cpu_usage)](https://kromgo.alfi0812.de)&nbsp;&nbsp;
+[![Memory-Usage](https://kromgo.alfi0812.de/badges/cluster_memory_usage)](https://kromgo.alfi0812.de)&nbsp;&nbsp;
 
 </div>
 
