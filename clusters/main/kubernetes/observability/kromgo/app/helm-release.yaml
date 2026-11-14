@@ -33,9 +33,9 @@ spec:
     kromgo:
       defaults:
         badge:
-          font: dejavu-sans # dejavu-sans (default, shields.io-style), dejavu-sans-bold, comic-neue, comic-neue-bold
+          font: verdana # dejavu-sans (default, shields.io-style), dejavu-sans-bold, comic-neue, comic-neue-bold
           size: 11 # badge font size in points
-          style: flat # flat (default), flat-square, or plastic
+          style: flat-square # flat (default), flat-square, plastic, or for-the-badge
           gallery:
             hidden: false # list badges in the gallery (default); true hides them
         graph:
@@ -50,31 +50,35 @@ spec:
       badges:
         - id: talos_version
           query: label_replace(node_os_info{name="Talos"}, "version_id", "$1", "version_id", "v(.+)")
-          title: Talos
+          # title: Talos
           icon: si:talos
           valueExpr: labels["version_id"]
-          colorExpr: '"blue"'          
+          colorExpr: '"blue"'
+          style: for-the-badge
 
         - id: kubernetes_version
           query: label_replace(kubernetes_build_info{service="kubernetes"}, "git_version", "$1", "git_version", "v(.+)")
-          title: Kubernetes
+          # title: Kubernetes
           icon: si:kubernetes
           valueExpr: labels["git_version"]
           colorExpr: '"blue"'          
+          style: for-the-badge
 
         - id: flux_version
-          query: label_replace(gotk_resource_info{exported_namespace="flux-system",name="flux",customresource_kind="Kustomization"}, "revision", "$1", "revision", "v(.+)@sha256:.+")
-          title: Flux
+          query: label_replace(flux_instance_info, "revision", "$1", "revision", "v(.+)@sha256:.+")
+          # title: Flux
           icon: si:flux
           valueExpr: labels["revision"]
           colorExpr: '"blue"'          
+          style: for-the-badge
 
         - id: truenas_version
           query: truenas_info
-          title: "Truenas"
+          # title: "Truenas"
           icon: si:truenas          
           valueExpr: labels["version"]
           colorExpr: '"blue"'
+          style: for-the-badge
 
         - id: cluster_node_count
           query: count(count by (node) (kube_node_status_condition{condition="Ready"}))
@@ -99,9 +103,9 @@ spec:
           title: Memory
 
         - id: cluster_power_usage
-          query: round(shellyplug_power{name="server"}, 1)
+          query: round(increase((max by (name) (shellyplug_total{name="server"}))[1h:10s]) / 60, 1)
           valueExpr: string(result) + "w"
-          colorExpr: 'result < 110 ? "green" : result < 150 ? "orange" : "red"'
+          colorExpr: 'result < 185 ? "green" : result < 200 ? "orange" : "red"'
           title: Power
 
         - id: cluster_age_days
@@ -120,3 +124,27 @@ spec:
           query: alertmanager_alerts{state="active"} - 1 # Ignore Watchdog
           colorExpr: 'result < 1 ? "green" : "red"'
           title: Alerts
+
+        - id: buddy_ping
+          query: gatus_results_endpoint_success{key="buddy_ping-(buddy)"}
+          valueExpr: 'result == 1.0 ? "up" : "down"'
+          colorExpr: 'result == 1.0 ? "brightgreen" : "red"'
+          icon: si:ubiquiti
+          style: for-the-badge
+          title: Home Internet
+
+        - id: buddy_status_page
+          query: gatus_results_endpoint_success{key="buddy_status-page-(buddy)"}
+          valueExpr: 'result == 1.0 ? "up" : "down"'
+          colorExpr: 'result == 1.0 ? "brightgreen" : "red"'
+          icon: si:statuspage
+          style: for-the-badge
+          title: Status Page
+
+        - id: buddy_heartbeat
+          query: gatus_results_endpoint_success{key="buddy_heartbeat-(buddy)"}
+          valueExpr: 'result == 1.0 ? "up" : "down"'
+          colorExpr: 'result == 1.0 ? "brightgreen" : "red"'
+          icon: si:prometheus
+          style: for-the-badge
+          title: Alertmanager
