@@ -65,11 +65,11 @@ spec:
           style: for-the-badge
 
         - id: flux_version
-          query: label_replace(flux_instance_info, "revision", "$1", "revision", "v(.+)@sha256:.+")
-          # title: Flux
+          query: label_replace(gotk_resource_info{exported_namespace="flux-system",name="flux",customresource_kind="Kustomization"}, "revision", "$1", "revision", "v(.+)@sha256:.+")
+          title: Flux
           icon: si:flux
           valueExpr: labels["revision"]
-          colorExpr: '"blue"'          
+          colorExpr: '"blue"'           
           style: for-the-badge
 
         - id: truenas_version
@@ -101,12 +101,6 @@ spec:
           valueExpr: string(result) + "%"
           colorExpr: 'result < 35 ? "green" : result < 75 ? "orange" : "red"'
           title: Memory
-
-        - id: cluster_power_usage
-          query: round(increase((max by (name) (shellyplug_total{name="server"}))[1h:10s]) / 60, 1)
-          valueExpr: string(result) + "w"
-          colorExpr: 'result < 185 ? "green" : result < 200 ? "orange" : "red"'
-          title: Power
 
         - id: cluster_age_days
           query: round((time() - min(kube_node_created) ) / 86400)
