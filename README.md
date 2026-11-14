@@ -4,22 +4,22 @@
 
 *A self-hosted, GitOps-driven Kubernetes cluster built on Talos Linux, focused on reliability, observability, and clean automation.*
 
-[![Truenas](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/truenas_version?format=shields&style=for-the-badge&logo=truenas&logoColor=white&label=%20&color=blue)](https://www.truenas.com/)&nbsp;&nbsp;
-[![Talos](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/talos_version?format=shields&style=for-the-badge&logo=talos&logoColor=white&label=%20&color=blue)](https://www.talos.dev/)&nbsp;&nbsp;
-[![Kubernetes](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/kubernetes_version?format=shields&style=for-the-badge&logo=kubernetes&logoColor=white&label=%20&color=blue)](https://www.kubernetes.io/)&nbsp;&nbsp;
-[![Flux](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/flux_version?format=shields&style=for-the-badge&logo=flux&logoColor=white&color=blue&label=%20)](https://fluxcd.io)&nbsp;&nbsp;
+![TrueNAS](https://kromgo.alfi0812.de/badges/truenas_version)&nbsp;&nbsp;
+![Talos](https://kromgo.alfi0812.de/badges/talos_version)&nbsp;&nbsp;
+![Kubernetes](https://kromgo.alfi0812.de/badges/kubernetes_version)&nbsp;&nbsp;
+![Flux](https://kromgo.alfi0812.de/badges/flux_version)&nbsp;&nbsp;
 
-[![Home-Internet](https://img.shields.io/endpoint?url=https://status.boemeltrein.nl/api/v1/endpoints/buddy_ping-(buddy)/health/badge.shields&style=for-the-badge&logo=ubiquiti&logoColor=white&label=Home%20Internet)](https://status.goeppel.dev)&nbsp;&nbsp;
-[![Status-Page](https://img.shields.io/endpoint?url=https://status.boemeltrein.nl/api/v1/endpoints/buddy_status-page-(buddy)/health/badge.shields&style=for-the-badge&logo=statuspage&logoColor=white&label=Status%20Page)](https://status.goeppel.dev)&nbsp;&nbsp;
-[![Alertmanager](https://img.shields.io/endpoint?url=https://status.boemeltrein.nl/api/v1/endpoints/buddy_heartbeat-(buddy)/health/badge.shields&style=for-the-badge&logo=prometheus&logoColor=white&label=Alertmanager)](https://status.goeppel.dev)
+[![Home-Internet](https://kromgo.boemeltrein.nl/badges/buddy_ping)](https://status.goeppel.dev)&nbsp;&nbsp;
+[![Status-Page](https://kromgo.boemeltrein.nl/badges/buddy_status_page)](https://status.goeppel.dev)&nbsp;&nbsp;
+[![Alertmanager](https://kromgo.boemeltrein.nl/badges/buddy_heartbeat)](https://status.goeppel.dev)
 
-[![Age-Days](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_age_days?format=shields&style=flat-square&label=Age)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Uptime-Days](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_uptime_days?format=shields&style=flat-square&label=Uptime)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Node-Count](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_node_count?format=shields&style=flat-square&label=Nodes)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Pod-Count](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_pod_count?format=shields&style=flat-square&label=Pods)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![CPU-Usage](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_cpu_usage?format=shields&style=flat-square&label=CPU)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Memory-Usage](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_memory_usage?format=shields&style=flat-square&label=Memory)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Alerts](https://img.shields.io/endpoint?url=https://kromgo.alfi0812.de/badges/cluster_alert_count?format=shields&style=flat-square&label=Alerts)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+![Age-Days](https://kromgo.alfi0812.de/badges/cluster_age_days)&nbsp;&nbsp;
+![Uptime-Days](https://kromgo.alfi0812.de/badges/cluster_uptime_days)&nbsp;&nbsp;
+![Node-Count](https://kromgo.alfi0812.de/badges/cluster_node_count)&nbsp;&nbsp;
+![Pod-Count](https://kromgo.alfi0812.de/badges/cluster_pod_count)&nbsp;&nbsp;
+![Alerts](https://kromgo.alfi0812.de/badges/cluster_alert_count)&nbsp;&nbsp;
+![CPU-Usage](https://kromgo.alfi0812.de/badges/cluster_cpu_usage)&nbsp;&nbsp;
+![Memory-Usage](https://kromgo.alfi0812.de/badges/cluster_memory_usage)&nbsp;&nbsp;
 
 </div>
 
