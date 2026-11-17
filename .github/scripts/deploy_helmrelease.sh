@@ -304,7 +304,18 @@ install_dependency_crds() {
   fi
 
   kubectl apply --server-side --force-conflicts --filename "$rendered_crds"
-  kubectl wait --for=condition=Established --timeout=120s --filename "$rendered_crds"
+  # Right after the apply a CRD may have no status.conditions yet, and kubectl
+  # wait fails on that ("accessor error") instead of waiting: retry
+  local attempt
+  for attempt in {1..12}; do
+    kubectl wait --for=condition=Established --timeout=10s --filename "$rendered_crds" >/dev/null 2>&1 && break
+    if [[ "$attempt" -eq 12 ]]; then
+      kubectl wait --for=condition=Established --timeout=10s --filename "$rendered_crds" || true
+      echo "❌ ${name} CRDs not Established"
+      return 1
+    fi
+    sleep 5
+  done
   echo "${icon} Installed ${crd_count} ${name} CRD(s)"
   echo "::endgroup::"
 }
