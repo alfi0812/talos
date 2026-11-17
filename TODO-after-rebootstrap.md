@@ -74,6 +74,15 @@ with them. Move the patches to the 1.14 multi-document format:
   - [ ] `headlamp`: confidential, redirect `https://kube.${DOMAIN_1}/oidc-callback`
   - [ ] `claims_policy` that puts `groups` and `preferred_username` into the **ID token**
 - [ ] Headlamp: OIDC settings, remove forward-auth from its ingress
+  - Env vars (chart passes them through): `HEADLAMP_CONFIG_OIDC_CLIENT_ID`, `..._CLIENT_SECRET`,
+    `..._IDP_ISSUER_URL` (`https://auth.${DOMAIN_1}`), optional `..._SCOPES` (default
+    `openid profile email`; setting it replaces the default, so include `groups`), `..._AUTO_LOGIN`
+  - Callback `https://kube.${DOMAIN_1}/oidc-callback`; post-logout redirect
+    `https://kube.${DOMAIN_1}/encoded-clusters/<base64url cluster name>/login`
+  - The ingress must pass `X-Forwarded-Proto`. Headlamp sends the ID token to the kube-apiserver,
+    so login only works once the apiserver trusts the same issuer and audience (otherwise every
+    API call returns 401)
+  - Docs: <https://headlamp.dev/docs/latest/installation/in-cluster/oidc/>
 - [ ] kubectl: kubelogin context for OIDC; keep the certificate kubeconfig as break-glass access
 - [ ] Before pushing: validate the Authelia config with the real binary
       (`authelia validate-config`) and check each client hash (`authelia crypto hash validate`)
