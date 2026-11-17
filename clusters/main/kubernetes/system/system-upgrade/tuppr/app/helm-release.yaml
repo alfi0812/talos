@@ -9,7 +9,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: tuppr
-    namespace: flux-system     
+    namespace: flux-system
   values:
     monitoring:
       serviceMonitor:

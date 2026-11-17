@@ -39,10 +39,10 @@ jobs:
 
           # All changed HelmReleases (skip list included) for the template job
           echo "all=$(printf '%s\n' "$files" | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
-          
+
           echo "🔍 Detected HelmReleases:"
           printf '%s\n' "$files"
-          
+
           # --------------------------------------------------
           # Filter releases using YAML skip list
           # --------------------------------------------------
@@ -253,8 +253,8 @@ jobs:
         run: |
           yq e '.dummyEnv | to_entries | .[] | "\(.key)=\(.value)"' ci/.config.yaml >> "$GITHUB_ENV"
 
-          
-          
+
+
       # --------------------------------------------------
       # Create ephemeral k3d cluster
       # --------------------------------------------------
@@ -418,5 +418,3 @@ jobs:
           fi
 
           echo "All checks passed"
-
-  

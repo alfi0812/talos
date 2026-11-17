@@ -48,7 +48,7 @@ spec:
               - mountPath: /var/run/secrets/talos.dev
                 name: talos
                 readOnly: true
-        serviceAccountName: actions-runners       
+        serviceAccountName: actions-runners
         volumes:
           - name: talos
             secret:

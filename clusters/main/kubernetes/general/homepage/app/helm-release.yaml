@@ -90,4 +90,3 @@ spec:
                     expandObjectName: false
                     name: homepage-oidc
                     key: HOMEPAGE_OIDC_CLIENT_SECRET
-    

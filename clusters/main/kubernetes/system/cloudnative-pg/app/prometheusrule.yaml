@@ -87,4 +87,4 @@ spec:
             ) / 3600 > 32
           for: 10m
           labels:
-            severity: warning            
+            severity: warning

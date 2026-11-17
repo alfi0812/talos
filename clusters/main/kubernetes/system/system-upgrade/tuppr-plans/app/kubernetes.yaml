@@ -6,4 +6,3 @@ metadata:
 spec:
   kubernetes:
     version: ${KUBERNETES_VERSION}  # Required - target Kubernetes version
-    

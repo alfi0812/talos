@@ -36,7 +36,7 @@ spec:
           gatus.home-operations.com/endpoint: |
             group: external
             client:
-              dns-resolver: "tcp://1.1.1.1:53" 
+              dns-resolver: "tcp://1.1.1.1:53"
             alerts:
               - type: discord
         default: false

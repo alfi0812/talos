@@ -14,7 +14,7 @@
         "!/cilium/"
       ],
       "automerge": false,
-      "addLabels": ["automerge"]  
+      "addLabels": ["automerge"]
     },
     {
       "matchUpdateTypes": ["patch"],

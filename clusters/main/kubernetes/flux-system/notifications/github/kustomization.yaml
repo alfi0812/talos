@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
   - provider.yaml
   - github.secret.yaml
-  

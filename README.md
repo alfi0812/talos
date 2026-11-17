@@ -171,5 +171,5 @@ Their open-source contributions and documentation made this setup possible.
 > This repository is public for transparency and learning purposes. Secrets and credentials **are stored in Git in encrypted form** using **SOPS**.
 > Decryption keys are managed externally and are **not** committed to the repository, ensuring sensitive values remain protected.
 
-> 🧪 This cluster is used as a learning, testing, and long-running homelab environment.  
+> 🧪 This cluster is used as a learning, testing, and long-running homelab environment.
 > Configurations may evolve as new Kubernetes, Talos, or GitOps features are evaluated.

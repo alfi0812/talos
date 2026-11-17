@@ -9,7 +9,7 @@
 
   "extends": [
     "config:recommended",
-    ":timezone(Europe/Amsterdam)",    
+    ":timezone(Europe/Amsterdam)",
     ":disableRateLimiting",
     ":semanticCommits",
     ":configMigration",
@@ -23,6 +23,11 @@
     "github>alfi0812/talos//.github/renovate/special_grafanadashboard.json5",
     "github>alfi0812/talos//.github/renovate/special_truechartsSchema.json5"
   ],
+
+  // Keep the hook versions in .pre-commit-config.yaml up to date (off by default in Renovate)
+  "pre-commit": {
+    "enabled": true
+  },
 
   "ignorePaths": [
     "**/*.sops.*",

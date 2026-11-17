@@ -1,7 +1,12 @@
 ---
+# Runs locally from the git hook (after clustertool's encryption check) and in CI
+# ("Repo Checks" workflow). Renovate keeps the hook versions up to date.
+#
+# SOPS-encrypted and generated Talos files are excluded: they must stay exactly as sops/talhelper wrote them.
+exclude: '(\.secret\.ya?ml$|(^|/)clusterenv\.yaml$|(^|/)talsecret\.yaml$|\.sops\.|^clusters/main/talos/generated/)'
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v6.0.0
     hooks:
       - id: check-merge-conflict
       - id: trailing-whitespace

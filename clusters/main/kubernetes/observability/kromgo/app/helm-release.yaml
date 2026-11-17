@@ -61,7 +61,7 @@ spec:
           # title: Kubernetes
           icon: si:kubernetes
           valueExpr: labels["git_version"]
-          colorExpr: '"blue"'          
+          colorExpr: '"blue"'
           style: for-the-badge
 
         - id: flux_version
@@ -69,13 +69,13 @@ spec:
           # title: Flux
           icon: si:flux
           valueExpr: labels["revision"]
-          colorExpr: '"blue"'           
+          colorExpr: '"blue"'
           style: for-the-badge
 
         - id: truenas_version
           query: truenas_info
           # title: "Truenas"
-          icon: si:truenas          
+          icon: si:truenas
           valueExpr: labels["version"]
           colorExpr: '"blue"'
           style: for-the-badge

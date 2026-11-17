@@ -46,7 +46,7 @@ spec:
 
     workload:
       main:
-        replicas: 1         
+        replicas: 1
     blocking:
       clientGroupsBlock:  []
     k8sgateway:

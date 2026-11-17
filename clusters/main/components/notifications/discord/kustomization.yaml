@@ -27,4 +27,4 @@ replacements:
     fieldPaths:
       - metadata.namespace
     options:
-        create: true        
+        create: true

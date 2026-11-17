@@ -48,7 +48,7 @@ fi
 # Check stopAll
 # --------------------------------------------------
 # STOP_ALL=$(yq '.spec.values.global.stopAll // "false"' "$HELMRELEASE_PATH")
-# 
+#
 # if [[ "$STOP_ALL" == "true" ]]; then
 #   echo -e "${YELLOW}⏭  ${BOLD}DEPLOYMENT SKIPPED  ⏭${NC}"
 #   echo -e "${YELLOW}Reason:  global.stopAll=true${NC}"
@@ -269,7 +269,7 @@ install_nfd_crds=false
 grep -q "postgresql.cnpg.io" "$RENDERED" && install_cnpg=true
 # grep -q "volsync.backube" "$RENDERED" && install_volsync=true
 grep -q "kind: Ingress" "$RENDERED" && install_ingress=true
-grep -q "cert-manager.io" "$RENDERED" && [[ "$CHART_NAME" != "cert-manager" ]] && install_certmanager=true 
+grep -q "cert-manager.io" "$RENDERED" && [[ "$CHART_NAME" != "cert-manager" ]] && install_certmanager=true
 grep -q "monitoring.coreos.com" "$RENDERED" && install_prometheus=true
 grep -q "metallb.io" "$RENDERED" && install_metallb=true
 grep -q "deviceplugin.intel.com" "$RENDERED" && install_intel_crds=true
@@ -309,7 +309,7 @@ if $install_volsync; then
       echo "❌ Failed to install Volsync CRDs"
       exit 1
   fi
-  echo "💾 Done installing Volsync CRDs"  
+  echo "💾 Done installing Volsync CRDs"
   echo "::endgroup::"
 fi
 

@@ -1,4 +1,4 @@
-config:  
+config:
   statusChecks: false
   prComments: false
 secret:

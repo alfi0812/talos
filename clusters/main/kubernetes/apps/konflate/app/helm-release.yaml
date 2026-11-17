@@ -25,7 +25,7 @@ spec:
     config:
       repo: github://alfi0812/talos
       closedPrMax: 0
-      closedPrTtl: 720h      
+      closedPrTtl: 720h
       statusChecks: true
       prComments: true
       publicUrl: https://konflate.${DOMAIN_1}

@@ -6,6 +6,7 @@ name: Repo Checks
 #   - actionlint: GitHub workflow files
 #   - Renovate config: validated with the Renovate version the cluster runs
 #   - Talos / Kubernetes: the Kubernetes version tuppr upgrades to is supported by the Talos version
+#   - pre-commit: the hooks of .pre-commit-config.yaml on all files (every PR)
 
 on:
   pull_request:
@@ -156,12 +157,29 @@ jobs:
           message-id: talos-kubernetes-compatibility
           message-path: ${{ runner.temp }}/talos-k8s-report.md
 
+  # The same hooks as the local git hook (whitespace, final newline, YAML syntax, merge
+  # conflict markers). Fixes are not pushed: run `pre-commit run --all-files` and commit.
+  pre-commit:
+    name: pre-commit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup pre-commit
+        env:
+          # renovate: datasource=pypi depName=pre-commit
+          PRE_COMMIT_VERSION: 4.7.0
+        run: pipx install "pre-commit==${PRE_COMMIT_VERSION}"
+      - name: Run pre-commit
+        run: pre-commit run --all-files --show-diff-on-failure --color always
+
   success:
     if: ${{ !cancelled() }}
     needs:
       - actionlint
       - renovate
       - talos-kubernetes
+      - pre-commit
     name: Repo Checks - Success
     runs-on: ubuntu-latest
     steps:

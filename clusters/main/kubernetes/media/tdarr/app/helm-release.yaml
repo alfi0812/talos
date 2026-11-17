@@ -101,4 +101,4 @@ spec:
         endpoints:
           - port: metrics
             path: /metrics
-        targetSelector: metrics            
+        targetSelector: metrics

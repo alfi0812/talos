@@ -45,7 +45,7 @@ spec:
         memory: 4Gi
       requests:
         cpu: 1000m
-        memory: 1Gi 
+        memory: 1Gi
     workload:
       main:
         podSpec:
@@ -100,7 +100,7 @@ spec:
       media:
         enabled: true
         existingClaim: media-nfs-pvc
-        mountPath: /Media     
+        mountPath: /Media
     cnpg:
       main:
         enabled: true
