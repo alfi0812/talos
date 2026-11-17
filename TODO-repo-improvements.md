@@ -25,9 +25,10 @@ Ideas to make the repo and the devcontainer easier to maintain. Separate from
 - [x] `kubeconform.sh`: moved to `k8s-schemas.home-operations.com` (the old `kubernetes-schemas.pages.dev`
       lacks Longhorn and answers missing schemas with an HTML page, so they were silently skipped),
       removed `-ignore-missing-schemas`, validates against the cluster's Kubernetes version
-- [ ] 30 manifests still have `# yaml-language-server` comments pointing to `kubernetes-schemas.pages.dev`;
-      switch them to `k8s-schemas.home-operations.com`
-- [ ] `kubeconform.yaml`: tools come from `brew install` without versions; pin them like in `pr-install.yaml`
+- [x] Switched the 30 `# yaml-language-server` comments from `kubernetes-schemas.pages.dev` to
+      `k8s-schemas.home-operations.com`
+- [x] `kubeconform.yaml`: kubeconform, kustomize and yq pinned as release binaries (Renovate annotations;
+      kustomize needs the `extractVersion` rule in `customManagers.json5`), Homebrew and the unused flux removed
 - [ ] When talhelper/`talconfig.yaml` goes away with the next clustertool update: `pr-install.yaml` and
       `kubeconform.sh` read the cluster's Kubernetes version from `clusters/main/talos/talconfig.yaml`,
       point them to the new location

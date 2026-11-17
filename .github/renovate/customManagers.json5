@@ -18,5 +18,13 @@
       ],
       "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}"
     }
+  ],
+  "packageRules": [
+    {
+      "description": "kustomize releases are tagged kustomize/vX.Y.Z (the repo also tags kyaml/, api/, ...)",
+      "matchDatasources": ["github-releases"],
+      "matchDepNames": ["kubernetes-sigs/kustomize"],
+      "extractVersion": "^kustomize/(?<version>v.+)$"
+    }
   ]
 }
