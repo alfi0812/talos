@@ -1,0 +1,145 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Repo Checks
+
+# Checks for the repo tooling, each only when its files change:
+#   - actionlint: GitHub workflow files
+#   - Renovate config: validated with the Renovate version the cluster runs
+#   - Talos / Kubernetes: the Kubernetes version tuppr upgrades to is supported by the Talos version
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  filter:
+    name: Repo Checks - Filter
+    runs-on: ubuntu-latest
+    outputs:
+      workflows: ${{ steps.workflows.outputs.changed_files }}
+      renovate: ${{ steps.renovate.outputs.changed_files }}
+      upgrades: ${{ steps.upgrades.outputs.changed_files }}
+    steps:
+      - name: Workflow files
+        id: workflows
+        uses: bjw-s-labs/action-changed-files@147be9638332cf68fd60714a610509d7a9360d60 # v0.7.0
+        with:
+          patterns: |
+            .github/workflows/**/*
+            .github/actionlint.yaml
+            .github/scripts/**/*
+      - name: Renovate config
+        id: renovate
+        uses: bjw-s-labs/action-changed-files@147be9638332cf68fd60714a610509d7a9360d60 # v0.7.0
+        with:
+          patterns: |
+            .github/renovate.json5
+            .github/renovate/**/*
+            clusters/main/kubernetes/apps/renovate/app/helm-release.yaml
+      - name: Talos and Kubernetes versions
+        id: upgrades
+        uses: bjw-s-labs/action-changed-files@147be9638332cf68fd60714a610509d7a9360d60 # v0.7.0
+        with:
+          patterns: |
+            clusters/main/kubernetes/flux-system/flux/upgradesettings.yaml
+            .github/scripts/talos_k8s_compat.sh
+
+  actionlint:
+    if: ${{ needs.filter.outputs.workflows != '[]' }}
+    needs: filter
+    name: actionlint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup actionlint
+        env:
+          # renovate: datasource=github-releases depName=rhysd/actionlint
+          ACTIONLINT_VERSION: v1.7.12
+        run: |
+          bin="$HOME/.local/bin"
+          mkdir -p "$bin"
+          curl -fsSL "https://github.com/rhysd/actionlint/releases/download/${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION#v}_linux_amd64.tar.gz" \
+            | tar xz -C "$bin" actionlint
+          echo "$bin" >> "$GITHUB_PATH"
+      # Also runs shellcheck (preinstalled on the runner) on the run: scripts.
+      # Config (self-hosted runner labels): .github/actionlint.yaml
+      - name: Run actionlint
+        run: actionlint -color -shellcheck="$(command -v shellcheck)"
+
+  renovate:
+    if: ${{ needs.filter.outputs.renovate != '[]' }}
+    needs: filter
+    name: Renovate config
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup yq
+        env:
+          # renovate: datasource=github-releases depName=mikefarah/yq
+          YQ_VERSION: v4.54.3
+        run: |
+          bin="$HOME/.local/bin"
+          mkdir -p "$bin"
+          curl -fsSL "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" -o "$bin/yq"
+          chmod +x "$bin/yq"
+          echo "$bin" >> "$GITHUB_PATH"
+      - name: Install helm
+        uses: azure/setup-helm@2f5e7bc67f1f9972ab16657bb795f36d8f04de0e # v5.1.0
+        with:
+          version: v4.3.2
+      - name: Renovate version of the cluster
+        id: version
+        run: echo "renovate=$(bash ./.github/scripts/renovate_version.sh)" >> "$GITHUB_OUTPUT"
+      # --strict also fails on options that need a migration
+      - name: Validate Renovate config
+        env:
+          RENOVATE_VERSION: ${{ steps.version.outputs.renovate }}
+        run: |
+          docker run --rm -v "$PWD/.github:/cfg:ro" -w /cfg "ghcr.io/renovatebot/renovate:${RENOVATE_VERSION}" \
+            renovate-config-validator --strict --no-global renovate.json5 renovate/*.json5
+
+  talos-kubernetes:
+    if: ${{ needs.filter.outputs.upgrades != '[]' }}
+    needs: filter
+    name: Talos / Kubernetes compatibility
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup yq
+        env:
+          # renovate: datasource=github-releases depName=mikefarah/yq
+          YQ_VERSION: v4.54.3
+        run: |
+          bin="$HOME/.local/bin"
+          mkdir -p "$bin"
+          curl -fsSL "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" -o "$bin/yq"
+          chmod +x "$bin/yq"
+          echo "$bin" >> "$GITHUB_PATH"
+      - name: Check compatibility
+        run: bash ./.github/scripts/talos_k8s_compat.sh
+
+  success:
+    if: ${{ !cancelled() }}
+    needs:
+      - actionlint
+      - renovate
+      - talos-kubernetes
+    name: Repo Checks - Success
+    runs-on: ubuntu-latest
+    steps:
+      - name: Any jobs failed?
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+      - name: All jobs passed or skipped?
+        if: ${{ !(contains(needs.*.result, 'failure')) }}
+        run: echo "All jobs passed or skipped" && echo "${{ toJSON(needs.*.result) }}"

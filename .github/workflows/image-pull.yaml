@@ -51,9 +51,11 @@ jobs:
         env:
           FLATE_ALLOW_MISSING_SECRETS: true
         run: |
-          echo 'images<<EOF' >> $GITHUB_OUTPUT
-          flate diff images -o json >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          {
+            echo 'images<<EOF'
+            flate diff images -o json
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
 
   pull:
     if: ${{ needs.extract.outputs.images != '[]' }}

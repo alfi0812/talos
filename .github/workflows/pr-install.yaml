@@ -174,7 +174,7 @@ jobs:
 
       - name: Load dummy env vars from config
         run: |
-          yq e '.dummyEnv | to_entries | .[] | "\(.key)=\(.value)"' ci/.config.yaml >> $GITHUB_ENV
+          yq e '.dummyEnv | to_entries | .[] | "\(.key)=\(.value)"' ci/.config.yaml >> "$GITHUB_ENV"
 
       # helm template validates the values against the chart's values.schema.json,
       # no cluster needed. Runs for skip-listed releases too.
@@ -251,7 +251,7 @@ jobs:
       # --------------------------------------------------
       - name: Load dummy env vars from config
         run: |
-          yq e '.dummyEnv | to_entries | .[] | "\(.key)=\(.value)"' ci/.config.yaml >> $GITHUB_ENV
+          yq e '.dummyEnv | to_entries | .[] | "\(.key)=\(.value)"' ci/.config.yaml >> "$GITHUB_ENV"
 
           
           
