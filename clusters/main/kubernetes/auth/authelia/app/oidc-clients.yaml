@@ -300,3 +300,27 @@ authelia:
           response_types:
             - 'code'
           token_endpoint_auth_method: 'client_secret_post'
+        # https://docs.tdarr.io/docs/other/single-sign-on (Custom OIDC)
+        # Configured in the Tdarr UI (stored in the Tdarr DB). Tdarr matches users by email and needs
+        # 'email' + 'email_verified' in the ID token; roles stay in Tdarr (Tools -> Users)
+        - client_id: 'tdarr'
+          client_name: 'Tdarr'
+          # PBKDF2 hash; plaintext is only stored in Tdarr's SSO settings
+          client_secret: '$pbkdf2-sha512$310000$RmIarOT50H/N7Y.UOlosHA$3Eawag4qF8ofXzWAP0ZXrZowukuFE9sfTCU/Pq7BpjHlk8Zpj/3X1RH87AzejLA.PM6iDP9dnhIess1pUu0pvA'
+          public: false
+          authorization_policy: 'admins'
+          consent_mode: 'implicit'
+          claims_policy: 'id_token_profile'
+          redirect_uris:
+            - 'https://tdarr.${DOMAIN_1}/api/v2/public/auth/sso/oidc/callback'
+          scopes:
+            - 'openid'
+            - 'profile'
+            - 'email'
+          grant_types:
+            - 'authorization_code'
+          response_types:
+            - 'code'
+          # Not documented by Tdarr; if Authelia logs a client authentication method mismatch,
+          # switch to 'client_secret_post'
+          token_endpoint_auth_method: 'client_secret_basic'
