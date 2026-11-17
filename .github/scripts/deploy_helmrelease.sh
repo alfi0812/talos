@@ -504,37 +504,37 @@ fi
 # Detect dependencies
 # --------------------------------------------------
 install_cnpg=false
-install_ingress=false
 install_certmanager=false
 install_prometheus=false
 install_metallb=false
 install_intel_crds=false
 install_nfd_crds=false
+install_arc_crds=false
 
 # Match on the apiVersion group of rendered resources (chart and app folder), so
 # annotations such as cert-manager.io/cluster-issuer don't count as a dependency
 rendered_uses "postgresql.cnpg.io" && install_cnpg=true
-rendered_uses "networking.k8s.io" "Ingress" && install_ingress=true
 rendered_uses "cert-manager.io" && install_certmanager=true
 rendered_uses "monitoring.coreos.com" && install_prometheus=true
 rendered_uses "metallb.io" && install_metallb=true
 rendered_uses "deviceplugin.intel.com" && install_intel_crds=true
 rendered_uses "nfd.k8s-sigs.io" && install_nfd_crds=true
+rendered_uses "actions.github.com" && install_arc_crds=true
 
 echo "🔎 Dependencies:"
 echo "     CNPG:        $install_cnpg"
-echo "     Ingress:     $install_ingress"
 echo "     CertManager: $install_certmanager"
 echo "     Prometheus:  $install_prometheus"
 echo "     MetalLB:     $install_metallb"
 echo "     Intel CRDs:  $install_intel_crds"
 echo "     NFD CRDs:    $install_nfd_crds"
+echo "     ARC CRDs:    $install_arc_crds"
 
 # --------------------------------------------------
 # Install dependencies
 # --------------------------------------------------
 # Chart and version come from the dependency's own HelmRelease, so CI follows
-# what the cluster runs. Only CNPG and ingress-nginx need a running controller,
+# what the cluster runs. Only CNPG needs a running operator (it creates the database pods),
 # everything else only needs its CRDs.
 
 # Namespaces whose pods and logs are shown when the test fails
@@ -555,25 +555,6 @@ if $install_cnpg; then
     --wait \
     --timeout 5m
   echo "🗄️ Done installing CloudNativePG"
-  echo "::endgroup::"
-fi
-
-if $install_ingress; then
-  DEBUG_NAMESPACES+=(ingress-nginx)
-  resolve_helm_chart clusters/main/kubernetes/networking/nginx-internal/app/helm-release.yaml
-  echo "::group::🌐 Installing ingress-nginx (${RESOLVED_CHART_VERSION})..."
-  helm install ingress-nginx "$RESOLVED_CHART_REF" \
-    --version "$RESOLVED_CHART_VERSION" \
-    --namespace ingress-nginx \
-    --create-namespace \
-    --set controller.ingressClassResource.default=true \
-    --set controller.publishService.enabled=false \
-    --set controller.service.type="ClusterIP" \
-    --set controller.config.allow-snippet-annotations=true \
-    --set controller.config.annotations-risk-level="Critical" \
-    --wait \
-    --timeout 5m
-  echo "🌐 Done installing ingress-nginx"
   echo "::endgroup::"
 fi
 
@@ -603,6 +584,22 @@ if $install_nfd_crds; then
   install_dependency_crds "node-feature-discovery" "🏷️" \
     clusters/main/kubernetes/kube-system/node-feature-discovery/app/helm-release.yaml
 fi
+
+if $install_arc_crds; then
+  install_dependency_crds "actions-runner-controller" "🏃" \
+    clusters/main/kubernetes/apps/actions-runner-controller/app/helm-release.yaml
+fi
+
+# --------------------------------------------------
+# Namespaces the chart puts resources in besides its own (e.g. clusterissuer
+# creates its Secrets in cert-manager). In the cluster another app owns them.
+# --------------------------------------------------
+for ns in $(yq e -N -r '.metadata.namespace // ""' "$RENDERED" | sort -u); do
+  if [[ -n "$ns" && "$ns" != "$NAMESPACE" ]] && ! kubectl get namespace "$ns" >/dev/null 2>&1; then
+    kubectl create namespace "$ns" >/dev/null
+    echo "📂 Created namespace $ns (used by the chart)"
+  fi
+done
 
 # --------------------------------------------------
 # Dummy secrets for values that reference Secrets outside the chart
