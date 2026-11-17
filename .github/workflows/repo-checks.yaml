@@ -124,8 +124,37 @@ jobs:
           curl -fsSL "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" -o "$bin/yq"
           chmod +x "$bin/yq"
           echo "$bin" >> "$GITHUB_PATH"
+      # upgradesettings.yaml of the base branch, to show "old → new" in the comment
+      - name: Base versions
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          git fetch --depth=1 origin "$BASE_REF"
+          git show "FETCH_HEAD:clusters/main/kubernetes/flux-system/flux/upgradesettings.yaml" \
+            > "$RUNNER_TEMP/base-upgradesettings.yaml" || true
       - name: Check compatibility
+        id: compat
+        env:
+          BASE_SETTINGS: ${{ runner.temp }}/base-upgradesettings.yaml
+          TALOS_K8S_REPORT: ${{ runner.temp }}/talos-k8s-report.md
         run: bash ./.github/scripts/talos_k8s_compat.sh
+
+      # PR comment as the bot: compatible or not, with the versions. One comment, updated on each run.
+      - name: Generate Token
+        if: ${{ !cancelled() && (steps.compat.outcome == 'success' || steps.compat.outcome == 'failure') }}
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+      - name: Comment compatibility report
+        if: ${{ !cancelled() && steps.app-token.outcome == 'success' }}
+        continue-on-error: true
+        uses: mshick/add-pr-comment@9302b90c1c7d26c4aebe20b7846b4a8a434bee94
+        with:
+          repo-token: ${{ steps.app-token.outputs.token }}
+          message-id: talos-kubernetes-compatibility
+          message-path: ${{ runner.temp }}/talos-k8s-report.md
 
   success:
     if: ${{ !cancelled() }}
