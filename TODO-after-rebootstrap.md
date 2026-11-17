@@ -122,3 +122,20 @@ Check that the AI rules and CI still match the new clustertool once it no longer
 - [ ] CI: run the checks once on a PR (`Repo Checks`, `Kubeconform`, `Pull Request: Install`) and look at
       the bot comments. The versions CI uses come from `upgradesettings.yaml` and the HelmReleases, not
       from `talconfig.yaml`, so they should be unaffected
+
+## 8. Switch more apps to native OIDC once released
+
+Checked 2026-11-17: these apps still use Authelia forward-auth, but native OIDC is on its way. When a
+release ships it, switch like Sonarr/Radarr (Authelia client in `auth/authelia/app/oidc-clients.yaml`,
+`<app>-oidc` secret, remove the forward-auth from the ingress).
+
+- [ ] **Prowlarr**: PR [Prowlarr#2869](https://github.com/Prowlarr/Prowlarr/pull/2869) (open; not in
+      3.0.2.5780 or `develop`). Same settings as Sonarr: `PROWLARR__AUTH__METHOD: Oidc`,
+      `..._OIDCAUTHORITY`, `..._OIDCCLIENTID`, `..._OIDCCLIENTSECRET`, `..._OIDCUSERIDENTIFIER`,
+      callback `/signin-oidc`, single user only
+- [ ] **Seerr**: only in the `preview-new-oidc` build, not in 3.5.2
+      ([seerr#3581](https://github.com/seerr-team/seerr/issues/3581)). Configured in `settings.json`
+      (`oidcLogin`, `oidc.providers[]`), no settings UI yet
+- [ ] **Bazarr**: accepted as a feature ([bazarr#3732](https://github.com/morpheus65535/bazarr/issues/3732)),
+      no implementation yet
+- [ ] **Lidarr**: no OIDC planned yet (the Sonarr change was not ported); check again occasionally
