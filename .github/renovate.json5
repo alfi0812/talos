@@ -9,7 +9,7 @@
 
   "extends": [
     "config:recommended",
-    ":timezone(Europe/Amsterdam)",
+    ":timezone(Europe/Berlin)",
     ":disableRateLimiting",
     ":semanticCommits",
     ":configMigration",
