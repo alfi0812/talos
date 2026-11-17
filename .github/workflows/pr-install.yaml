@@ -401,7 +401,6 @@ jobs:
         with:
           repo-token: ${{ steps.app-token.outputs.token }}
           message-id: "${{ github.event.pull_request.number }}/helmrelease-tests"
-          header: "HelmRelease CI"
           message: |
             ## 🚀 HelmRelease CI Report
 
