@@ -4,10 +4,12 @@ Claude Code instructions for this repository. The canonical, tool-agnostic instr
 
 ## Sub-agents
 
-This repository defines small Haiku agents in `.claude/agents/`. Use them when their description fits, so long logs and repetitive work stay out of the main context:
+This repository defines its own agents in `.claude/agents/` (copied and adapted from TrueCharts). Use them when their description fits, so long logs and repetitive work stay out of the main context:
 
 | Agent | Use it for |
 | --- | --- |
+| `Explore` | Searching the repository: finding files, tracing where something is used. Read-only, runs on Haiku (replaces the built-in `Explore`) |
+| `Plan` | Designing a larger change before doing it (new app, CI rework, upgrades). Read-only, runs on Opus (replaces the built-in `Plan`) |
 | `haiku-triage` | Every validation run with a long log: `kubeconform.sh`, `template_helmrelease.sh` over several releases, `flux_api_check.sh`, `pre-commit run --all-files`, `actionlint`, the Renovate validator. Start it yourself, without being asked |
 | `haiku-lookup` | Quick read-only questions: where a value is set, which apps use a chart, which HelmReleases are not TrueCharts |
 | `haiku-bulk-edit` | One exact, mechanical change in many files (e.g. the same line in many `helm-release.yaml`) |
