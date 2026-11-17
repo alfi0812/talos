@@ -10,6 +10,20 @@ skipList:
   - clusters/main/kubernetes/apps/actions-runners/app
   - clusters/main/kubernetes/apps/actions-runner-controller/app
   - clusters/main/kubernetes/apps/actions-runners-truecharts/app
+# HelmReleases the install test runs when the test itself changes
+# (deploy/template scripts, pr-install.yaml, this file) and on a manual run
+# without input. Together they cover each code path of deploy_helmrelease.sh.
+installSamples:
+  # Ingress, Prometheus CRDs, cert-manager annotations
+  - clusters/main/kubernetes/apps/konflate/app/helm-release.yaml
+  # Extra manifests in the app folder (PrometheusRule, ScrapeConfig, AlertmanagerConfig)
+  - clusters/main/kubernetes/observability/kube-prometheus-stack/app/helm-release.yaml
+  # postRenderers, CRDs shipped as templates
+  - clusters/main/kubernetes/system/metallb/app/helm-release.yaml
+  # chartRef -> OCIRepository
+  - clusters/main/kubernetes/system/system-upgrade/tuppr/app/helm-release.yaml
+  # CNPG operator and Cluster, dummy external secrets
+  - clusters/main/kubernetes/general/vaultwarden/app/helm-release.yaml
 dummyEnv:
   DOMAIN_0: base.dummy0.local
   DOMAIN_1: base.dummy1.local

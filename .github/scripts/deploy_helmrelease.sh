@@ -97,16 +97,13 @@ resolve_helm_chart() {
   fi
 }
 
-# Writes the values of a HelmRelease to a file, with the ${VARS} that are set
-# in the environment substituted. Missing ones stay literal ${VAR}.
+# Substitutes the ${VARS} that are set in the environment, like Flux does with
+# the cluster variables. Missing ones stay literal ${VAR}.
 # Sets EXISTING_VARS and MISSING_VARS.
-extract_values() {
-  local helmrelease_path="$1" out="$2"
-  local raw vars var name
-  raw="$(mktemp)"
-  yq '.spec.values // {}' "$helmrelease_path" > "$raw"
-
-  vars="$(grep -o '\${[A-Za-z_][A-Za-z0-9_]*}' "$raw" | sort -u || true)"
+substitute_vars() {
+  local in="$1" out="$2"
+  local vars var name
+  vars="$(grep -o '\${[A-Za-z_][A-Za-z0-9_]*}' "$in" | sort -u || true)"
   EXISTING_VARS=""
   MISSING_VARS=""
   while IFS= read -r var; do
@@ -119,17 +116,156 @@ extract_values() {
     fi
   done <<< "$vars"
 
-  envsubst "$EXISTING_VARS" < "$raw" > "$out"
+  envsubst "$EXISTING_VARS" < "$in" > "$out"
 }
 
-# True if the rendered chart contains a resource of the API group (and kind, if given)
+# Writes the values of a HelmRelease to a file, with ${VARS} substituted.
+extract_values() {
+  local helmrelease_path="$1" out="$2"
+  local raw
+  raw="$(mktemp)"
+  yq '.spec.values // {}' "$helmrelease_path" > "$raw"
+  substitute_vars "$raw" "$out"
+}
+
+# True if the rendered chart or the app's other manifests contain a resource of
+# the API group (and kind, if given)
 rendered_uses() {
+  local files=("$RENDERED")
+  [[ -n "${EXTRAS:-}" && -s "${EXTRAS:-}" ]] && files+=("$EXTRAS")
   API_GROUP="$1" API_KIND="${2:-}" yq ea -e '
     select(
       ((.apiVersion // "") | split("/") | .[0]) == strenv(API_GROUP)
       and (strenv(API_KIND) == "" or .kind == strenv(API_KIND))
     )
-  ' "$RENDERED" >/dev/null 2>&1
+  ' "${files[@]}" >/dev/null 2>&1
+}
+
+# Builds the app folder (kustomization.yaml next to the HelmRelease) into
+# EXTRAS: everything Flux applies besides the HelmRelease, with ${VARS}
+# substituted. SOPS-encrypted files and Flux objects (no Flux in CI) are left out.
+build_app_manifests() {
+  local app_dir raw
+  app_dir="$(dirname "$HELMRELEASE_PATH")"
+  EXTRAS="$(mktemp)"
+  [[ -f "$app_dir/kustomization.yaml" ]] || return 0
+
+  raw="$(mktemp)"
+  if ! kubectl kustomize "$app_dir" > "$raw" 2> "$raw.err"; then
+    echo "❌ kustomize build failed: $app_dir"
+    cat "$raw.err"
+    return 1
+  fi
+  substitute_vars "$raw" "$raw.sub"
+  yq ea '
+    select(
+      .kind != "HelmRelease"
+      and .sops == null
+      and ((.apiVersion // "") | test("\.toolkit\.fluxcd\.io/") | not)
+    )
+  ' "$raw.sub" > "$EXTRAS"
+}
+
+# Turns spec.valuesFrom into --values files (VALUES_FROM_ARGS), in order, so
+# the inline values still win like in Flux. Only ConfigMaps from the app folder
+# can be read; Secrets are SOPS-encrypted.
+resolve_values_from() {
+  local count i kind name key target file
+  VALUES_FROM_ARGS=()
+  count="$(yq '.spec.valuesFrom // [] | length' "$HELMRELEASE_PATH")"
+  for ((i = 0; i < count; i++)); do
+    kind="$(yq -r ".spec.valuesFrom[$i].kind" "$HELMRELEASE_PATH")"
+    name="$(yq -r ".spec.valuesFrom[$i].name" "$HELMRELEASE_PATH")"
+    key="$(yq -r ".spec.valuesFrom[$i].valuesKey // \"values.yaml\"" "$HELMRELEASE_PATH")"
+    target="$(yq -r ".spec.valuesFrom[$i].targetPath // \"\"" "$HELMRELEASE_PATH")"
+
+    if [[ -n "$target" ]]; then
+      echo -e "${YELLOW}      ⚠ valuesFrom ${kind}/${name}: targetPath is not supported in CI, skipped${NC}"
+      continue
+    fi
+
+    file="$(mktemp)"
+    KIND="$kind" NAME="$name" KEY="$key" yq ea -N -r '
+      select(.kind == strenv(KIND) and .metadata.name == strenv(NAME)) | .data[strenv(KEY)] // ""
+    ' "$EXTRAS" > "$file"
+
+    if [[ ! -s "$file" ]] || [[ "$(tr -d '[:space:]' < "$file")" == "" ]]; then
+      echo -e "${YELLOW}      ⚠ valuesFrom ${kind}/${name} (${key}): not found in the app folder, skipped${NC}"
+      continue
+    fi
+    echo -e "${GREEN}      ✔ valuesFrom ${kind}/${name} (${key})${NC}"
+    VALUES_FROM_ARGS+=(--values "$file")
+  done
+}
+
+# Runs spec.postRenderers (kustomize patches and images) through a Helm 4
+# post-renderer plugin in a temporary plugin folder. Sets POST_RENDER_ARGS.
+setup_post_renderer() {
+  local dir
+  POST_RENDER_ARGS=()
+  [[ "$(yq '.spec.postRenderers // [] | length' "$HELMRELEASE_PATH")" -gt 0 ]] || return 0
+
+  dir="$(mktemp -d)"
+  mkdir -p "$dir/plugins/ci-kustomize"
+  cat > "$dir/plugins/ci-kustomize/plugin.yaml" <<'PLUGIN'
+apiVersion: v1
+type: postrenderer/v1
+name: ci-kustomize
+version: 0.1.0
+runtime: subprocess
+runtimeConfig:
+  platformCommand:
+    - command: ${HELM_PLUGIN_DIR}/run.sh
+PLUGIN
+  cat > "$dir/plugins/ci-kustomize/run.sh" <<'RUN'
+#!/usr/bin/env bash
+set -euo pipefail
+d="$(mktemp -d)"
+cat > "$d/all.yaml"
+cp "${CI_POSTRENDER_KUSTOMIZATION:?}" "$d/kustomization.yaml"
+kubectl kustomize "$d"
+RUN
+  chmod +x "$dir/plugins/ci-kustomize/run.sh"
+
+  substitute_vars "$HELMRELEASE_PATH" "$dir/helm-release.yaml"
+  yq '{
+    "apiVersion": "kustomize.config.k8s.io/v1beta1",
+    "kind": "Kustomization",
+    "resources": ["all.yaml"],
+    "patches": [.spec.postRenderers[].kustomize.patches[]?],
+    "images": [.spec.postRenderers[].kustomize.images[]?]
+  } | del(.patches | select(length == 0)) | del(.images | select(length == 0))
+  ' "$dir/helm-release.yaml" > "$dir/kustomization.yaml"
+
+  export HELM_PLUGINS="$dir/plugins"
+  export CI_POSTRENDER_KUSTOMIZATION="$dir/kustomization.yaml"
+  POST_RENDER_ARGS=(--post-renderer ci-kustomize)
+  echo -e "${GREEN}      ✔ postRenderers applied with kustomize${NC}"
+}
+
+# Applies EXTRAS. Kinds the CI cluster doesn't serve are skipped with a warning.
+apply_app_manifests() {
+  local served kept skipped
+  [[ -s "$EXTRAS" ]] || return 0
+  print_section "📎 Applying the app's other manifests"
+
+  # "group|kind" of every served resource (core group is empty)
+  served="$(kubectl api-resources --no-headers | awk '{v=$(NF-2); i=index(v,"/"); print (i ? substr(v,1,i-1) : "") "|" $NF}')"
+  kept="$(mktemp)"
+  skipped="$(mktemp)"
+  # Per document (yq e): "group|kind", the version stripped from apiVersion
+  local key='(.apiVersion | sub("/?[^/]*$"; "")) + "|" + .kind'
+  SERVED="$served" yq e "select(${key} as \$k | strenv(SERVED) | split(\"\n\") | any_c(. == \$k))" "$EXTRAS" > "$kept"
+  SERVED="$served" yq e -N -r "select(${key} as \$k | strenv(SERVED) | split(\"\n\") | any_c(. == \$k) | not) | .kind + \"/\" + .metadata.name" "$EXTRAS" > "$skipped"
+
+  while IFS= read -r res; do
+    [[ -n "$res" ]] && echo -e "${YELLOW}      ⚠ $res: kind not served in CI, skipped${NC}"
+  done < "$skipped"
+
+  if [[ -s "$kept" ]]; then
+    kubectl create namespace "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f - >/dev/null
+    kubectl apply --server-side -n "$NAMESPACE" -f "$kept"
+  fi
 }
 
 # Applies the CRDs of a dependency, rendered from the chart and values of its
@@ -324,9 +460,17 @@ echo " "
 echo "::endgroup::"
 
 # --------------------------------------------------
+# App folder, valuesFrom and postRenderers
+# --------------------------------------------------
+print_sub_section "📎 App folder, valuesFrom and postRenderers"
+build_app_manifests
+resolve_values_from
+setup_post_renderer
+
+# --------------------------------------------------
 # CI Values file check
 # --------------------------------------------------
-HELM_VALUES_ARGS=(--values "$VALUES_FILE")
+HELM_VALUES_ARGS=("${VALUES_FROM_ARGS[@]}" --values "$VALUES_FILE")
 
 if [[ -f "$CI_VALUES_FILE" ]]; then
   echo "::group::    🧪 Used CI values:"
@@ -349,6 +493,7 @@ if ! helm template "$RELEASE_NAME" "$CHART_REF" \
   --version "$CHART_VERSION" \
   --namespace "$NAMESPACE" \
   "${HELM_VALUES_ARGS[@]}" \
+  "${POST_RENDER_ARGS[@]}" \
   > "$RENDERED" 2> "$RENDERED.err"; then
   echo "❌ helm template failed:"
   cat "$RENDERED.err"
@@ -359,7 +504,6 @@ fi
 # Detect dependencies
 # --------------------------------------------------
 install_cnpg=false
-install_volsync=false
 install_ingress=false
 install_certmanager=false
 install_prometheus=false
@@ -367,10 +511,9 @@ install_metallb=false
 install_intel_crds=false
 install_nfd_crds=false
 
-# Match on the apiVersion group of rendered resources, so annotations such as
-# cert-manager.io/cluster-issuer don't count as a dependency
+# Match on the apiVersion group of rendered resources (chart and app folder), so
+# annotations such as cert-manager.io/cluster-issuer don't count as a dependency
 rendered_uses "postgresql.cnpg.io" && install_cnpg=true
-# rendered_uses "volsync.backube" && install_volsync=true
 rendered_uses "networking.k8s.io" "Ingress" && install_ingress=true
 rendered_uses "cert-manager.io" && install_certmanager=true
 rendered_uses "monitoring.coreos.com" && install_prometheus=true
@@ -380,7 +523,6 @@ rendered_uses "nfd.k8s-sigs.io" && install_nfd_crds=true
 
 echo "🔎 Dependencies:"
 echo "     CNPG:        $install_cnpg"
-# echo "     VolSync:     $install_volsync"
 echo "     Ingress:     $install_ingress"
 echo "     CertManager: $install_certmanager"
 echo "     Prometheus:  $install_prometheus"
@@ -395,28 +537,29 @@ echo "     NFD CRDs:    $install_nfd_crds"
 # what the cluster runs. Only CNPG and ingress-nginx need a running controller,
 # everything else only needs its CRDs.
 
+# Namespaces whose pods and logs are shown when the test fails
+DEBUG_NAMESPACES=()
+
 if $install_cnpg; then
+  DEBUG_NAMESPACES+=(cloudnative-pg)
   resolve_helm_chart clusters/main/kubernetes/system/cloudnative-pg/app/helm-release.yaml
   echo "::group::🗄️ Installing CloudNativePG (${RESOLVED_CHART_VERSION})..."
+  # The whole operator, not just CRDs: it has to create the database pods
   helm install cloudnative-pg "$RESOLVED_CHART_REF" \
     --version "$RESOLVED_CHART_VERSION" \
     --namespace cloudnative-pg \
     --create-namespace \
+    --set crds.create=true \
+    --set monitoring.podMonitorEnabled=false \
+    --set monitoring.grafanaDashboard.create=false \
     --wait \
     --timeout 5m
   echo "🗄️ Done installing CloudNativePG"
   echo "::endgroup::"
 fi
 
-if $install_volsync; then
-  echo "::group::💾 Installing VolSync CRDs..."
-  kubectl apply -f https://raw.githubusercontent.com/backube/volsync/main/config/crd/bases/volsync.backube_replicationsources.yaml
-  kubectl apply -f https://raw.githubusercontent.com/backube/volsync/main/config/crd/bases/volsync.backube_replicationdestinations.yaml
-  echo "💾 Done installing Volsync CRDs"
-  echo "::endgroup::"
-fi
-
 if $install_ingress; then
+  DEBUG_NAMESPACES+=(ingress-nginx)
   resolve_helm_chart clusters/main/kubernetes/networking/nginx-internal/app/helm-release.yaml
   echo "::group::🌐 Installing ingress-nginx (${RESOLVED_CHART_VERSION})..."
   helm install ingress-nginx "$RESOLVED_CHART_REF" \
@@ -481,6 +624,11 @@ if [[ "$(jq 'length' <<< "$EXTERNAL_SECRETS")" -gt 0 ]]; then
 fi
 
 # --------------------------------------------------
+# App folder manifests (PrometheusRules, RBAC, ConfigMaps, ...)
+# --------------------------------------------------
+apply_app_manifests
+
+# --------------------------------------------------
 # Deploy chart
 # --------------------------------------------------
 print_section "🚀 Deploying $RELEASE_NAME..."
@@ -491,6 +639,7 @@ helm upgrade --install "$RELEASE_NAME" "$CHART_REF" \
   --namespace "$NAMESPACE" \
   --create-namespace \
   "${HELM_VALUES_ARGS[@]}" \
+  "${POST_RENDER_ARGS[@]}" \
   --skip-crds \
   --wait \
   --timeout 5m
@@ -498,19 +647,56 @@ HELM_RC=$?
 set -e
 
 # --------------------------------------------------
+# CNPG clusters: helm --wait doesn't wait for them
+# --------------------------------------------------
+DB_RC=0
+if [[ "$HELM_RC" -eq 0 ]] && rendered_uses "postgresql.cnpg.io" "Cluster"; then
+  print_section "🗄️ Waiting for CNPG clusters"
+  kubectl wait clusters.postgresql.cnpg.io --all -n "$NAMESPACE" \
+    --for=condition=Ready --timeout=5m || DB_RC=1
+  kubectl get clusters.postgresql.cnpg.io -n "$NAMESPACE" || true
+fi
+
+# --------------------------------------------------
 # Debug info
 # --------------------------------------------------
-print_section "🐛 Debug info"
-print_section "📦 Pods:"
-kubectl get pods -n "$NAMESPACE" -o wide || true
+debug_namespace() {
+  local ns="$1" pod ready phase restarts
+  print_section "🐛 Debug info: $ns"
+  print_sub_section "📦 Pods:"
+  kubectl get pods -n "$ns" -o wide || true
 
-print_section "📅 Events:"
-kubectl get events -n "$NAMESPACE" --sort-by=.metadata.creationTimestamp || true
+  print_sub_section "📅 Events:"
+  kubectl get events -n "$ns" --sort-by=.metadata.creationTimestamp || true
 
-for pod in $(kubectl get pods -n "$NAMESPACE" -o name 2>/dev/null); do
-  print_section "📜 Logs for $pod:"
-  kubectl logs -n "$NAMESPACE" "$pod" --all-containers --tail=200 || true
-done
+  for pod in $(kubectl get pods -n "$ns" -o name 2>/dev/null); do
+    print_sub_section "📜 Logs for $pod:"
+    kubectl logs -n "$ns" "$pod" --all-containers --tail=200 || true
+
+    # Crashed containers: the logs of the previous run say why
+    restarts="$(kubectl get -n "$ns" "$pod" -o jsonpath='{range .status.containerStatuses[*]}{.restartCount}{"\n"}{end}' 2>/dev/null | awk '{s+=$1} END {print s+0}')"
+    if [[ "$restarts" -gt 0 ]]; then
+      print_sub_section "📜 Previous logs for $pod ($restarts restart(s)):"
+      kubectl logs -n "$ns" "$pod" --all-containers --previous --tail=100 || true
+    fi
+
+    # Pods that never got ready: image pulls, scheduling, probes
+    ready="$(kubectl get -n "$ns" "$pod" -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}' 2>/dev/null || true)"
+    phase="$(kubectl get -n "$ns" "$pod" -o jsonpath='{.status.phase}' 2>/dev/null || true)"
+    if [[ "$ready" != "True" && "$phase" != "Succeeded" ]]; then
+      print_sub_section "🔍 Describe $pod (not ready):"
+      kubectl describe -n "$ns" "$pod" || true
+    fi
+  done
+}
+
+debug_namespace "$NAMESPACE"
+# Dependencies only when something failed, they are noise otherwise
+if [[ "$HELM_RC" -ne 0 || "$DB_RC" -ne 0 ]]; then
+  for ns in "${DEBUG_NAMESPACES[@]}"; do
+    debug_namespace "$ns"
+  done
+fi
 
 # --------------------------------------------------
 # Exit result
@@ -519,6 +705,10 @@ print_section "🎯 Result"
 if [ "$HELM_RC" -ne 0 ]; then
   echo "❌ Deployment failed"
   exit "$HELM_RC"
+fi
+if [ "$DB_RC" -ne 0 ]; then
+  echo "❌ CNPG cluster not ready"
+  exit 1
 fi
 
 echo "✅ Deployment succeeded"
