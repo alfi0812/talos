@@ -8,7 +8,8 @@
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.claude,target=/config/.claude,type=bind,consistency=cached",
     "source=talos-gh-config,target=/config/gh,type=volume",
-    "source=talos-kube-config,target=/config/.kube,type=volume"
+    "source=talos-kube-config,target=/config/.kube,type=volume",
+    "source=talos-fish-history,target=/config/.local/share/fish,type=volume"
   ],
   "containerEnv": {
     "CLAUDE_CONFIG_DIR": "/config/.claude"
@@ -32,15 +33,16 @@
         "PKief.material-icon-theme",
         "usernamehw.errorlens",
         "redhat.vscode-yaml",
-        "weaveworks.vscode-gitops-tools",
-        "Tim-Koehler.helm-intellisense",
         "ms-kubernetes-tools.vscode-kubernetes-tools",
         "sandipchitale.vscode-kubernetes-helm-extras",
-        "VadzimNestsiarenka.helm-template-preview-and-more",
-        "karyan40024.helmix",
         "eamodio.gitlens",
         "streetsidesoftware.code-spell-checker",
         "mhutchie.git-graph",
+        "github.vscode-github-actions",
+        "github.vscode-pull-request-github",
+        "mkhl.direnv",
+        "timonwong.shellcheck",
+        "oderwat.indent-rainbow",
         "yzhang.markdown-all-in-one",
         "DavidAnson.vscode-markdownlint",
         "Anthropic.claude-code"

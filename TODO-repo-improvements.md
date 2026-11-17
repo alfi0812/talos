@@ -9,16 +9,6 @@ Ideas to make the repo and the devcontainer easier to maintain. Separate from
       28.16.6) and upstream Readarr is retired. Candidates: LazyLibrarian (TrueCharts chart
       `lazylibrarian`), or a maintained Readarr fork (no TrueCharts chart).
 
-## Devcontainer
-
-- [x] Persist Claude Code login, `gh` login and `~/.kube` across rebuilds
-- [ ] Persist fish history (`/config/.local/share/fish`) and krew plugins (`/config/.krew`) in named volumes
-- [ ] Remove `postCreateCommand` (`npm install`, there is no `package.json`) and probably the node feature
-- [ ] Extensions: remove `weaveworks.vscode-gitops-tools` (unmaintained since Weaveworks shut down)
-- [ ] Extensions: keep at most one of the four Helm extensions (they mostly help chart authors)
-- [ ] Extensions: add `github.vscode-github-actions`
-- [ ] Keep the extension list in one place (`devcontainer.json` or `.vscode/extensions.json`)
-
 ## Claude Code
 
 - [ ] `CLAUDE.md`: repo layout, clustertool/talhelper workflow, sops rules, Renovate, how Flux deploys
