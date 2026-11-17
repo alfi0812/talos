@@ -1,16 +1,26 @@
 {
   "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
   "name": "TalosCluster",
-  "image": "oci.trueforge.org/containerforge/devcontainer:4.1.1@sha256:3a018771e97b5a1548766ae27f10c5fcca33a83e9478d95faac862b70b4731ba",
+  "image": "oci.trueforge.org/containerforge/devcontainer:4.1.1@sha256:50d6f1a0e91eec59a2834c36c88f4932cc6e8f9755e713895155413c6223f2ee",
+  "initializeCommand": "mkdir -p ${localEnv:HOME}${localEnv:USERPROFILE}/.claude",
+  "postCreateCommand": "if [ -f package.json ]; then npm install; fi",
+  "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.claude,target=/config/.claude,type=bind,consistency=cached",
+    "source=talos-gh-config,target=/config/.config/gh,type=volume",
+    "source=talos-kube-config,target=/config/.kube,type=volume"
+  ],
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/config/.claude"
+  },
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-      "moby": false,
-      "installDockerBuildx": false,
-      "installDockerComposeSwitch": false,
-      "dockerDashComposeVersion": "none"
+      "moby": false
+    },
+    "ghcr.io/devcontainers/features/node:2": {
+      "version": "26"
     }
   },
-  "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
   "customizations": {
     "vscode": {
       "extensions": [
