@@ -2,14 +2,8 @@
 skipList:
   - clusters/main/kubernetes/kube-system/cilium/app
   - clusters/main/kubernetes/system/longhorn/app
-  - clusters/main/kubernetes/observability/exporter-fritz/app
   - clusters/main/kubernetes/apps/renovate/app
-  - clusters/main/kubernetes/system/spegel/app
   - clusters/main/kubernetes/auth/authelia/app
-  - clusters/main/kubernetes/core/clusterissuer/app
-  - clusters/main/kubernetes/apps/actions-runners/app
-  - clusters/main/kubernetes/apps/actions-runner-controller/app
-  - clusters/main/kubernetes/apps/actions-runners-truecharts/app
   - clusters/main/kubernetes/system/system-upgrade/tuppr/app
 # HelmReleases the install test runs when the test itself changes
 # (deploy/template scripts, pr-install.yaml, this file) and on a manual run
@@ -34,3 +28,7 @@ dummyEnv:
   NGINX_EXTERNAL_IP: 192.168.20.215
   NGINX_INTERNAL_IP: 192.168.20.214
   API_TDARR: tapi_ci_dummy_key_0123456789
+  DOMAIN_0_EMAIL: ci@dummy0.local
+  DOMAIN_1_EMAIL: ci@dummy1.local
+  DOMAIN_0_CLOUDFLARE_TOKEN: ci_dummy_cloudflare_token_0
+  DOMAIN_1_CLOUDFLARE_TOKEN: ci_dummy_cloudflare_token_1
