@@ -12,3 +12,4 @@ mounts/
 kubeconfig
 ssh-public-key.txt
 .decrypted~*.yaml
+.claude/settings.local.json

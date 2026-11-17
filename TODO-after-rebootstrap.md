@@ -81,3 +81,35 @@ with them. Move the patches to the 1.14 multi-document format:
 ## 5. Kubernetes 1.37
 
 - [ ] Cilium and Flux officially support 1.37 (Cilium 1.21 / Flux 2.10); upgrade them if not done yet
+
+## 6. Optional: Flux MCP server for Claude
+
+- [ ] Decide whether to add the Flux MCP server (`flux-operator-mcp`, by ControlPlane). It gives AI tools
+      structured access to Flux (resource status, reconcile errors, events, tracing, Flux docs search).
+      The `flux` CLI already covers this, so it is a nice-to-have
+- [ ] If yes: install it in the devcontainer, start it **read-only** (`--read-only`), register it in
+      `.mcp.json`, and add `mcp__flux-operator-mcp__*` permission rules to `.claude/settings.json`
+      (MCP tools are not covered by the Bash rules). Some of its reports assume Flux Operator
+      (`FluxInstance`); this cluster installs Flux from the `flux-manifests` artifact
+
+## 7. After the clustertool update (talhelper removed)
+
+Check that the AI rules and CI still match the new clustertool once it no longer uses talhelper:
+
+- [ ] Talos config layout: does `clusters/main/talos/` still have `talconfig.yaml`, `patches/` and
+      `generated/` (machine config, `talosconfig`, `talsecret.yaml`)? Update where these paths are named:
+  - `AGENTS.md` (repository table, golden rules 2, 5 and 7)
+  - `.claude/rules/secrets.md` and `.claude/rules/upgrades.md` (incl. their `paths:` frontmatter)
+  - `.claude/agents/haiku-lookup.md` and `haiku-bulk-edit.md` (generated files they must not touch)
+  - `.claude/settings.json`: the `Read(./clusters/main/talos/generated/**)` deny rule must still cover
+    the plaintext machine config and `talosconfig`, wherever they move to
+  - `.pre-commit-config.yaml`: the `exclude` pattern for generated and encrypted Talos files
+- [ ] clustertool commands: compare `clustertool --help` with the `clustertool ...` rules in
+      `.claude/settings.json` (`decrypt` denied; `encrypt`, `genconfig`, `init`, `talos`, `flux` ask;
+      `checkcrypt` allowed). New commands that change files or the node need an ask rule
+- [ ] Git hook: clustertool may rewrite `.git/hooks/pre-commit`. Make sure it still runs the encryption
+      check (`clustertool precommit`) and re-add the `pre-commit run` part if it's gone
+- [ ] `.sops.yaml`: if clustertool changes the encryption rules, update `.claude/rules/secrets.md`
+- [ ] CI: run the checks once on a PR (`Repo Checks`, `Kubeconform`, `Pull Request: Install`) and look at
+      the bot comments. The versions CI uses come from `upgradesettings.yaml` and the HelmReleases, not
+      from `talconfig.yaml`, so they should be unaffected
