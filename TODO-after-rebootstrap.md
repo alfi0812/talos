@@ -117,7 +117,8 @@ Check that the AI rules and CI still match the new clustertool once it no longer
       `.claude/settings.json` (`decrypt` denied; `encrypt`, `genconfig`, `init`, `talos`, `flux` ask;
       `checkcrypt` allowed). New commands that change files or the node need an ask rule
 - [ ] Git hook: clustertool may rewrite `.git/hooks/pre-commit`. Make sure it still runs the encryption
-      check (`clustertool precommit`) and re-add the `pre-commit run` part if it's gone
+      check (`clustertool precommit`) and re-add the `pre-commit run` part if it's gone. Requested upstream:
+      [clustertool#774](https://github.com/trueforge-org/clustertool/issues/774)
 - [ ] `.sops.yaml`: if clustertool changes the encryption rules, update `.claude/rules/secrets.md`
 - [ ] CI: run the checks once on a PR (`Repo Checks`, `Kubeconform`, `Pull Request: Install`) and look at
       the bot comments. The versions CI uses come from `upgradesettings.yaml` and the HelmReleases, not

@@ -89,7 +89,13 @@ spec:
                   enabled: false
               env:
                 TDARR_URL: "http://tdarr.media.svc.cluster.local:8265"
+                TDARR_API_KEY: "${API_TDARR}"
             main:
+              env:
+                auth: "true"
+                # "admin" with this key as password: log in and change it right away
+                seededApiKey: "${API_TDARR}"
+                apiKey: "${API_TDARR}"
               resources:
                 limits:
                   gpu.intel.com/i915: 1
