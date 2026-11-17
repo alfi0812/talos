@@ -2,6 +2,12 @@ name: "Pull Request: Install"
 
 on:
   workflow_dispatch:
+    inputs:
+      helmreleases:
+        description: "HelmRelease paths, separated by spaces or commas. Empty: installSamples from ci/.config.yaml"
+        required: false
+        type: string
+        default: ""
   pull_request:
 #    paths:
 #      - "**/helm-release.yaml"
@@ -24,11 +30,49 @@ jobs:
 
       - name: Detect changed HelmReleases
         id: set
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.sha }}
+          INPUT_HELMRELEASES: ${{ inputs.helmreleases }}
         run: |
-          files=$(git diff \
-            "${{ github.event.pull_request.base.sha }}" \
-            "${{ github.sha }}" \
-            --name-only --diff-filter=d | grep 'helm-release.yaml$' || true)
+          samples() { yq -r '.installSamples[]' ci/.config.yaml; }
+
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            # Manual run: the given HelmReleases, or the sample set
+            if [ -n "$INPUT_HELMRELEASES" ]; then
+              files=$(tr ', ' '\n' <<< "$INPUT_HELMRELEASES" | sed '/^$/d')
+            else
+              files=$(samples)
+            fi
+            for f in $files; do
+              if [ ! -f "$f" ]; then
+                echo "::error::HelmRelease not found: $f"
+                exit 1
+              fi
+            done
+          else
+            changed=$(git diff "$BASE_SHA" "$HEAD_SHA" --name-only --diff-filter=d)
+            files=$(grep 'helm-release.yaml$' <<< "$changed" || true)
+
+            # Changes to the test itself: run the sample set
+            if grep -qxE '\.github/scripts/(deploy|template)_helmrelease\.sh|\.github/workflows/pr-install\.yaml|ci/\.config\.yaml' <<< "$changed"; then
+              echo "🧪 Test changed, adding installSamples"
+              files+=$'\n'"$(samples)"
+            fi
+
+            # Changed CI overrides (ci/<chart>.yaml): every HelmRelease of that chart
+            for chart in $(grep -oP '^ci/\K[^/.][^/]*(?=\.yaml$)' <<< "$changed" || true); do
+              echo "🧪 ci/${chart}.yaml changed, adding its HelmReleases"
+              while IFS= read -r hr; do
+                if [ "$(yq '.spec.chart.spec.chart // .spec.chartRef.name' "$hr")" = "$chart" ]; then
+                  files+=$'\n'"$hr"
+                fi
+              done < <(find clusters -name helm-release.yaml)
+            done
+
+            files=$(sed '/^$/d' <<< "$files" | sort -u)
+          fi
 
           if [ -z "$files" ]; then
             echo "🔍 No HelmReleases changed"
@@ -357,7 +401,6 @@ jobs:
         with:
           repo-token: ${{ steps.app-token.outputs.token }}
           message-id: "${{ github.event.pull_request.number }}/helmrelease-tests"
-          header: "HelmRelease CI"
           message: |
             ## 🚀 HelmRelease CI Report
 
