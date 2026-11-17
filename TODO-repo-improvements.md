@@ -9,14 +9,6 @@ Ideas to make the repo and the devcontainer easier to maintain. Separate from
       28.16.6) and upstream Readarr is retired. Candidates: LazyLibrarian (TrueCharts chart
       `lazylibrarian`), or a maintained Readarr fork (no TrueCharts chart).
 
-## GitHub Actions
-
-- [ ] `actions/create-github-app-token`: switch `app-id` to `client-id` (the bot app's Client ID, from the
-      GitHub App settings). Add it as a new secret (e.g. `BOT_CLIENT_ID`) and replace
-      `app-id: ${{ secrets.BOT_APP_ID }}` in all 9 workflows that generate a bot token:
-      automerge, flate, flux-migrate, kubeconform, label-sync, labeler, pr-install, repo-checks, tag.
-      `app-id` still works, the action only recommends `client-id`.
-
 ## Claude Code
 
 - [ ] `CLAUDE.md`: repo layout, clustertool/talhelper workflow, sops rules, Renovate, how Flux deploys
