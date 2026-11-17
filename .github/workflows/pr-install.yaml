@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set.outputs.matrix }}
+      all: ${{ steps.set.outputs.all }}
       tested: ${{ steps.set.outputs.tested }}
       skipped: ${{ steps.set.outputs.skipped }}
 
@@ -27,13 +28,17 @@ jobs:
           files=$(git diff \
             "${{ github.event.pull_request.base.sha }}" \
             "${{ github.sha }}" \
-            --name-only | grep 'helm-release.yaml$' || true)
-          
+            --name-only --diff-filter=d | grep 'helm-release.yaml$' || true)
+
           if [ -z "$files" ]; then
             echo "🔍 No HelmReleases changed"
             echo "matrix=[]" >> "$GITHUB_OUTPUT"
+            echo "all=[]" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+
+          # All changed HelmReleases (skip list included) for the template job
+          echo "all=$(printf '%s\n' "$files" | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
           
           echo "🔍 Detected HelmReleases:"
           printf '%s\n' "$files"
@@ -152,11 +157,58 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-  test:
+  template:
     needs: detect
+    name: Template HelmReleases
+    if: needs.detect.outputs.all != '[]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Install helm
+        uses: azure/setup-helm@2f5e7bc67f1f9972ab16657bb795f36d8f04de0e # v5.1.0
+        with:
+          version: v4.3.2
+
+      - name: Load dummy env vars from config
+        run: |
+          yq e '.dummyEnv | to_entries | .[] | "\(.key)=\(.value)"' ci/.config.yaml >> $GITHUB_ENV
+
+      # helm template validates the values against the chart's values.schema.json,
+      # no cluster needed. Runs for skip-listed releases too.
+      - name: Template HelmReleases
+        env:
+          FILES: ${{ needs.detect.outputs.all }}
+        run: |
+          failed=()
+          while IFS= read -r file; do
+            echo "::group::📄 $file"
+            if ! bash .github/scripts/template_helmrelease.sh "$file"; then
+              failed+=("$file")
+              echo "::error file=$file::helm template failed (invalid values or chart not renderable)"
+            fi
+            echo "::endgroup::"
+          done < <(jq -r '.[]' <<< "$FILES")
+
+          if [ ${#failed[@]} -gt 0 ]; then
+            echo "❌ Failed:"
+            printf '  - %s\n' "${failed[@]}"
+            exit 1
+          fi
+          echo "✅ All HelmReleases render"
+
+  test:
+    needs:
+      - detect
+      - template
     name: Test HelmReleases
     if: needs.detect.outputs.matrix != '[]'
     runs-on: ubuntu-latest
+    env:
+      # renovate: datasource=github-releases depName=k3d-io/k3d
+      K3D_VERSION: v5.9.0
 
     strategy:
       fail-fast: false
@@ -174,12 +226,24 @@ jobs:
       # Install required CLI tools
       # --------------------------------------------------
       - name: Install tools
+        env:
+          # renovate: datasource=github-releases depName=mikefarah/yq
+          YQ_VERSION: v4.54.3
         run: |
           sudo apt-get update
           sudo apt-get install -y jq gettext
-          sudo curl -sSL https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 \
+          sudo curl -fsSL "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" \
             -o /usr/local/bin/yq
           sudo chmod +x /usr/local/bin/yq
+
+      # kubectl and K3s follow the Kubernetes version of the cluster
+      - name: Read cluster Kubernetes version
+        id: cluster
+        run: |
+          version="$(yq '.kubernetesVersion' clusters/main/talos/talconfig.yaml)"
+          echo "Cluster Kubernetes version: $version"
+          echo "kubernetes=$version" >> "$GITHUB_OUTPUT"
+          echo "kubernetes-minor=${version%.*}" >> "$GITHUB_OUTPUT"
 
       # --------------------------------------------------
       # Dummy env vars for Helm interpolation
@@ -195,6 +259,8 @@ jobs:
       # --------------------------------------------------
       - name: Install kubectl
         uses: azure/setup-kubectl@bda439f5f36b99b262ebdcd3613869bddb064c8e # v5
+        with:
+          version: ${{ steps.cluster.outputs.kubernetes }}
 
       - name: Install helm
         uses: azure/setup-helm@2f5e7bc67f1f9972ab16657bb795f36d8f04de0e # v5.1.0
@@ -221,9 +287,11 @@ jobs:
           lsmod | grep -E '^(ip_tables|iptable_)' || true
 
       - name: Create k3d cluster
-        uses: nolar/setup-k3d-k3s@v1
+        uses: nolar/setup-k3d-k3s@62c9d1bd2bc843275c85d2e7dcd696edc1160eee # v1.1.0
         with:
-          version: latest
+          # Newest K3s patch of the cluster's Kubernetes minor (K3s releases lag behind upstream)
+          version: ${{ steps.cluster.outputs.kubernetes-minor }}
+          k3d-tag: ${{ env.K3D_VERSION }}
           k3d-args: --k3s-arg --disable=metrics-server@server:*
           # github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -244,6 +312,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - detect
+      - template
       - test
     if: always()
 
@@ -256,6 +325,10 @@ jobs:
 
             echo "### Detect job"
             echo "- Result: **${{ needs.detect.result }}**"
+            echo ""
+
+            echo "### Template job"
+            echo "- Result: **${{ needs.template.result }}**"
             echo ""
 
             echo "### Test matrix job"
@@ -292,6 +365,7 @@ jobs:
             | Stage | Result |
             |-------|--------|
             | 🔍 Detect HelmReleases | **${{ needs.detect.result }}** |
+            | 📐 Helm Template | **${{ needs.template.result }}** |
             | 🧪 Helm Tests | **${{ needs.test.result }}** |
 
             ---
@@ -310,7 +384,9 @@ jobs:
 
             ### Result
 
-            ${{ needs.test.result == 'skipped' && 'ℹ️ **No HelmReleases required testing**' || '' }}
+            ${{ needs.template.result == 'failure' && '❌ **helm template failed** (invalid values), install tests were not run\n\nCheck workflow logs for details.' || '' }}
+
+            ${{ needs.template.result != 'failure' && needs.test.result == 'skipped' && 'ℹ️ **No HelmReleases required testing**' || '' }}
 
             ${{ needs.test.result == 'success' && '✅ **All HelmRelease tests passed**' || '' }}
 
@@ -323,6 +399,13 @@ jobs:
           # Detect must succeed
           if [ "${{ needs.detect.result }}" != "success" ]; then
             echo "Detect job failed"
+            exit 1
+          fi
+
+          # Template may be success OR skipped (no releases changed)
+          if [ "${{ needs.template.result }}" != "success" ] && \
+             [ "${{ needs.template.result }}" != "skipped" ]; then
+            echo "HelmRelease template failed"
             exit 1
           fi
 

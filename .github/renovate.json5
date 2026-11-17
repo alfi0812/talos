@@ -20,7 +20,8 @@
     "github>alfi0812/talos//.github/renovate/labels.json5",
     "github>alfi0812/talos//.github/renovate/autoMerge.json5",
     "github>alfi0812/talos//.github/renovate/groups.json5",
-    "github>alfi0812/talos//.github/renovate/special_grafanadashboard.json5"
+    "github>alfi0812/talos//.github/renovate/special_grafanadashboard.json5",
+    "github>alfi0812/talos//.github/renovate/special_truechartsSchema.json5"
   ],
 
   "ignorePaths": [

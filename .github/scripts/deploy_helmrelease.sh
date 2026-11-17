@@ -291,7 +291,8 @@ echo "     NFD CRDs:    $install_nfd_crds"
 
 if $install_cnpg; then
   echo "::group::🗄️ Installing CloudNativePG..."
-  helm install cloudnative-pg oci://ghcr.io/cloudnative-pg/charts/cloudnative-pg --namespace cloudnative-pg --create-namespace --wait
+  CNPG_VERSION="$(yq '.spec.chart.spec.version' clusters/main/kubernetes/system/cloudnative-pg/app/helm-release.yaml)"
+  helm install cloudnative-pg oci://ghcr.io/cloudnative-pg/charts/cloudnative-pg --version "$CNPG_VERSION" --namespace cloudnative-pg --create-namespace --wait
   if [[ "$?" != "0" ]]; then
       echo "❌ Failed to install CloudNativePG"
       exit 1
@@ -328,7 +329,8 @@ fi
 
 if $install_certmanager; then
   echo "::group::🔐 Installing cert-manager..."
-  kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
+  CERTMANAGER_VERSION="$(yq '.spec.chart.spec.version' clusters/main/kubernetes/system/cert-manager/app/helm-release.yaml)"
+  kubectl apply -f "https://github.com/cert-manager/cert-manager/releases/download/${CERTMANAGER_VERSION}/cert-manager.yaml"
   kubectl wait deployment --all -n cert-manager --for=condition=Available --timeout=180s
   if [[ "$?" != "0" ]]; then
       echo "❌ Failed to install certmanager"
@@ -340,7 +342,10 @@ fi
 
 if $install_prometheus; then
   echo "::group::📊 Installing Prometheus Operator CRDs..."
-  kubectl apply -f https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.89.0/stripped-down-crds.yaml
+  # The operator version is the appVersion of the kube-prometheus-stack chart the cluster runs
+  KPS_VERSION="$(yq '.spec.chart.spec.version' clusters/main/kubernetes/observability/kube-prometheus-stack/app/helm-release.yaml)"
+  PROMETHEUS_OPERATOR_VERSION="$(helm show chart oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack --version "$KPS_VERSION" | yq '.appVersion')"
+  kubectl apply --server-side -f "https://github.com/prometheus-operator/prometheus-operator/releases/download/${PROMETHEUS_OPERATOR_VERSION}/stripped-down-crds.yaml"
   if [[ "$?" != "0" ]]; then
       echo "❌ Failed to install Prometheus Operator CRDs"
       exit 1
@@ -351,7 +356,8 @@ fi
 
 if $install_metallb; then
   echo "::group::📡 Installing MetalLB..."
-  helm install metallb oci://quay.io/metallb/chart/metallb --namespace metallb --create-namespace --wait
+  METALLB_VERSION="$(yq '.spec.chart.spec.version' clusters/main/kubernetes/system/metallb/app/helm-release.yaml)"
+  helm install metallb oci://quay.io/metallb/chart/metallb --version "$METALLB_VERSION" --namespace metallb --create-namespace --wait
 
   if [[ "$?" != "0" ]]; then
       echo "❌ Failed to install MetalLB"

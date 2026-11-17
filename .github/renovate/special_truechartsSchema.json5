@@ -1,0 +1,32 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  // TrueCharts publishes a Flux HelmRelease schema for each version of its common library:
+  //   https://truecharts.org/schemas/helm-release/31.0.19.schema.json
+  // It validates spec.values against the common values schema. It is mapped to the TrueCharts
+  // HelmReleases centrally in .vscode/settings.json (yaml.schemas). This keeps the version in that
+  // URL up to date with the latest common release (based on trueforge-org/renovate-config#20).
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": ["Process the TrueCharts common version in the HelmRelease schema URL"],
+      "managerFilePatterns": ["/(^|/)\\.vscode/settings\\.json$/", "/(^|/)clusters/.+\\.ya?ml$/"],
+      "matchStrings": ["schemas/helm-release/(?<currentValue>\\d+\\.\\d+\\.\\d+)\\.schema\\.json"],
+      "depNameTemplate": "truecharts-common-schema",
+      "packageNameTemplate": "oci.trueforge.org/truecharts/common",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": ["Update the TrueCharts HelmRelease schema comment"],
+      "matchManagers": ["custom.regex"],
+      "matchDepNames": ["truecharts-common-schema"],
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "schema",
+      "commitMessageTopic": "TrueCharts HelmRelease schema",
+      "pinDigests": false,
+      "addLabels": ["renovate/schema"]
+    }
+  ]
+}
