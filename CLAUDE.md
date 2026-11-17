@@ -14,6 +14,12 @@ This repository defines its own agents in `.claude/agents/` (copied and adapted 
 | `haiku-lookup` | Quick read-only questions: where a value is set, which apps use a chart, which HelmReleases are not TrueCharts |
 | `haiku-bulk-edit` | One exact, mechanical change in many files (e.g. the same line in many `helm-release.yaml`) |
 | `haiku-drafter` | Commit messages and PR descriptions from a diff |
+| `renovate-review` | Before merging an update (every one that isn't automerged): release notes, values changes against what this repo sets, CI and bot comments → MERGE or HOLD. Read-only, runs on Sonnet |
+| `upgrade-watch` | Following a chart upgrade after it's merged (Renovate PR or manual bump) and finding out why it failed: Flux, helm-controller, rollbacks, pods, volumes, database. Read-only, runs on Sonnet |
+| `cluster-health` | One health report of the whole cluster: Flux, pods, alerts, certificates, volumes, CNPG backups, VolSync. After maintenance, around a rebootstrap, or when asked. Read-only |
+| `leak-check` | Before every commit or push: unencrypted secrets, token-like strings, hardcoded domains/IPs, files that must never be committed. This repository is public. Read-only |
+| `new-app` | Adding an app: ks.yaml, kustomization, HelmRelease from a similar app, plus dummyEnv, CI overrides and the schema exclusion. Validates, does not commit. Runs on Sonnet |
+| `ci-triage` | A failed GitHub Actions run: which job and step failed, the error lines, and which required check it blocks. Read-only |
 
 - Give the agent the exact command or change, the files, and what to return. Tell `haiku-triage` not to fix anything; fix what it reports yourself, then run it again.
 - A quick check on one file with short output may run directly.

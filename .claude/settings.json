@@ -103,6 +103,7 @@
       "Bash(kubectl describe *)",
       "Bash(kubectl logs *)",
       "Bash(kubectl top *)",
+      "Bash(kubectl wait *)",
       "Bash(kubectl events *)",
       "Bash(kubectl explain *)",
       "Bash(kubectl api-resources *)",
