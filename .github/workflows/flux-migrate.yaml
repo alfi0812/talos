@@ -1,0 +1,83 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Flux API Migrate
+
+# Daily: migrate the Flux objects to the latest API versions of the cluster's Flux version
+# (repositories/oci/flux-manifests.yaml) and open a PR as the bot. The PR gets the "automerge"
+# label, so the "Automerge and Approve" workflow merges it once the required checks pass.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * *"
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    name: Flux API Migrate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Setup yq
+        env:
+          # renovate: datasource=github-releases depName=mikefarah/yq
+          YQ_VERSION: v4.54.3
+        run: |
+          bin="$HOME/.local/bin"
+          mkdir -p "$bin"
+          curl -fsSL "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" -o "$bin/yq"
+          chmod +x "$bin/yq"
+          echo "$bin" >> "$GITHUB_PATH"
+
+      # The Flux CLI in the cluster's version, so it migrates to what the cluster serves
+      - name: Setup Flux CLI
+        run: bash ./.github/scripts/install_flux_cli.sh
+
+      - name: Migrate Flux API versions
+        id: migrate
+        run: |
+          bash ./.github/scripts/flux_migrate.sh
+          echo "flux-version=$(yq '.spec.ref.tag' repositories/oci/flux-manifests.yaml)" >> "$GITHUB_OUTPUT"
+          {
+            echo "changes<<EOF"
+            git diff -U0 | grep '^[-+]apiVersion' | sort | uniq -c || true
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      # Commits through the GitHub API with the bot token: authored by the bot and verified.
+      # Does nothing when there are no changes; updates the open PR on later runs.
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          sign-commits: true
+          branch: flux/api-migrate
+          delete-branch: true
+          commit-message: "fix(flux): migrate manifests to the latest Flux ${{ steps.migrate.outputs.flux-version }} API versions"
+          title: "fix(flux): migrate manifests to the latest Flux ${{ steps.migrate.outputs.flux-version }} API versions"
+          labels: automerge
+          body: |
+            `flux migrate` moved these Flux objects to the latest API versions of Flux ${{ steps.migrate.outputs.flux-version }} (the version the cluster runs), and their schema comments with them:
+
+            ```
+            ${{ steps.migrate.outputs.changes }}
+            ```
+
+            Created by the daily "Flux API Migrate" workflow. Merged automatically once the checks pass.

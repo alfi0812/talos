@@ -28,6 +28,7 @@ jobs:
         with:
           patterns: |
             clusters/main/kubernetes/**/*
+            clusters/main/components/**/*
             repositories/**/*
 
   kubeconform:
@@ -60,10 +61,69 @@ jobs:
         shell: bash
         run: bash ./.github/scripts/kubeconform.sh ${{ env.KUBERNETES_DIR }}
 
+  flux-api:
+    if: ${{ needs.filter.outputs.changed-files != '[]' }}
+    needs: filter
+    name: Flux API versions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup yq
+        env:
+          # renovate: datasource=github-releases depName=mikefarah/yq
+          YQ_VERSION: v4.54.3
+        run: |
+          bin="$HOME/.local/bin"
+          mkdir -p "$bin"
+          curl -fsSL "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" -o "$bin/yq"
+          chmod +x "$bin/yq"
+          echo "$bin" >> "$GITHUB_PATH"
+      # The Flux CLI in the cluster's version (repositories/oci/flux-manifests.yaml)
+      - name: Setup Flux CLI
+        run: bash ./.github/scripts/install_flux_cli.sh
+      # Fails when a Flux object uses an API version the cluster's Flux does not serve,
+      # warns on deprecated ones (the daily "Flux API Migrate" workflow upgrades those)
+      - name: Check Flux API versions
+        id: flux
+        env:
+          FLUX_API_REPORT: ${{ runner.temp }}/flux-api-report.md
+        run: bash ./.github/scripts/flux_api_check.sh
+
+      # PR comment as the bot: posted/updated when something is unsupported or deprecated.
+      # When everything is current, only an existing comment is updated (no noise on clean PRs).
+      - name: Generate Token
+        if: ${{ !cancelled() && github.event_name == 'pull_request' && steps.flux.outputs.unsupported != '' }}
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+
+      - name: Comment Flux API report
+        if: ${{ !cancelled() && steps.app-token.outcome == 'success' && (steps.flux.outputs.unsupported != '0' || steps.flux.outputs.deprecated != '0') }}
+        continue-on-error: true
+        uses: mshick/add-pr-comment@9302b90c1c7d26c4aebe20b7846b4a8a434bee94
+        with:
+          repo-token: ${{ steps.app-token.outputs.token }}
+          message-id: flux-api-versions
+          message-path: ${{ runner.temp }}/flux-api-report.md
+
+      - name: Update Flux API report (all current)
+        if: ${{ !cancelled() && steps.app-token.outcome == 'success' && steps.flux.outputs.unsupported == '0' && steps.flux.outputs.deprecated == '0' }}
+        continue-on-error: true
+        uses: mshick/add-pr-comment@9302b90c1c7d26c4aebe20b7846b4a8a434bee94
+        with:
+          repo-token: ${{ steps.app-token.outputs.token }}
+          message-id: flux-api-versions
+          message-path: ${{ runner.temp }}/flux-api-report.md
+          update-only: true
+
   success:
     if: ${{ !cancelled() }}
     needs:
       - kubeconform
+      - flux-api
     name: Kubeconform - Success
     runs-on: ubuntu-latest
     steps:

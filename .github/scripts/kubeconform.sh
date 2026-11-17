@@ -10,7 +10,7 @@ kustomize_args=("--load-restrictor=LoadRestrictionsNone")
 kustomize_config="kustomization.yaml"
 
 # Validate core resources against the Kubernetes version the cluster runs (without the "v")
-KUBERNETES_VERSION="$(yq '.kubernetesVersion' clusters/main/talos/talconfig.yaml)"
+KUBERNETES_VERSION="$(yq '.data.KUBERNETES_VERSION' clusters/main/kubernetes/flux-system/flux/upgradesettings.yaml)"
 KUBERNETES_VERSION="${KUBERNETES_VERSION#v}"
 echo "=== Kubernetes version: ${KUBERNETES_VERSION} ==="
 

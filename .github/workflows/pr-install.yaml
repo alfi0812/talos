@@ -240,7 +240,8 @@ jobs:
       - name: Read cluster Kubernetes version
         id: cluster
         run: |
-          version="$(yq '.kubernetesVersion' clusters/main/talos/talconfig.yaml)"
+          # The version tuppr upgrades the cluster to
+          version="$(yq '.data.KUBERNETES_VERSION' clusters/main/kubernetes/flux-system/flux/upgradesettings.yaml)"
           echo "Cluster Kubernetes version: $version"
           echo "kubernetes=$version" >> "$GITHUB_OUTPUT"
           echo "kubernetes-minor=${version%.*}" >> "$GITHUB_OUTPUT"
