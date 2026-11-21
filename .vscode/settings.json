@@ -10,7 +10,7 @@
         // see .github/renovate/special_truechartsSchema.json5). Applies to every helm-release.yaml,
         // except the non-TrueCharts ones listed below: add new non-TrueCharts HelmReleases here.
         // A "# yaml-language-server: $schema=..." comment inside a file overrides this mapping.
-        "https://truecharts.org/schemas/helm-release/31.0.19.schema.json": [
+        "https://truecharts.org/schemas/helm-release/32.3.0.schema.json": [
             "clusters/**/helm-release.yaml",
             "!clusters/main/kubernetes/apps/actions-runner-controller/app/helm-release.yaml",
             "!clusters/main/kubernetes/apps/actions-runners-truecharts/app/helm-release.yaml",
